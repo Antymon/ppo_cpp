@@ -73,7 +73,7 @@ public:
         }
 
         std::vector<Tensor> outputs;
-        status = _session->Run({}, {}, {"oh_init"}, &outputs);
+        status = _session->Run({}, {}, {"init"}, &outputs);
 
 
         if (!status.ok())

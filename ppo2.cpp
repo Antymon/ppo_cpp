@@ -2,8 +2,10 @@
 // Created by szymon on 10/07/19.
 //
 
-#include "PPO2.hpp"
+#include "ppo2.hpp"
+#include "env.hpp"
 
 int main(){
-    PPO2 algorithm {0.99f};
+    Env e {8};
+    ppo2 algorithm {e};
 }
