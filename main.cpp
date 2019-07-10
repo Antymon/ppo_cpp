@@ -8,6 +8,8 @@
 //#include <tensorflow/cc/ops/math_ops.h>
 //#include <tensorflow/cc/ops/array_ops.h>
 
+#include "network_loader.hpp"
+
 int main()
 {
 //    tensorflow::Scope root = tensorflow::Scope::NewRootScope();
@@ -19,6 +21,8 @@ int main()
 //
 //    tensorflow::Status s = session.Run({ {a, {1}} }, {c}, &outputs);
 //    if (!s.ok()) {
+
+        NetworkLoader loader = NetworkLoader("./exp/ppo_cpp/ppo2_graph-1562761538.345122.meta.txt");
 
         const int n_steps{3};
         const int n_envs{2};

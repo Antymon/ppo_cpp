@@ -7,7 +7,8 @@ include_directories("/usr/local/include/eigen3")
 include_directories("/usr/local/include/tensorflow")
 include_directories("/usr/local/include/protobuf")
 
-add_executable(ppo_cpp main.cpp network_loader.hpp)
+add_executable(test main.cpp network_loader.hpp)
+add_executable(ppo_cpp ppo2.cpp PPO2.hpp ActorCriticRLModel.hpp cmake-build-debug/policies.hpp)
 
 target_link_libraries(ppo_cpp "/usr/local/lib/libprotobuf.so")
 target_link_libraries(ppo_cpp "/usr/local/lib/libprotoc.so")

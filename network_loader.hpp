@@ -1,7 +1,7 @@
 #ifndef __NETWORK__LOADER__HPP__
 #define __NETWORK__LOADER__HPP__
 
-#include <sferes/misc/rand.hpp>
+//#include <sferes/misc/rand.hpp>
 
 //#include "tensorflow/core/framework/graph.h"
 #include "tensorflow/core/framework/tensor.pb.h"
@@ -12,6 +12,7 @@
 #include "tensorflow/core/platform/init_main.h"
 #include "tensorflow/core/platform/logging.h"
 #include "tensorflow/core/platform/types.h"
+#include <tensorflow/core/platform/env.h>
 #include "tensorflow/core/public/session.h"
 #include <tensorflow/core/protobuf/meta_graph.pb.h>
 
@@ -28,7 +29,7 @@ class NetworkLoader {
         static const int input_dim = 100;
         static const int batch_size = 20000;
         static const int nb_epoch = 25000;
-        SFERES_CONST float CV_fraction = 0.75;
+        static constexpr float CV_fraction = 0.75;
     };
 
 public:
@@ -60,7 +61,7 @@ public:
 
         _session.reset(NewSession(opts));
 
-        Status status = ReadBinaryProto(Env::Default(), graph_file_name + ".meta", &graph_def);
+        Status status = ReadTextProto(Env::Default(), graph_file_name, &graph_def);
         if (!status.ok()) {
             std::cout << "Error reading graph definition" << graph_file_name << ": " << status.ToString() << std::endl;
         }
@@ -72,7 +73,7 @@ public:
         }
 
         std::vector<Tensor> outputs;
-        status = _session->Run({}, {}, {"init_all_vars_op"}, &outputs);
+        status = _session->Run({}, {}, {"oh_init"}, &outputs);
 
 
         if (!status.ok())
@@ -81,19 +82,19 @@ public:
             std::cout << "Success load graph !! " << "\n";
 
         // Read weights from the saved checkpoint
-        Tensor checkpointPathTensor(DT_STRING, TensorShape());
-        checkpointPathTensor.scalar<std::string>()() = graph_file_name;
-
-        status = _session->Run(
-                {{graph_def.saver_def().filename_tensor_name(), checkpointPathTensor},},
-                {},
-                {graph_def.saver_def().restore_op_name()},
-                nullptr);
-        if (!status.ok())
-            std::cout << "Error loading checkpoint from " << graph_file_name << ": " << status.ToString() << std::endl;
-        else
-            std::cout << "Success load weights !! " << "\n";
-
+//        Tensor checkpointPathTensor(DT_STRING, TensorShape());
+//        checkpointPathTensor.scalar<std::string>()() = graph_file_name;
+//
+//        status = _session->Run(
+//                {{graph_def.saver_def().filename_tensor_name(), checkpointPathTensor},},
+//                {},
+//                {graph_def.saver_def().restore_op_name()},
+//                nullptr);
+//        if (!status.ok())
+//            std::cout << "Error loading checkpoint from " << graph_file_name << ": " << status.ToString() << std::endl;
+//        else
+//            std::cout << "Success load weights !! " << "\n";
+//
         return Status::OK();
     }
 
