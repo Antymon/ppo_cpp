@@ -7,5 +7,5 @@
 
 int main(){
     Env e {8};
-    ppo2 algorithm {e};
+    PPO2 algorithm {"./exp/ppo_cpp/ppo2_graph-1562761538.345122.meta.txt",e};
 }

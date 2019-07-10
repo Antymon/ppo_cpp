@@ -34,7 +34,7 @@ def build(bld):
     
     bld.program(features = 'cxx',
             #source = 'cpp/tf_exp.cpp',
-            source = 'main.cpp',
+            source = 'ppo2.cpp',
             includes = './cpp . ../../',
             uselib = 'ABSL TBB BOOST EIGEN PTHREAD MPI PROTOBUF TF',
             #use = 'sferes2',

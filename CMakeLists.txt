@@ -8,7 +8,7 @@ include_directories("/usr/local/include/tensorflow")
 include_directories("/usr/local/include/protobuf")
 
 add_executable(test main.cpp network_loader.hpp)
-add_executable(ppo_cpp ppo2.cpp ppo2.hpp ActorCriticRLModel.hpp policies.hpp env.hpp logger.hpp)
+add_executable(ppo_cpp ppo2.cpp ppo2.hpp ActorCriticRLModel.hpp policies.hpp env.hpp logger.hpp session_creator.hpp)
 
 target_link_libraries(ppo_cpp "/usr/local/lib/libprotobuf.so")
 target_link_libraries(ppo_cpp "/usr/local/lib/libprotoc.so")
