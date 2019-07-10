@@ -3,9 +3,9 @@ project(ppo_cpp)
 
 set(CMAKE_CXX_STANDARD 14)
 
-include_directories("/usr/local/include/eigen")
-include_directories("/usr/local/include/google/tensorflow")
-include_directories("/usr/local/include/google/protobuf")
+include_directories("/usr/local/include/eigen3")
+include_directories("/usr/local/include/tensorflow")
+include_directories("/usr/local/include/protobuf")
 
 add_executable(ppo_cpp main.cpp)
 

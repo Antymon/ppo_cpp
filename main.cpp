@@ -51,12 +51,12 @@ int main()
                 nextnonterminal = Eigen::MatrixXf::Ones(1, n_envs) - dones;
                 nextvalues = last_values;
             } else {
-                nextnonterminal = Eigen::MatrixXf::Ones(1, n_envs) - mb_dones(step + 1, Eigen::seqN(0, n_envs));
-                nextvalues = mb_values(step + 1, Eigen::seqN(0, n_envs));
+                nextnonterminal = Eigen::MatrixXf::Ones(1, n_envs) - mb_dones.row(step + 1);
+                nextvalues = mb_values.row(step + 1);
             }
-            delta = mb_rewards(step, Eigen::seqN(0, n_envs)) + gamma * nextvalues.cwiseProduct(nextnonterminal) -
-                    mb_values(step, Eigen::seqN(0, n_envs));
-            mb_advs(step, Eigen::seqN(0, n_envs)) = last_gae_lam =
+            delta = mb_rewards.row(step) + gamma * nextvalues.cwiseProduct(nextnonterminal) -
+                    mb_values.row(step);
+            mb_advs.row(step) = last_gae_lam =
                     delta + gamma * lam * nextnonterminal.cwiseProduct(last_gae_lam);
         }
         mb_returns = mb_advs + mb_values;
