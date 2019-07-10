@@ -7,7 +7,7 @@ include_directories("/usr/local/include/eigen3")
 include_directories("/usr/local/include/tensorflow")
 include_directories("/usr/local/include/protobuf")
 
-add_executable(ppo_cpp main.cpp)
+add_executable(ppo_cpp main.cpp network_loader.hpp)
 
 target_link_libraries(ppo_cpp "/usr/local/lib/libprotobuf.so")
 target_link_libraries(ppo_cpp "/usr/local/lib/libprotoc.so")
