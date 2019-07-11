@@ -33,7 +33,7 @@ public:
         //opts.config.mutable_gpu_options()->set_per_process_gpu_memory_fraction(1);
         //opts.config.mutable_gpu_options()->set_allow_growth(true);
         //(*opts.config.mutable_device_count())["GPU"]=0;//causes segfault...
-        //opts.config.set_allow_soft_placement(true);
+        opts.config.set_allow_soft_placement(true);
 
 
         session.reset(NewSession(opts));
