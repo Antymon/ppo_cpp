@@ -2,8 +2,8 @@
 // Created by szymon on 10/07/19.
 //
 
-#include "ppo2.hpp"
-#include "env.hpp"
+#include "ppo2/ppo2.hpp"
+#include "ppo2/env.hpp"
 
 int main(){
     Env e {8};

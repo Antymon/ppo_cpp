@@ -8,11 +8,12 @@
 #include <memory>
 #include "Eigen/Dense"
 #include <string>
-#include "ActorCriticRLModel.hpp"
+#include "base_class.hpp"
 #include "env.hpp"
 #include <iostream>
 #include "session_creator.hpp"
 #include "policies.hpp"
+#include "utils.hpp"
 
 const std::string BasePolicy::obs_ph{"input/Ob:0"};
 const std::string ActorCriticPolicy::action{"output/_action:0"};
@@ -30,7 +31,7 @@ struct MiniBatch {
 
 class Runner {
 public:
-    Runner() {}
+    Runner(Env& env) {}
 
     MiniBatch run() {
         MiniBatch mb;
@@ -39,9 +40,10 @@ public:
     }
 };
 
-class PPO2 : public virtual ActorCriticRLModel {
+class PPO2 : public ActorCriticRLModel {
 public:
-    PPO2(std::string model_filename, Env &env,
+    PPO2(std::string model_filename,
+            Env &env,
          float gamma = 0.99,
          int n_steps = 128,
          float ent_coef = 0.01,
@@ -53,8 +55,22 @@ public:
          int noptepochs = 4,
          float cliprange = 0.2,
          std::string tensorboard_log = ""
-    )
-            : env{env}, n_steps{n_steps}, n_envs{this->env.get_num_envs()}, n_batch{n_envs * n_steps} {
+    ) : ActorCriticRLModel(env)
+    , gamma{gamma}
+    , n_steps{n_steps}
+    , ent_coef{ent_coef}
+    , learning_rate{learning_rate}
+    , vf_coef{vf_coef}
+    , max_grad_norm{max_grad_norm}
+    , lam{lam}
+    , nminibatches{nminibatches}
+    , noptepochs{noptepochs}
+    , cliprange{cliprange}
+    , tensorboard_log{tensorboard_log}
+    {
+
+
+        n_batch = n_envs * n_steps;
 
         std::cout << "ppo2 " << std::endl;
         std::cout << "gamma " << gamma << std::endl;
@@ -66,7 +82,7 @@ public:
             return;
         }
 
-        acting_policy = std::make_unique<MlpPolicy>(_session);
+        act_model = std::make_unique<MlpPolicy>(_session);
 
     }
 
@@ -75,7 +91,10 @@ public:
     }
 
     void learn(int total_timesteps) {
-        Runner runner{};
+
+        bool new_tb_log = _init_num_timesteps();
+
+        Runner runner{env};
 
         const MiniBatch &mb = runner.run();
 
@@ -96,12 +115,25 @@ private:
 
     }
 
-    Env &env;
+    float gamma;
     int n_steps;
-    int n_envs;
+    float ent_coef;
+
+    float learning_rate;
+    float vf_coef;
+    float max_grad_norm;
+    float lam;
+    int nminibatches;
+    int noptepochs;
+
+    float cliprange;
+    std::string tensorboard_log;
     int n_batch;
+
+    float cliprange_vf;
+
     std::shared_ptr<tensorflow::Session> _session;
-    std::unique_ptr<MlpPolicy> acting_policy;
+    std::unique_ptr<MlpPolicy> act_model;
 
 
 };
