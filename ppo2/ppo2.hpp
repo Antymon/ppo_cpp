@@ -15,29 +15,42 @@
 #include "policies.hpp"
 #include "utils.hpp"
 
+typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Mat;
+
 const std::string BasePolicy::obs_ph{"input/Ob:0"};
 const std::string ActorCriticPolicy::action{"output/_action:0"};
 const std::string ActorCriticPolicy::neglogp{"output/_neglogp"};
 const std::string ActorCriticPolicy::value_flat{"output/_value_flat"};
 
 struct MiniBatch {
-    Eigen::MatrixXf obs;
-    Eigen::MatrixXf returns;
-    Eigen::MatrixXf dones;
-    Eigen::MatrixXf actions;
-    Eigen::MatrixXf values;
-    Eigen::MatrixXf neglogpacs;
+    Mat obs;
+    Mat returns;
+    Mat dones;
+    Mat actions;
+    Mat values;
+    Mat neglogpacs;
 };
 
 class Runner {
 public:
-    Runner(Env& env) {}
+    Runner(Env& env, MlpPolicy& model, int n_steps, float gamma, float lam)
+    : env{env}
+    , model{model}
+    , n_steps{n_steps}
+    , gamma {gamma}
+    , lam{lam}{}
 
     MiniBatch run() {
         MiniBatch mb;
 
         return mb;
     }
+private:
+    Env& env;
+    MlpPolicy& model;
+    int n_steps;
+    float gamma;
+    float lam;
 };
 
 class PPO2 : public ActorCriticRLModel {
@@ -94,21 +107,67 @@ public:
 
         bool new_tb_log = _init_num_timesteps();
 
-        Runner runner{env};
+        Runner runner{env,*act_model.get(),n_steps,gamma,lam};
 
-        const MiniBatch &mb = runner.run();
+        auto t_first_start = std::chrono::system_clock::now();
+
+        int n_updates = total_timesteps / n_batch;
+
+        for (int update = 1; update<=n_updates; ++update) {
+            assert((n_batch % nminibatches) == 0);
+
+            int batch_size = n_batch / nminibatches;
+            auto t_start = std::chrono::system_clock::now();
+
+            const MiniBatch &mb = runner.run();
+
+            num_timesteps += n_batch;
+
+            //mb_loss_vals{};
+
+            int update_fac = n_batch / nminibatches / noptepochs + 1;
+
+            std::vector<int> inds(n_batch);
+            for (int i=0; i<n_batch; ++i) {
+                inds[i]=i;
+            }
+            for (int epoch_num = 0; epoch_num<noptepochs; epoch_num++) {
+                std::random_shuffle(inds.begin(), inds.end());
+                for (int start = 0; start<n_batch; start+=batch_size) {
+                    int timestep = num_timesteps / update_fac + (noptepochs*n_batch + epoch_num *n_batch + start)/batch_size;
+
+                    int end = start + batch_size;
+
+                    std::vector<int> mbinds(inds.begin() + start, inds.begin() + end);
+
+                    //slices
+
+//                    std::vector<int> obs(mbinds.size());
+//                    for (size_t i = 0; i < mbinds.size(); ++i )
+//                        obs[i] = A[mbinds[i]];
+
+                    //TRAIN STEPS
+                }
+            }
+            //loss_vals = np.mean(mb_loss_vals, axis=0)
+            auto t_now = std::chrono::system_clock::now();
+
+            int fps = static_cast<int>(n_batch / (t_now - t_start).count());
+
+            //writer
+        }
 
     }
 
 private:
     void _train_step(float learning_rate,
                      float cliprange,
-                     Eigen::RowVectorXf obs,
-                     Eigen::MatrixXf returns,
-                     Eigen::MatrixXf masks,
-                     Eigen::MatrixXf actions,
-                     Eigen::MatrixXf values,
-                     Eigen::MatrixXf neglogpacs,
+                     Mat obs,
+                     Mat returns,
+                     Mat masks,
+                     Mat actions,
+                     Mat values,
+                     Mat neglogpacs,
                      int update
             //writer
     ) {

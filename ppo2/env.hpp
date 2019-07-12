@@ -5,7 +5,6 @@
 #ifndef PPO_CPP_ENV_HPP
 #define PPO_CPP_ENV_HPP
 
-#include "../logger.hpp"
 #include <string>
 
 class Env {
