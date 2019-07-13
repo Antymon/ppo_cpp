@@ -35,6 +35,9 @@ int main(){
 
     m.block<2,2>(1,1) = m2;
 
+    m2(0,0)=0;
+    m2(1,1)=1;
+
     std::cout << "m with changed Block in the middle" << std::endl;
     std::cout << m << std::endl;
 

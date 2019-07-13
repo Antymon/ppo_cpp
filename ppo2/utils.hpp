@@ -7,9 +7,11 @@
 
 #include <tensorflow/core/framework/tensor.h>
 
+typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Mat;
+
+
 class Utils {
 public:
-    typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Mat;
 
     static void convert_tensor(tensorflow::Tensor &t, Mat &m) {
         assert(t.dims() < 3); //not suported

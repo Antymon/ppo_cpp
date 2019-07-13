@@ -7,6 +7,7 @@
 #include<iostream>
 #include <vector>
 #include <algorithm>
+#include <cassert>
 
 
 using namespace std;
@@ -34,6 +35,10 @@ class C : public virtual B
 {
 public:
     C(int x, int y) : A(x), B(y){}
+};
+
+struct S{
+    std::string name = "S";
 };
 
 int main()
