@@ -14,7 +14,6 @@ class Env {
 public:
     Env(int num_envs):
         _num_envs{num_envs} {
-
     }
 
     std::string get_action_space(){
@@ -43,7 +42,12 @@ public:
 
     ////self.obs[:], rewards, self.dones
     std::vector<Mat> step(Mat actions){
-        return {};
+
+        auto obs = Mat::Zero(get_num_envs(),get_observation_space_size());
+        auto rewards = Mat::Zero(get_num_envs(), 1);
+        auto dones =  Mat::Zero(get_num_envs(), 1);
+
+        return {obs,rewards,dones};
     }
 
 private:
