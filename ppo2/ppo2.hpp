@@ -14,6 +14,7 @@
 #include "session_creator.hpp"
 #include "policies.hpp"
 #include "utils.hpp"
+#include "tensorboard.hpp"
 
 typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Mat;
 
@@ -30,6 +31,14 @@ struct MiniBatch {
     std::shared_ptr<Mat> values;
     std::shared_ptr<Mat> neglogpacs;
     std::shared_ptr<Mat> true_rewards;
+
+    std::vector<std::shared_ptr<Mat>> get_all(){
+        return {obs, returns, dones, actions, values, neglogpacs, true_rewards};
+    }
+
+    std::vector<std::shared_ptr<Mat>> get_1_dims(){
+        return {returns, dones, values, neglogpacs,true_rewards};
+    }
 };
 
 class Runner {
@@ -113,11 +122,32 @@ public:
 
         }
 
-        *(mb.obs) = mb.obs->transpose();
-        *(mb.actions) = mb.actions->transpose();
-
         //advantage calc
         set_returns(mb);
+
+        //reshaping (num_envs,n_steps*space_size) -> (n_steps*num_envs,space_size) [contiguous samples per environment]
+
+        Eigen::Map<Mat> obs_view(mb.obs->data(), num_envs*n_steps,env.get_observation_space_size());
+        *(mb.obs) = obs_view;
+
+        Eigen::Map<Mat> actions_view(mb.actions->data(), num_envs*n_steps,env.get_action_space_size());
+        *(mb.actions) = actions_view;
+
+        //reshaping (n_steps,num_envs) -> (n_steps*num_envs) [contiguous samples per environment require tranpose]
+
+        const std::vector<std::shared_ptr<Mat>>& mb_1_dims = mb.get_1_dims();
+
+        for(const std::shared_ptr<Mat>& v : mb_1_dims){
+            *v = v->transpose();
+            Eigen::Map<Mat> view(v->data(),num_envs*n_steps,1);
+            *v = view;
+        }
+
+//        *(mb.returns) = mb.returns->transpose(); Eigen::Map<Mat> returns_view
+//        mb.dones =
+//        mb.values =
+//        mb.neglogpacs =
+//        mb.true_rewards =
 
         return mb;
     }
@@ -216,6 +246,8 @@ public:
 
         bool new_tb_log = _init_num_timesteps();
 
+        auto writer = TensorboardWriter();
+
         Runner runner{env,*act_model.get(),n_steps,gamma,lam};
 
         auto t_first_start = std::chrono::system_clock::now();
@@ -235,19 +267,25 @@ public:
             //mb_loss_vals{};
 
             int update_fac = n_batch / nminibatches / noptepochs + 1;
-
-            std::vector<int> inds(n_batch);
-            for (int i=0; i<n_batch; ++i) {
-                inds[i]=i;
-            }
+//
+//            std::vector<int> inds(n_batch);
+//            for (int i=0; i<n_batch; ++i) {
+//                inds[i]=i;
+//            }
             for (int epoch_num = 0; epoch_num<noptepochs; epoch_num++) {
-                std::random_shuffle(inds.begin(), inds.end());
+                //std::random_shuffle(inds.begin(), inds.end());
+//                Eigen::PermutationMatrix<Eigen::Dynamic, Eigen::Dynamic> perm(data.rows());
+//                perm.setIdentity();
+//                std::random_shuffle(perm.indices().data(), perm.indices().data() + perm.indices().size());
+//                Mat tmp = perm * data;
+
+
                 for (int start = 0; start<n_batch; start+=batch_size) {
                     int timestep = num_timesteps / update_fac + (noptepochs*n_batch + epoch_num *n_batch + start)/batch_size;
 
                     int end = start + batch_size;
 
-                    std::vector<int> mbinds(inds.begin() + start, inds.begin() + end);
+                    //std::vector<int> mbinds(inds.begin() + start, inds.begin() + end);
 
                     //slices
 
