@@ -32,11 +32,11 @@ struct MiniBatch {
     std::shared_ptr<Mat> neglogpacs;
     std::shared_ptr<Mat> true_rewards;
 
-    std::vector<std::shared_ptr<Mat>> get_all(){
+    std::vector<std::shared_ptr<Mat>> get_all() const {
         return {obs, returns, dones, actions, values, neglogpacs, true_rewards};
     }
 
-    std::vector<std::shared_ptr<Mat>> get_1_dims(){
+    std::vector<std::shared_ptr<Mat>> get_1_dims() const {
         return {returns, dones, values, neglogpacs,true_rewards};
     }
 };
@@ -223,6 +223,7 @@ public:
     , noptepochs{noptepochs}
     , cliprange{cliprange}
     , tensorboard_log{tensorboard_log}
+    , episode_reward{Mat()}
     {
         n_batch = n_envs * n_steps;
 
@@ -248,7 +249,9 @@ public:
 
         auto writer = TensorboardWriter();
 
-        Runner runner{env,*act_model.get(),n_steps,gamma,lam};
+        Runner runner{env,*act_model,n_steps,gamma,lam};
+
+        episode_reward = Mat::Zero(n_envs,1);
 
         auto t_first_start = std::chrono::system_clock::now();
 
@@ -261,64 +264,100 @@ public:
             auto t_start = std::chrono::system_clock::now();
 
             const MiniBatch &mb = runner.run();
+            const auto& mb_all = mb.get_all();
+            //all batch vectors have same num of rows
+            auto num_rows = mb_all[0]->rows();
+            Eigen::PermutationMatrix<Eigen::Dynamic, Eigen::Dynamic> perm{num_rows};
+            perm.setIdentity();
 
             num_timesteps += n_batch;
 
-            //mb_loss_vals{};
+            std::shared_ptr<Mat> mb_loss_vals {std::make_shared<Mat>(noptepochs*nminibatches,5)};
 
             int update_fac = n_batch / nminibatches / noptepochs + 1;
-//
-//            std::vector<int> inds(n_batch);
-//            for (int i=0; i<n_batch; ++i) {
-//                inds[i]=i;
-//            }
+
             for (int epoch_num = 0; epoch_num<noptepochs; epoch_num++) {
                 //std::random_shuffle(inds.begin(), inds.end());
-//                Eigen::PermutationMatrix<Eigen::Dynamic, Eigen::Dynamic> perm(data.rows());
-//                perm.setIdentity();
-//                std::random_shuffle(perm.indices().data(), perm.indices().data() + perm.indices().size());
-//                Mat tmp = perm * data;
 
+                //omit last one: true rewards
+                std::vector<std::shared_ptr<Mat>> mb_permutated {mb_all.size()-1};
+
+                std::random_shuffle(perm.indices().data(), perm.indices().data() + perm.indices().size());
+
+                //shuffle all-1 batch vectors in the same way
+                for (int i = 0; i< mb_permutated.size(); ++i){
+                    const auto& v = mb_all[i];
+                    std::shared_ptr<Mat> tmp {std::make_shared<Mat>()};
+                    *tmp = perm * *v;
+                    mb_permutated[i] = tmp;
+                }
 
                 for (int start = 0; start<n_batch; start+=batch_size) {
                     int timestep = num_timesteps / update_fac + (noptepochs*n_batch + epoch_num *n_batch + start)/batch_size;
 
-                    int end = start + batch_size;
-
-                    //std::vector<int> mbinds(inds.begin() + start, inds.begin() + end);
-
                     //slices
+                    std::vector<Mat> slices {mb_permutated.size()};
 
-//                    std::vector<int> obs(mbinds.size());
-//                    for (size_t i = 0; i < mbinds.size(); ++i )
-//                        obs[i] = A[mbinds[i]];
+                    for (int i = 0; i< mb_permutated.size(); ++i){
+                        slices[i] = mb_permutated[i]->block(start,0,batch_size,1);
+                    }
 
                     //TRAIN STEPS
+                    const Mat& losses = _train_step(
+                            learning_rate,
+                            cliprange,
+                            slices[0],
+                            slices[1],
+                            slices[2],
+                            slices[3],
+                            slices[4],
+                            slices[5],
+                            timestep,
+                            writer);
+
+                    int loss_index = start/batch_size + epoch_num*nminibatches;
+
+                    mb_loss_vals->block(loss_index,0,1,5) = losses;
                 }
             }
             //loss_vals = np.mean(mb_loss_vals, axis=0)
+
+            auto loss_vals = mb_loss_vals->colwise().mean();
+
             auto t_now = std::chrono::system_clock::now();
 
             int fps = static_cast<int>(n_batch / (t_now - t_start).count());
 
-            //writer
+            //ToDo TB writer
+
+            std::cout << fps << ",";
+
+            for (int i = 0; i < 5; ++i){
+                std::cout << loss_vals(i,0) << ",";
+            }
+
+            //ToDo: EPISODE REWARD!
+
+            //episode_reward = total_episode_reward_logger
         }
 
     }
 
 private:
-    void _train_step(float learning_rate,
+    Mat _train_step(float learning_rate,
                      float cliprange,
-                     Mat obs,
-                     Mat returns,
-                     Mat masks,
-                     Mat actions,
-                     Mat values,
-                     Mat neglogpacs,
-                     int update
-            //writer
+                     const Mat& obs,
+                     const Mat& returns,
+                     const Mat& masks,
+                     const Mat& actions,
+                     const Mat& values,
+                     const Mat& neglogpacs,
+                     int update,
+                     const TensorboardWriter& writer
     ) {
+        Mat losses{5,1};
 
+        return losses;
     }
 
     float gamma;
@@ -342,6 +381,7 @@ private:
     std::unique_ptr<MlpPolicy> act_model;
 
     Mat obs;
+    Mat episode_reward;
 
 };
 
