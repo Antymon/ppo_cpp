@@ -8,6 +8,8 @@
 #include <iostream>
 #include <random>
 
+#include "logger.hpp"
+
 
 typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Mat;
 
@@ -118,5 +120,16 @@ int main(){
         }
 
     }
+
+    //test 4
+
+    std::cout << "test4"<< std::endl;
+
+
+    {
+        auto sp = std::make_shared<Logger>("oh");
+    }
+
+    std::cout << "how about oh?";
 
 }

@@ -13,6 +13,7 @@ add_executable(test test/main.cpp test/network_loader.hpp)
 add_executable(ppo_cpp ppo2.cpp)
 add_executable(test2 test/main2.cpp)
 add_executable(test3 test/main3.cpp)
+add_executable(test4 test/main4.cpp)
 
 target_link_libraries(ppo_cpp "/usr/local/lib/libprotobuf.so")
 target_link_libraries(ppo_cpp "/usr/local/lib/libprotoc.so")

@@ -143,12 +143,6 @@ public:
             *v = view;
         }
 
-//        *(mb.returns) = mb.returns->transpose(); Eigen::Map<Mat> returns_view
-//        mb.dones =
-//        mb.values =
-//        mb.neglogpacs =
-//        mb.true_rewards =
-
         return mb;
     }
 
@@ -243,11 +237,12 @@ public:
 
     }
 
-    void learn(int total_timesteps) {
+    void learn(int total_timesteps, std::string tb_log_name = "PPO2") {
 
         bool new_tb_log = _init_num_timesteps();
 
-        auto writer = TensorboardWriter();
+
+        TensorboardWriter writer {tensorboard_log, tb_log_name, new_tb_log};
 
         Runner runner{env,*act_model,n_steps,gamma,lam};
 
@@ -328,17 +323,18 @@ public:
 
             int fps = static_cast<int>(n_batch / (t_now - t_start).count());
 
-            //ToDo TB writer
-
             std::cout << fps << ",";
 
             for (int i = 0; i < 5; ++i){
                 std::cout << loss_vals(i,0) << ",";
             }
 
-            //ToDo: EPISODE REWARD!
+            if(!tb_log_name.empty()){
+                Eigen::Map<Mat> rewards_view(mb.true_rewards->data(), n_envs, n_steps);
+                Eigen::Map<Mat> dones_view(mb.dones->data(), n_envs, n_steps);
 
-            //episode_reward = total_episode_reward_logger
+                episode_reward = Utils::total_episode_reward_logger(episode_reward,rewards_view,dones_view,writer,num_timesteps);
+            }
         }
 
     }
