@@ -18,11 +18,6 @@
 
 typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Mat;
 
-const std::string BasePolicy::obs_ph{"input/Ob:0"};
-const std::string ActorCriticPolicy::action{"output/_action:0"};
-const std::string ActorCriticPolicy::neglogp{"output/_neglogp"};
-const std::string ActorCriticPolicy::value_flat{"output/_value_flat"};
-
 struct MiniBatch {
     std::shared_ptr<Mat> obs;
     std::shared_ptr<Mat> returns;
@@ -204,6 +199,7 @@ public:
          int nminibatches = 4,
          int noptepochs = 4,
          float cliprange = 0.2,
+         float cliprange_vf = -1.,
          std::string tensorboard_log = ""
     ) : ActorCriticRLModel(env)
     , gamma{gamma}
@@ -216,8 +212,27 @@ public:
     , nminibatches{nminibatches}
     , noptepochs{noptepochs}
     , cliprange{cliprange}
+    , cliprange_vf{cliprange_vf}
     , tensorboard_log{tensorboard_log}
     , episode_reward{Mat()}
+    /*, input_placeholders{
+        train_obs_ph,
+        action_ph,
+        advs_ph,
+        rewards_ph,
+        learning_rate_ph,
+        clip_range_ph,
+        old_neglog_pac_ph,
+        old_vpred_ph
+    }*/,output_placeholders{
+        summary,
+        pg_loss,
+        vf_loss,
+        entropy,
+        approxkl,
+        clipfrac,
+        _train
+    }
     {
         n_batch = n_envs * n_steps;
 
@@ -230,7 +245,6 @@ public:
         }
 
         act_model = std::make_unique<MlpPolicy>(_session);
-
     }
 
     void save(std::string save_path) {
@@ -315,8 +329,6 @@ public:
                     mb_loss_vals->block(loss_index,0,1,5) = losses;
                 }
             }
-            //loss_vals = np.mean(mb_loss_vals, axis=0)
-
             auto loss_vals = mb_loss_vals->colwise().mean();
 
             auto t_now = std::chrono::system_clock::now();
@@ -351,10 +363,101 @@ private:
                      int update,
                      const TensorboardWriter& writer
     ) {
+
+        Mat learning_rate_wrapper{1,1};
+        learning_rate_wrapper(0,0) = learning_rate;
+
+        Mat clip_range_wrapper{1,1};
+        clip_range_wrapper(0,0) = cliprange;
+
+        Mat advs {returns-values};
+        assert(advs.rows()>1);
+        float advs_mean = advs.mean();
+        Mat advs_sub_mean {advs - advs_mean*Mat::Ones(advs.rows(),advs.cols())};
+        float advs_var = (advs_sub_mean.cwiseProduct(advs_sub_mean)).sum()/advs.rows();
+        advs = advs_sub_mean / (std::sqrt(advs_var) + 1e-8);
+
+        tensorflow::Tensor obs_tensor{};
+        tensorflow::Tensor returns_tensor{};
+        tensorflow::Tensor actions_tensor{};
+        tensorflow::Tensor values_tensor{};
+        tensorflow::Tensor neglogpacs_tensor{};
+        tensorflow::Tensor advs_tensor{};
+        tensorflow::Tensor learning_rate_tensor{};
+        tensorflow::Tensor clip_range_tensor{};
+
+        Utils::convert_mat(obs,obs_tensor);
+        Utils::convert_mat(returns,returns_tensor);
+        Utils::convert_mat(actions,actions_tensor);
+        Utils::convert_mat(values,values_tensor);
+        Utils::convert_mat(neglogpacs,neglogpacs_tensor);
+        Utils::convert_mat(advs,advs_tensor);
+
+        Utils::convert_mat(learning_rate_wrapper,learning_rate_tensor);
+        Utils::convert_mat(clip_range_wrapper,clip_range_tensor);
+
+        std::vector<std::pair<std::string,tensorflow::Tensor>> td_map =
+                {
+                        {train_obs_ph,obs_tensor},
+                        {action_ph,actions_tensor},
+                        {advs_ph,advs_tensor},
+                        {rewards_ph,returns_tensor},
+                        {learning_rate_ph,learning_rate_tensor},
+                        {clip_range_ph,clip_range_tensor},
+                        {old_neglog_pac_ph,neglogpacs_tensor},
+                        {old_vpred_ph,values_tensor}
+                };
+
+        if (cliprange_vf >= 0.f){
+            Mat clip_range_vf_wrapper{1,1};
+            clip_range_vf_wrapper(0,0) = cliprange_vf;
+            tensorflow::Tensor clip_range_vf_tensor{};
+            Utils::convert_mat(clip_range_vf_wrapper,clip_range_vf_tensor);
+            td_map.push_back({clip_range_vf_ph,clip_range_vf_tensor});
+        }
+
+        //unitl tensor board fully implemented
+        //int update_fac = n_batch /nnminibatches / noptepochs + 1;
+
+        std::vector<tensorflow::Tensor> tensor_outputs;
+
+        tensorflow::Status s = _session->Run(td_map,output_placeholders, {}, &tensor_outputs);
+
+        if (!s.ok()) {
+            std::cout << "train error" << std::endl;
+            std::cout << s.ToString() << std::endl;
+        }
+
         Mat losses{5,1};
+
+        for(int i = 1; i<tensor_outputs.size()-1; ++i){
+            Mat output{1,1};
+            Utils::convert_tensor(tensor_outputs[i],output);
+            losses(i,0)=output(0,0);
+        }
 
         return losses;
     }
+
+    static const std::string train_obs_ph;
+    static const std::string action_ph;
+    static const std::string advs_ph;
+    static const std::string rewards_ph;
+    static const std::string learning_rate_ph;
+    static const std::string clip_range_ph;
+    static const std::string old_neglog_pac_ph;
+    static const std::string old_vpred_ph;
+    //opt input
+    static const std::string clip_range_vf_ph;
+
+
+    static const std::string summary;
+    static const std::string pg_loss;
+    static const std::string vf_loss;
+    static const std::string entropy;
+    static const std::string approxkl;
+    static const std::string clipfrac;
+    static const std::string _train;
 
     float gamma;
     int n_steps;
@@ -368,10 +471,11 @@ private:
     int noptepochs;
 
     float cliprange;
+    float cliprange_vf;
     std::string tensorboard_log;
     int n_batch;
 
-    float cliprange_vf;
+
 
     std::shared_ptr<tensorflow::Session> _session;
     std::unique_ptr<MlpPolicy> act_model;
@@ -379,7 +483,33 @@ private:
     Mat obs;
     Mat episode_reward;
 
+    std::vector<std::string> output_placeholders;
+
 };
+
+const std::string BasePolicy::obs_ph{"input/Ob:0"};
+
+const std::string ActorCriticPolicy::action{"output/_action:0"};
+const std::string ActorCriticPolicy::neglogp{"output/_neglogp"};
+const std::string ActorCriticPolicy::value_flat{"output/_value_flat"};
+
+const std::string PPO2::train_obs_ph{"train_model/input/Ob:0"};
+const std::string PPO2::action_ph{"loss/action_ph:0"};
+const std::string PPO2::advs_ph{"loss/advs_ph:0"};
+const std::string PPO2::rewards_ph{"loss/rewards_ph:0"};
+const std::string PPO2::learning_rate_ph{"loss/learning_rate_ph:0"};
+const std::string PPO2::clip_range_ph{"loss/clip_range_ph:0"};
+const std::string PPO2::old_neglog_pac_ph{"loss/old_neglog_pac_ph:0"};
+const std::string PPO2::old_vpred_ph{"loss/old_vpred_ph:0"};
+const std::string PPO2::clip_range_vf_ph{"loss/clip_range_vf_ph:0"};
+
+const std::string PPO2::summary{"ppo2/summary/ppo2/summary:0"};
+const std::string PPO2::pg_loss{"loss/pg_loss:0"};
+const std::string PPO2::vf_loss{"loss/vf_loss:0"};
+const std::string PPO2::entropy{"loss/ppo2/entropy:0"};
+const std::string PPO2::approxkl{"loss/approxkl:0"};
+const std::string PPO2::clipfrac{"loss/clipfrac:0"};
+const std::string PPO2::_train{"ppo2/_train"};
 
 
 #endif //PPO_CPP_PPO2_HPP
