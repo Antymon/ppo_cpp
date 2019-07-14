@@ -80,20 +80,20 @@ public:
 
             auto tensor_actions = step_result[0];
             assert(tensor_actions.dim_size(0)==num_envs && tensor_actions.dim_size(1)==env.get_action_space_size());
-            auto actions = Mat(num_envs,env.get_action_space_size());
+            Mat actions;// = Mat(num_envs,env.get_action_space_size());
             Utils::convert_tensor(tensor_actions,actions);
             mb.actions->block(0,step*env.get_action_space_size(),num_envs,env.get_action_space_size())
                     = actions;
 
             auto tensor_values = step_result[1];
             assert(tensor_values.dim_size(0)==num_envs && tensor_values.dim_size(1)==1);
-            auto values = Mat(num_envs,1);
+            Mat values;// = Mat(num_envs,1);
             Utils::convert_tensor(tensor_values,values);
             mb.values->block(step,0, 1, num_envs) = values.transpose();
 
             auto tensor_neglogpacs = step_result[2];
             assert(tensor_neglogpacs.dim_size(0)==num_envs && tensor_neglogpacs.dim_size(1)==1);
-            auto neglogpacs = Mat(num_envs,1);
+            Mat neglogpacs;// = Mat(num_envs,1);
             Utils::convert_tensor(tensor_neglogpacs,neglogpacs);
             mb.neglogpacs->block(step,0, 1, num_envs) = neglogpacs.transpose();
 
@@ -146,7 +146,7 @@ public:
         auto tensor_obs = tensorflow::Tensor();
         Utils::convert_mat(obs,tensor_obs);
         auto tensor_last_values = model.value(tensor_obs);
-        auto last_values = Mat(num_envs,1);
+        Mat last_values;// = Mat(num_envs,1);
         Utils::convert_tensor(tensor_last_values,last_values);
 
         auto mb_advs = std::make_shared<Mat>(n_steps, num_envs);
@@ -431,7 +431,7 @@ private:
         Mat losses{5,1};
 
         for(int i = 1; i<tensor_outputs.size()-1; ++i){
-            Mat output{1,1};
+            Mat output;
             Utils::convert_tensor(tensor_outputs[i],output);
             losses(i,0)=output(0,0);
         }
