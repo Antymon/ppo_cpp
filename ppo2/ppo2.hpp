@@ -1,3 +1,7 @@
+#include <utility>
+
+#include <utility>
+
 //
 // Created by szymon on 10/07/19.
 //
@@ -213,7 +217,7 @@ public:
     , noptepochs{noptepochs}
     , cliprange{cliprange}
     , cliprange_vf{cliprange_vf}
-    , tensorboard_log{tensorboard_log}
+    , tensorboard_log{std::move(tensorboard_log)}
     , episode_reward{Mat()}
     /*, input_placeholders{
         train_obs_ph,
@@ -238,7 +242,7 @@ public:
 
         std::cout << "ppo2 " << std::endl;
         SessionCreator sc{};
-        _session = std::move(sc.load_graph(model_filename));
+        _session = std::move(sc.load_graph(std::move(model_filename)));
 
         if (_session == nullptr || !_session) {
             return;
@@ -352,8 +356,8 @@ public:
     }
 
 private:
-    Mat _train_step(float learning_rate,
-                     float cliprange,
+    Mat _train_step(float learning_rate_now,
+                     float cliprange_now,
                      const Mat& obs,
                      const Mat& returns,
                      const Mat& masks,
@@ -365,10 +369,10 @@ private:
     ) {
 
         Mat learning_rate_wrapper{1,1};
-        learning_rate_wrapper(0,0) = learning_rate;
+        learning_rate_wrapper(0,0) = learning_rate_now;
 
         Mat clip_range_wrapper{1,1};
-        clip_range_wrapper(0,0) = cliprange;
+        clip_range_wrapper(0,0) = cliprange_now;
 
         Mat advs {returns-values};
         assert(advs.rows()>1);
@@ -413,7 +417,7 @@ private:
             clip_range_vf_wrapper(0,0) = cliprange_vf;
             tensorflow::Tensor clip_range_vf_tensor{};
             Utils::convert_mat(clip_range_vf_wrapper,clip_range_vf_tensor);
-            td_map.push_back({clip_range_vf_ph,clip_range_vf_tensor});
+            td_map.emplace_back(clip_range_vf_ph,clip_range_vf_tensor);
         }
 
         //unitl tensor board fully implemented
@@ -475,12 +479,9 @@ private:
     std::string tensorboard_log;
     int n_batch;
 
-
-
     std::shared_ptr<tensorflow::Session> _session;
     std::unique_ptr<MlpPolicy> act_model;
 
-    Mat obs;
     Mat episode_reward;
 
     std::vector<std::string> output_placeholders;

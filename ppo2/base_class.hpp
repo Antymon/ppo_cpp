@@ -9,7 +9,7 @@
 
 class BaseRLModel {
 public:
-    BaseRLModel(Env& env):
+    explicit BaseRLModel(Env& env):
     env{env},
     action_space{env.get_action_space()},
     observation_space{env.get_observation_space()},

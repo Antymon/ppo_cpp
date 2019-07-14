@@ -25,7 +25,7 @@ class MlpPolicy : public virtual ActorCriticPolicy{
 
 public:
 
-    MlpPolicy(std::shared_ptr<tensorflow::Session> session):_session{session}{
+    explicit MlpPolicy(std::shared_ptr<tensorflow::Session> session):_session{session}{
 
     }
 
