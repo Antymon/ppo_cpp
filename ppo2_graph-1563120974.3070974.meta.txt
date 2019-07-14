@@ -2540,7 +2540,7 @@ graph_def {
               size: 3
             }
           }
-          tensor_content: "\257\375\206\277\363\211^?\360\032\271\276V\274\310\2761\224\200\276x\010)?<\305\035\277s\017\206\277)\0259\277\254^\030?\254\256\224>\223Jt\277"
+          tensor_content: "\233c|\277|T\345\276h\221g?Z\357I\276\3632\245?WK\304>e\233\014?\261\003\273\276\020\373\223>\250AT?H\305\205<t\256y?"
         }
       }
     }
@@ -2992,7 +2992,7 @@ graph_def {
               size: 3
             }
           }
-          tensor_content: "\273<c\277\020b3?N\322\017?\2337M?2\301\235\276S\\\006?\335\005\014\277\323S!\277\266\270c\277\276\030\005\2779\024\201\277\2620I?"
+          tensor_content: "$-\205\276\035\251\034?\204\240\276\275\332n\304\276I\014\245\276R\303\247?W\021\247\277\030Ys>\001y\211\276!8\222>\027\357\232?y\314\345>"
         }
       }
     }
@@ -3444,7 +3444,7 @@ graph_def {
               size: 3
             }
           }
-          tensor_content: "\252t\021\275<\346Z\277\207\034\220?1\034\005\275\227.\220?\177\276Z?\031\352\264\277\364\257\220\273\201VD\275"
+          tensor_content: "W\370\002?\340\3540\277\032\267\217\277G\267\246?5\352\237=p\240\013?+uQ\276l\235\235\277:-*?"
         }
       }
     }
@@ -3896,7 +3896,7 @@ graph_def {
               size: 3
             }
           }
-          tensor_content: "\311\200\241\277]\213\014?\033+\247>+\370\"\277\006\300\202\277\242\024>\277#\254V\275Y6O\277=I\224?"
+          tensor_content: "\"\217\216\276v\357\260\277\255\203\335=\337\377j?Vm\210\276Bi\205\277\204\002\205?L=\n\276\273 s?"
         }
       }
     }
@@ -4348,7 +4348,7 @@ graph_def {
               size: 1
             }
           }
-          tensor_content: "L\232\364>\n\303C? i\335>"
+          tensor_content: "\353^\371\276\262BS\277xg\222\276"
         }
       }
     }
@@ -4774,7 +4774,7 @@ graph_def {
               size: 2
             }
           }
-          tensor_content: "\254\223k\273\332R\357;\213mj;E\n\231\273\2755\r<\316T\243;"
+          tensor_content: "\244E\370\273)\344\342:*1\241;a\377\235\273\372\212\214\273\350\264\014\274"
         }
       }
     }
@@ -5200,7 +5200,7 @@ graph_def {
               size: 2
             }
           }
-          tensor_content: "\244\312\023\274\\ur\273i\"\215;\242\356\003\274YE\2249B\325\227;"
+          tensor_content: "\0259\346\273S\355\345;\260\377M\273\334u\315\272\0022\321;\233\277\343;"
         }
       }
     }
@@ -7346,6 +7346,29 @@ graph_def {
       key: "shrink_axis_mask"
       value {
         i: 2
+      }
+    }
+  }
+  node {
+    name: "output/_value_flat"
+    op: "Identity"
+    input: "output/strided_slice"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: -1
+            }
+          }
+        }
       }
     }
   }
@@ -10074,6 +10097,29 @@ graph_def {
     }
   }
   node {
+    name: "train_model/output/_value_flat"
+    op: "Identity"
+    input: "train_model/output/strided_slice"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: -1
+            }
+          }
+        }
+      }
+    }
+  }
+  node {
     name: "loss/action_ph"
     op: "Placeholder"
     attr {
@@ -11848,7 +11894,7 @@ graph_def {
   node {
     name: "loss/sub_2"
     op: "Sub"
-    input: "train_model/output/strided_slice"
+    input: "train_model/output/_value_flat"
     input: "loss/old_vpred_ph"
     attr {
       key: "T"
@@ -11964,7 +12010,7 @@ graph_def {
   node {
     name: "loss/sub_3"
     op: "Sub"
-    input: "train_model/output/strided_slice"
+    input: "train_model/output/_value_flat"
     input: "loss/rewards_ph"
     attr {
       key: "T"
@@ -18629,7 +18675,7 @@ graph_def {
   node {
     name: "loss/gradients/loss/sub_3_grad/Shape"
     op: "Shape"
-    input: "train_model/output/strided_slice"
+    input: "train_model/output/_value_flat"
     attr {
       key: "T"
       value {
@@ -21691,7 +21737,7 @@ graph_def {
   node {
     name: "loss/gradients/loss/sub_2_grad/Shape"
     op: "Shape"
-    input: "train_model/output/strided_slice"
+    input: "train_model/output/_value_flat"
     attr {
       key: "T"
       value {
@@ -22587,101 +22633,6 @@ graph_def {
     }
   }
   node {
-    name: "loss/gradients/train_model/output/strided_slice_grad/Shape"
-    op: "Shape"
-    input: "train_model/model/vf/_value_fn"
-    attr {
-      key: "T"
-      value {
-        type: DT_FLOAT
-      }
-    }
-    attr {
-      key: "_output_shapes"
-      value {
-        list {
-          shape {
-            dim {
-              size: 2
-            }
-          }
-        }
-      }
-    }
-    attr {
-      key: "out_type"
-      value {
-        type: DT_INT32
-      }
-    }
-  }
-  node {
-    name: "loss/gradients/train_model/output/strided_slice_grad/StridedSliceGrad"
-    op: "StridedSliceGrad"
-    input: "loss/gradients/train_model/output/strided_slice_grad/Shape"
-    input: "train_model/output/strided_slice/stack"
-    input: "train_model/output/strided_slice/stack_1"
-    input: "train_model/output/strided_slice/stack_2"
-    input: "loss/gradients/AddN_4"
-    attr {
-      key: "Index"
-      value {
-        type: DT_INT32
-      }
-    }
-    attr {
-      key: "T"
-      value {
-        type: DT_FLOAT
-      }
-    }
-    attr {
-      key: "_output_shapes"
-      value {
-        list {
-          shape {
-            dim {
-              size: -1
-            }
-            dim {
-              size: 1
-            }
-          }
-        }
-      }
-    }
-    attr {
-      key: "begin_mask"
-      value {
-        i: 1
-      }
-    }
-    attr {
-      key: "ellipsis_mask"
-      value {
-        i: 0
-      }
-    }
-    attr {
-      key: "end_mask"
-      value {
-        i: 1
-      }
-    }
-    attr {
-      key: "new_axis_mask"
-      value {
-        i: 0
-      }
-    }
-    attr {
-      key: "shrink_axis_mask"
-      value {
-        i: 2
-      }
-    }
-  }
-  node {
     name: "loss/gradients/AddN_5"
     op: "AddN"
     input: "loss/gradients/loss/sub_grad/Reshape"
@@ -22949,6 +22900,179 @@ graph_def {
     }
   }
   node {
+    name: "loss/gradients/train_model/output/strided_slice_grad/Shape"
+    op: "Shape"
+    input: "train_model/model/vf/_value_fn"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 2
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "out_type"
+      value {
+        type: DT_INT32
+      }
+    }
+  }
+  node {
+    name: "loss/gradients/train_model/output/strided_slice_grad/StridedSliceGrad"
+    op: "StridedSliceGrad"
+    input: "loss/gradients/train_model/output/strided_slice_grad/Shape"
+    input: "train_model/output/strided_slice/stack"
+    input: "train_model/output/strided_slice/stack_1"
+    input: "train_model/output/strided_slice/stack_2"
+    input: "loss/gradients/AddN_4"
+    attr {
+      key: "Index"
+      value {
+        type: DT_INT32
+      }
+    }
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: -1
+            }
+            dim {
+              size: 1
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "begin_mask"
+      value {
+        i: 1
+      }
+    }
+    attr {
+      key: "ellipsis_mask"
+      value {
+        i: 0
+      }
+    }
+    attr {
+      key: "end_mask"
+      value {
+        i: 1
+      }
+    }
+    attr {
+      key: "new_axis_mask"
+      value {
+        i: 0
+      }
+    }
+    attr {
+      key: "shrink_axis_mask"
+      value {
+        i: 2
+      }
+    }
+  }
+  node {
+    name: "loss/gradients/train_model/model/pi/MatMul_grad/MatMul"
+    op: "MatMul"
+    input: "loss/gradients/train_model/model/pi/_policy_grad/Reshape"
+    input: "model/pi/w/read"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: -1
+            }
+            dim {
+              size: 3
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "transpose_a"
+      value {
+        b: false
+      }
+    }
+    attr {
+      key: "transpose_b"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "loss/gradients/train_model/model/pi/MatMul_grad/MatMul_1"
+    op: "MatMul"
+    input: "train_model/model/Tanh_2"
+    input: "loss/gradients/train_model/model/pi/_policy_grad/Reshape"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 3
+            }
+            dim {
+              size: 2
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "transpose_a"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "transpose_b"
+      value {
+        b: false
+      }
+    }
+  }
+  node {
     name: "loss/gradients/train_model/model/vf/_value_fn_grad/Shape"
     op: "Shape"
     input: "train_model/model/vf/MatMul"
@@ -23174,10 +23298,10 @@ graph_def {
     }
   }
   node {
-    name: "loss/gradients/train_model/model/pi/MatMul_grad/MatMul"
-    op: "MatMul"
-    input: "loss/gradients/train_model/model/pi/_policy_grad/Reshape"
-    input: "model/pi/w/read"
+    name: "loss/gradients/train_model/model/Tanh_2_grad/TanhGrad"
+    op: "TanhGrad"
+    input: "train_model/model/Tanh_2"
+    input: "loss/gradients/train_model/model/pi/MatMul_grad/MatMul"
     attr {
       key: "T"
       value {
@@ -23197,57 +23321,6 @@ graph_def {
             }
           }
         }
-      }
-    }
-    attr {
-      key: "transpose_a"
-      value {
-        b: false
-      }
-    }
-    attr {
-      key: "transpose_b"
-      value {
-        b: true
-      }
-    }
-  }
-  node {
-    name: "loss/gradients/train_model/model/pi/MatMul_grad/MatMul_1"
-    op: "MatMul"
-    input: "train_model/model/Tanh_2"
-    input: "loss/gradients/train_model/model/pi/_policy_grad/Reshape"
-    attr {
-      key: "T"
-      value {
-        type: DT_FLOAT
-      }
-    }
-    attr {
-      key: "_output_shapes"
-      value {
-        list {
-          shape {
-            dim {
-              size: 3
-            }
-            dim {
-              size: 2
-            }
-          }
-        }
-      }
-    }
-    attr {
-      key: "transpose_a"
-      value {
-        b: true
-      }
-    }
-    attr {
-      key: "transpose_b"
-      value {
-        b: false
       }
     }
   }
@@ -23326,60 +23399,6 @@ graph_def {
       key: "transpose_b"
       value {
         b: false
-      }
-    }
-  }
-  node {
-    name: "loss/gradients/train_model/model/Tanh_2_grad/TanhGrad"
-    op: "TanhGrad"
-    input: "train_model/model/Tanh_2"
-    input: "loss/gradients/train_model/model/pi/MatMul_grad/MatMul"
-    attr {
-      key: "T"
-      value {
-        type: DT_FLOAT
-      }
-    }
-    attr {
-      key: "_output_shapes"
-      value {
-        list {
-          shape {
-            dim {
-              size: -1
-            }
-            dim {
-              size: 3
-            }
-          }
-        }
-      }
-    }
-  }
-  node {
-    name: "loss/gradients/train_model/model/Tanh_3_grad/TanhGrad"
-    op: "TanhGrad"
-    input: "train_model/model/Tanh_3"
-    input: "loss/gradients/train_model/model/vf/MatMul_grad/MatMul"
-    attr {
-      key: "T"
-      value {
-        type: DT_FLOAT
-      }
-    }
-    attr {
-      key: "_output_shapes"
-      value {
-        list {
-          shape {
-            dim {
-              size: -1
-            }
-            dim {
-              size: 3
-            }
-          }
-        }
       }
     }
   }
@@ -23609,6 +23628,111 @@ graph_def {
     }
   }
   node {
+    name: "loss/gradients/train_model/model/Tanh_3_grad/TanhGrad"
+    op: "TanhGrad"
+    input: "train_model/model/Tanh_3"
+    input: "loss/gradients/train_model/model/vf/MatMul_grad/MatMul"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: -1
+            }
+            dim {
+              size: 3
+            }
+          }
+        }
+      }
+    }
+  }
+  node {
+    name: "loss/gradients/train_model/model/pi_fc1/MatMul_grad/MatMul"
+    op: "MatMul"
+    input: "loss/gradients/train_model/model/pi_fc1/Add_grad/Reshape"
+    input: "model/pi_fc1/w/read"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: -1
+            }
+            dim {
+              size: 3
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "transpose_a"
+      value {
+        b: false
+      }
+    }
+    attr {
+      key: "transpose_b"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "loss/gradients/train_model/model/pi_fc1/MatMul_grad/MatMul_1"
+    op: "MatMul"
+    input: "train_model/model/Tanh"
+    input: "loss/gradients/train_model/model/pi_fc1/Add_grad/Reshape"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 3
+            }
+            dim {
+              size: 3
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "transpose_a"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "transpose_b"
+      value {
+        b: false
+      }
+    }
+  }
+  node {
     name: "loss/gradients/train_model/model/vf_fc1/Add_grad/Shape"
     op: "Shape"
     input: "train_model/model/vf_fc1/MatMul"
@@ -23834,10 +23958,10 @@ graph_def {
     }
   }
   node {
-    name: "loss/gradients/train_model/model/pi_fc1/MatMul_grad/MatMul"
-    op: "MatMul"
-    input: "loss/gradients/train_model/model/pi_fc1/Add_grad/Reshape"
-    input: "model/pi_fc1/w/read"
+    name: "loss/gradients/train_model/model/Tanh_grad/TanhGrad"
+    op: "TanhGrad"
+    input: "train_model/model/Tanh"
+    input: "loss/gradients/train_model/model/pi_fc1/MatMul_grad/MatMul"
     attr {
       key: "T"
       value {
@@ -23857,57 +23981,6 @@ graph_def {
             }
           }
         }
-      }
-    }
-    attr {
-      key: "transpose_a"
-      value {
-        b: false
-      }
-    }
-    attr {
-      key: "transpose_b"
-      value {
-        b: true
-      }
-    }
-  }
-  node {
-    name: "loss/gradients/train_model/model/pi_fc1/MatMul_grad/MatMul_1"
-    op: "MatMul"
-    input: "train_model/model/Tanh"
-    input: "loss/gradients/train_model/model/pi_fc1/Add_grad/Reshape"
-    attr {
-      key: "T"
-      value {
-        type: DT_FLOAT
-      }
-    }
-    attr {
-      key: "_output_shapes"
-      value {
-        list {
-          shape {
-            dim {
-              size: 3
-            }
-            dim {
-              size: 3
-            }
-          }
-        }
-      }
-    }
-    attr {
-      key: "transpose_a"
-      value {
-        b: true
-      }
-    }
-    attr {
-      key: "transpose_b"
-      value {
-        b: false
       }
     }
   }
@@ -23986,60 +24059,6 @@ graph_def {
       key: "transpose_b"
       value {
         b: false
-      }
-    }
-  }
-  node {
-    name: "loss/gradients/train_model/model/Tanh_grad/TanhGrad"
-    op: "TanhGrad"
-    input: "train_model/model/Tanh"
-    input: "loss/gradients/train_model/model/pi_fc1/MatMul_grad/MatMul"
-    attr {
-      key: "T"
-      value {
-        type: DT_FLOAT
-      }
-    }
-    attr {
-      key: "_output_shapes"
-      value {
-        list {
-          shape {
-            dim {
-              size: -1
-            }
-            dim {
-              size: 3
-            }
-          }
-        }
-      }
-    }
-  }
-  node {
-    name: "loss/gradients/train_model/model/Tanh_1_grad/TanhGrad"
-    op: "TanhGrad"
-    input: "train_model/model/Tanh_1"
-    input: "loss/gradients/train_model/model/vf_fc1/MatMul_grad/MatMul"
-    attr {
-      key: "T"
-      value {
-        type: DT_FLOAT
-      }
-    }
-    attr {
-      key: "_output_shapes"
-      value {
-        list {
-          shape {
-            dim {
-              size: -1
-            }
-            dim {
-              size: 3
-            }
-          }
-        }
       }
     }
   }
@@ -24269,6 +24288,111 @@ graph_def {
     }
   }
   node {
+    name: "loss/gradients/train_model/model/Tanh_1_grad/TanhGrad"
+    op: "TanhGrad"
+    input: "train_model/model/Tanh_1"
+    input: "loss/gradients/train_model/model/vf_fc1/MatMul_grad/MatMul"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: -1
+            }
+            dim {
+              size: 3
+            }
+          }
+        }
+      }
+    }
+  }
+  node {
+    name: "loss/gradients/train_model/model/pi_fc0/MatMul_grad/MatMul"
+    op: "MatMul"
+    input: "loss/gradients/train_model/model/pi_fc0/Add_grad/Reshape"
+    input: "model/pi_fc0/w/read"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: -1
+            }
+            dim {
+              size: 4
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "transpose_a"
+      value {
+        b: false
+      }
+    }
+    attr {
+      key: "transpose_b"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "loss/gradients/train_model/model/pi_fc0/MatMul_grad/MatMul_1"
+    op: "MatMul"
+    input: "train_model/model/flatten/Reshape"
+    input: "loss/gradients/train_model/model/pi_fc0/Add_grad/Reshape"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 4
+            }
+            dim {
+              size: 3
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "transpose_a"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "transpose_b"
+      value {
+        b: false
+      }
+    }
+  }
+  node {
     name: "loss/gradients/train_model/model/vf_fc0/Add_grad/Shape"
     op: "Shape"
     input: "train_model/model/vf_fc0/MatMul"
@@ -24490,84 +24614,6 @@ graph_def {
             }
           }
         }
-      }
-    }
-  }
-  node {
-    name: "loss/gradients/train_model/model/pi_fc0/MatMul_grad/MatMul"
-    op: "MatMul"
-    input: "loss/gradients/train_model/model/pi_fc0/Add_grad/Reshape"
-    input: "model/pi_fc0/w/read"
-    attr {
-      key: "T"
-      value {
-        type: DT_FLOAT
-      }
-    }
-    attr {
-      key: "_output_shapes"
-      value {
-        list {
-          shape {
-            dim {
-              size: -1
-            }
-            dim {
-              size: 4
-            }
-          }
-        }
-      }
-    }
-    attr {
-      key: "transpose_a"
-      value {
-        b: false
-      }
-    }
-    attr {
-      key: "transpose_b"
-      value {
-        b: true
-      }
-    }
-  }
-  node {
-    name: "loss/gradients/train_model/model/pi_fc0/MatMul_grad/MatMul_1"
-    op: "MatMul"
-    input: "train_model/model/flatten/Reshape"
-    input: "loss/gradients/train_model/model/pi_fc0/Add_grad/Reshape"
-    attr {
-      key: "T"
-      value {
-        type: DT_FLOAT
-      }
-    }
-    attr {
-      key: "_output_shapes"
-      value {
-        list {
-          shape {
-            dim {
-              size: 4
-            }
-            dim {
-              size: 3
-            }
-          }
-        }
-      }
-    }
-    attr {
-      key: "transpose_a"
-      value {
-        b: true
-      }
-    }
-    attr {
-      key: "transpose_b"
-      value {
-        b: false
       }
     }
   }

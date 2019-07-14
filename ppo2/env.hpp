@@ -16,19 +16,19 @@ public:
         _num_envs{num_envs} {
     }
 
-    std::string get_action_space(){
+    virtual std::string get_action_space(){
         return SPACE_CONTINOUS;
     }
 
-    std::string get_observation_space(){
+    virtual std::string get_observation_space(){
         return SPACE_CONTINOUS;
     }
 
-    int get_action_space_size(){
+    virtual int get_action_space_size(){
         return 18;
     }
 
-    int get_observation_space_size(){
+    virtual int get_observation_space_size(){
         return 1;
     }
 
@@ -41,7 +41,7 @@ public:
     }
 
     ////self.obs[:], rewards, self.dones
-    std::vector<Mat> step(Mat actions){
+    std::vector<Mat> step(const Mat& actions){
 
         auto obs = Mat::Zero(get_num_envs(),get_observation_space_size());
         auto rewards = Mat::Zero(get_num_envs(), 1);
@@ -50,10 +50,11 @@ public:
         return {obs,rewards,dones};
     }
 
-private:
+public:
     const static std::string SPACE_CONTINOUS;
     const static std::string SPACE_DISCRETE;
 
+private:
     int _num_envs;
 };
 

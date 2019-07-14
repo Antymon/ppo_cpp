@@ -491,8 +491,8 @@ private:
 const std::string BasePolicy::obs_ph{"input/Ob:0"};
 
 const std::string ActorCriticPolicy::action{"output/_action:0"};
-const std::string ActorCriticPolicy::neglogp{"output/_neglogp"};
-const std::string ActorCriticPolicy::value_flat{"output/_value_flat"};
+const std::string ActorCriticPolicy::neglogp{"output/_neglogp:0"};
+const std::string ActorCriticPolicy::value_flat{"output/_value_flat:0"};
 
 const std::string PPO2::train_obs_ph{"train_model/input/Ob:0"};
 const std::string PPO2::action_ph{"loss/action_ph:0"};
