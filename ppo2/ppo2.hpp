@@ -327,7 +327,8 @@ public:
                     std::vector<Mat> slices {mb_permutated.size()};
 
                     for (int i = 0; i< mb_permutated.size(); ++i){
-                        slices[i] = mb_permutated[i]->block(start,0,batch_size,1);
+                        //get consecutive rows from range, with all columns
+                        slices[i] = mb_permutated[i]->block(start,0,batch_size,mb_all[i]->cols());
                     }
 
                     //TRAIN STEPS
@@ -345,9 +346,13 @@ public:
 
                     int loss_index = start/batch_size + epoch_num*nminibatches;
 
+
+                    std::cout << "#6" << std::endl;
                     mb_loss_vals->block(loss_index,0,1,5) = losses;
                 }
             }
+            std::cout << "#7" << std::endl;
+
             auto loss_vals = mb_loss_vals->colwise().mean();
 
             auto t_now = std::chrono::system_clock::now();
@@ -383,6 +388,9 @@ private:
                      const TensorboardWriter& writer
     ) {
 
+        assert(obs.cols() == env.get_observation_space_size());
+        assert(actions.cols() == env.get_action_space_size());
+
         Mat learning_rate_wrapper{1,1};
         learning_rate_wrapper(0,0) = learning_rate_now;
 
@@ -416,8 +424,7 @@ private:
         Utils::scalar(learning_rate_now,learning_rate_tensor);
         Utils::scalar(cliprange_now, clip_range_tensor);
 
-
-        std::cout << advs_tensor.dims() << std::endl;
+        //std::cout << advs_tensor.dims() << std::endl;
 
         std::vector<std::pair<std::string,tensorflow::Tensor>> td_map =
                 {
@@ -442,8 +449,6 @@ private:
 
         std::vector<tensorflow::Tensor> tensor_outputs;
 
-        //std::cout << "#5" << std::endl;
-
         tensorflow::Status s = _session->Run(td_map,output_placeholders, {_train}, &tensor_outputs);
 
         if (!s.ok()) {
@@ -452,12 +457,16 @@ private:
             assert(false);
         }
 
+        //summary proto string that needs to be decoded and fed into tb
+        //std::cout << tensor_outputs[0].scalar<std::string>()() << std::endl;
+
         Mat losses{5,1};
 
         for(int i = 1; i<tensor_outputs.size(); ++i){
             Mat output;
             Utils::convert_tensor(tensor_outputs[i],output);
-            losses(i,0)=output(0,0);
+            losses(i-1,0)=output(0,0);
+
         }
 
         return losses;
