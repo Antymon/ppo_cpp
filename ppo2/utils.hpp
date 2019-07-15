@@ -53,6 +53,24 @@ public:
 
     }
 
+    static void convert_vec(const Mat &m, tensorflow::Tensor &t) {
+        assert(m.cols() == 1);
+
+        tensorflow::TensorShape shape;
+        shape.InsertDim(0, m.rows());
+
+        t = tensorflow::Tensor(tensorflow::DT_FLOAT, shape);
+        auto dst = t.flat<float>().data();
+        memcpy(dst, m.data(), m.cols() * m.rows() * sizeof(float));
+
+        assert(t.dims() == 1);
+    }
+
+    static void scalar(float scalar, tensorflow::Tensor &t) {
+        t = tensorflow::Tensor(tensorflow::DT_FLOAT, tensorflow::TensorShape());
+        t.scalar<float>()() = scalar;
+    }
+
     static Mat total_episode_reward_logger(Mat rew_acc, Eigen::Map<Mat> rewards_view, Eigen::Map<Mat> masks_view, TensorboardWriter& writer, int total_steps){
         assert(rew_acc.rows() == rewards_view.rows() && rewards_view.rows() == masks_view.rows());
         assert(rew_acc.cols() == 1 && rewards_view.cols() == masks_view.cols());

@@ -38,7 +38,7 @@ std::vector<tensorflow::Tensor> step(const tensorflow::Tensor& obs){
     if (!s.ok()) {
         std::cout << "step error" << std::endl;
         std::cout << s.ToString() << std::endl;
-        return {};
+        assert(false);
     }
 
     return outputs;
@@ -53,6 +53,7 @@ tensorflow::Tensor value(const tensorflow::Tensor& obs){
         if (!s.ok()) {
             std::cout << "value() error" << std::endl;
             std::cout << s.ToString() << std::endl;
+            assert(false);
         }
 
         return outputs[0];

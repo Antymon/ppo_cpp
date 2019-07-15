@@ -41,8 +41,12 @@ int main(){
 //    std::cout << "m with changed Block in the middle" << std::endl;
 //    std::cout << m << std::endl;
 
+    tensorflow::Tensor t{0.1f};
+
+    std::cout << t.dims() << " "<< t.dim_size(0) << std::endl;
+
     CartPoleEnv e {1};
-    PPO2 algorithm {"./exp/ppo_cpp/ppo2_graph-1563120974.3070974.meta.txt",e,
+    PPO2 algorithm {"./exp/ppo_cpp/ppo2_graph_forced_cont_actions.meta.txt",e,
                     0.99,2048,0,1e-3,0.5f,.5,.95,32,10,0.2,-1,""
     };
 

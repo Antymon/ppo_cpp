@@ -249,8 +249,7 @@ public:
         vf_loss,
         entropy,
         approxkl,
-        clipfrac,
-        _train
+        clipfrac
     }
     {
         n_batch = n_envs * n_steps;
@@ -260,7 +259,8 @@ public:
         _session = std::move(sc.load_graph(std::move(model_filename)));
 
         if (_session == nullptr || !_session) {
-            return;
+            std::cout<<"session cannot be nullptr"<<std::endl;
+            assert(false);
         }
 
         act_model = std::make_unique<MlpPolicy>(_session);
@@ -406,14 +406,18 @@ private:
         tensorflow::Tensor clip_range_tensor{};
 
         Utils::convert_mat(obs,obs_tensor);
-        Utils::convert_mat(returns,returns_tensor);
         Utils::convert_mat(actions,actions_tensor);
-        Utils::convert_mat(values,values_tensor);
-        Utils::convert_mat(neglogpacs,neglogpacs_tensor);
-        Utils::convert_mat(advs,advs_tensor);
 
-        Utils::convert_mat(learning_rate_wrapper,learning_rate_tensor);
-        Utils::convert_mat(clip_range_wrapper,clip_range_tensor);
+        Utils::convert_vec(returns,returns_tensor);
+        Utils::convert_vec(values,values_tensor);
+        Utils::convert_vec(neglogpacs,neglogpacs_tensor);
+        Utils::convert_vec(advs,advs_tensor);
+
+        Utils::scalar(learning_rate_now,learning_rate_tensor);
+        Utils::scalar(cliprange_now, clip_range_tensor);
+
+
+        std::cout << advs_tensor.dims() << std::endl;
 
         std::vector<std::pair<std::string,tensorflow::Tensor>> td_map =
                 {
@@ -428,10 +432,8 @@ private:
                 };
 
         if (cliprange_vf >= 0.f){
-            Mat clip_range_vf_wrapper{1,1};
-            clip_range_vf_wrapper(0,0) = cliprange_vf;
             tensorflow::Tensor clip_range_vf_tensor{};
-            Utils::convert_mat(clip_range_vf_wrapper,clip_range_vf_tensor);
+            Utils::scalar(cliprange_vf,clip_range_vf_tensor);
             td_map.emplace_back(clip_range_vf_ph,clip_range_vf_tensor);
         }
 
@@ -440,18 +442,19 @@ private:
 
         std::vector<tensorflow::Tensor> tensor_outputs;
 
-        std::cout << "#5" << std::endl;
+        //std::cout << "#5" << std::endl;
 
-        tensorflow::Status s = _session->Run(td_map,output_placeholders, {}, &tensor_outputs);
+        tensorflow::Status s = _session->Run(td_map,output_placeholders, {_train}, &tensor_outputs);
 
         if (!s.ok()) {
             std::cout << "train error" << std::endl;
             std::cout << s.ToString() << std::endl;
+            assert(false);
         }
 
         Mat losses{5,1};
 
-        for(int i = 1; i<tensor_outputs.size()-1; ++i){
+        for(int i = 1; i<tensor_outputs.size(); ++i){
             Mat output;
             Utils::convert_tensor(tensor_outputs[i],output);
             losses(i,0)=output(0,0);
@@ -501,7 +504,7 @@ private:
 
     Mat episode_reward;
 
-    std::vector<std::string> output_placeholders;
+    const std::vector<std::string> output_placeholders;
 
 };
 

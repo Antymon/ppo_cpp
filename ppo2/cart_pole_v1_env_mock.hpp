@@ -17,7 +17,7 @@ public:
     }
 
     std::string get_action_space() override {
-        return Env::SPACE_DISCRETE;
+        return Env::SPACE_CONTINOUS;
     }
 
     std::string get_observation_space() override {
@@ -25,7 +25,7 @@ public:
     }
 
     int get_action_space_size() override{
-        return 1;
+        return 2;
     }
 
     int get_observation_space_size() override{
