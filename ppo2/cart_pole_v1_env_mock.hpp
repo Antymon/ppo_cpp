@@ -16,19 +16,19 @@ public:
 
     }
 
-    std::string get_action_space(){
+    std::string get_action_space() override {
         return Env::SPACE_DISCRETE;
     }
 
-    std::string get_observation_space(){
+    std::string get_observation_space() override {
         return Env::SPACE_CONTINOUS;
     }
 
-    int get_action_space_size(){
-        return 2;
+    int get_action_space_size() override{
+        return 1;
     }
 
-    int get_observation_space_size(){
+    int get_observation_space_size() override{
         return 4;
     }
 

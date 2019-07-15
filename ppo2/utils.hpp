@@ -13,7 +13,16 @@ typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Ma
 
 class Utils {
 public:
+    static void convert_tensor(tensorflow::Tensor &t, Mat &m, std::string space_type = Env::SPACE_CONTINOUS) {
+        if (space_type==Env::SPACE_DISCRETE){
+            return convert_tensor<tensorflow::int64>(t,m);
+        } else {
+            return convert_tensor<float>(t,m);
+        }
+    }
 
+
+    template<typename T>
     static void convert_tensor(tensorflow::Tensor &t, Mat &m) {
         assert(t.dims() < 3); //not suported
         switch (t.dims()) {
@@ -28,8 +37,8 @@ public:
                 break;
         }
 
-        auto src = t.flat<float>().data();
-        memcpy(m.data(), src, m.cols() * m.rows() * sizeof(float));
+        auto src = t.flat<T>().data();
+        memcpy(m.data(), src, m.cols() * m.rows() * sizeof(T));
     }
 
 

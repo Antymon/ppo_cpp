@@ -69,4 +69,14 @@ int main(){
     expected_reward_acc << 1.420175, -0.734503;
 
     std::cout << ((expected_reward_acc-reward_acc).cwiseAbs().sum());
+
+    std::cout << "test 2" << std::endl;
+
+    Mat m1 {Mat::Random(2,5)};
+
+    std::cout << m1 << std::endl;
+
+    m1.transposeInPlace();
+
+    std::cout << m1 << std::endl;
 }

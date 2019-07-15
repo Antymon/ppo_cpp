@@ -82,28 +82,37 @@ public:
             //action, value, neglogp
             const std::vector<tensorflow::Tensor>& step_result = model.step(tensor_obs);
 
+            //std::cout << "#" << 1<<std::endl;
+
             auto tensor_actions = step_result[0];
-            assert(tensor_actions.dim_size(0)==num_envs && tensor_actions.dim_size(1)==env.get_action_space_size());
+
+            //std::cout << "#" << 1.51<<std::endl;
             Mat actions;// = Mat(num_envs,env.get_action_space_size());
-            Utils::convert_tensor(tensor_actions,actions);
+            Utils::convert_tensor(tensor_actions,actions,env.get_action_space());
+            //std::cout << "#" << 1.52<<std::endl;
+            assert(actions.rows()==num_envs && actions.cols()==env.get_action_space_size());
+            //std::cout << "#" << 1.53<<std::endl;
             mb.actions->block(0,step*env.get_action_space_size(),num_envs,env.get_action_space_size())
                     = actions;
 
+            //std::cout << "#" << 1.5<<std::endl;
+
             auto tensor_values = step_result[1];
-            assert(tensor_values.dim_size(0)==num_envs && tensor_values.dim_size(1)==1);
             Mat values;// = Mat(num_envs,1);
             Utils::convert_tensor(tensor_values,values);
+            assert(values.rows()==num_envs && values.cols()==1);
             mb.values->block(step,0, 1, num_envs) = values.transpose();
 
             auto tensor_neglogpacs = step_result[2];
-            assert(tensor_neglogpacs.dim_size(0)==num_envs && tensor_neglogpacs.dim_size(1)==1);
             Mat neglogpacs;// = Mat(num_envs,1);
             Utils::convert_tensor(tensor_neglogpacs,neglogpacs);
+            assert(neglogpacs.rows()==num_envs && neglogpacs.cols()==1);
             mb.neglogpacs->block(step,0, 1, num_envs) = neglogpacs.transpose();
 
             mb.dones->block(step,0, 1, num_envs) = dones.transpose();
 
             //env should handle action clippin
+            //std::cout << "#" << 2<<std::endl;
 
             //self.obs[:], rewards, self.dones
             const std::vector<Mat>& env_step_result = env.step(actions);
@@ -118,6 +127,9 @@ public:
             //obs shape num_envs,observation_space_size);
             assert(env_step_result[1].rows() == num_envs && env_step_result[1].cols() == 1);
             mb.true_rewards->block(step,0,1, num_envs)=env_step_result[1].transpose();
+
+            //std::cout << "#3" << 3<<std::endl;
+
 
         }
 
@@ -137,10 +149,12 @@ public:
         const std::vector<std::shared_ptr<Mat>>& mb_1_dims = mb.get_1_dims();
 
         for(const std::shared_ptr<Mat>& v : mb_1_dims){
-            *v = v->transpose();
+            v -> transposeInPlace();
             Eigen::Map<Mat> view(v->data(),num_envs*n_steps,1);
             *v = view;
         }
+
+        //std::cout << "#" << 4 <<std::endl;
 
         return mb;
     }
@@ -152,6 +166,7 @@ public:
         auto tensor_last_values = model.value(tensor_obs);
         Mat last_values;// = Mat(num_envs,1);
         Utils::convert_tensor(tensor_last_values,last_values);
+        assert(last_values.rows()==num_envs && last_values.cols()==1);
 
         auto mb_advs = std::make_shared<Mat>(n_steps, num_envs);
 
@@ -252,7 +267,7 @@ public:
     }
 
     void save(std::string save_path) {
-
+        //ToDo impl
     }
 
     void learn(int total_timesteps, std::string tb_log_name = "PPO2") {
@@ -424,6 +439,8 @@ private:
         //int update_fac = n_batch /nnminibatches / noptepochs + 1;
 
         std::vector<tensorflow::Tensor> tensor_outputs;
+
+        std::cout << "#5" << std::endl;
 
         tensorflow::Status s = _session->Run(td_map,output_placeholders, {}, &tensor_outputs);
 
