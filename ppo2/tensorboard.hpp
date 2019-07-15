@@ -13,11 +13,14 @@
 class TensorboardWriter{
 public:
     TensorboardWriter(const std::string& tensorboard_log_path,const std::string& tb_log_name,bool new_tb_log=true)
-    : save_path{tensorboard_log_path+"/"+tb_log_name}
+    : save_path{tensorboard_log_path+tb_log_name}
     , writer{save_path} {
 
-        for (int i = 0; i < 150; ++i)
-            write_scalar(i * 20, i, "test_scalar", 150.f / i);
+        std::cout << "tb" << std::endl;
+        std::cout << save_path << std::endl;
+
+//        for (int i = 0; i < 150; ++i)
+//            write_scalar(i * 20, i, "test_scalar", 150.f / i);
     }
 
     void write_scalar(double wall_time, tensorflow::int64 step, const std::string& tag, float simple_value) {

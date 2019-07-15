@@ -13,7 +13,7 @@ typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Ma
 
 class CartPoleEnv : public virtual Env{
 public:
-    CartPoleEnv(int num_envs):Env(num_envs), total_step{1}{
+    CartPoleEnv(int num_envs):Env(num_envs), total_step{0}{
 
     }
 
@@ -38,6 +38,8 @@ public:
     }
 
     std::vector<Mat> step(const Mat &actions) override {
+        ++total_step;
+
         auto obs = Mat::Zero(get_num_envs(),get_observation_space_size());
         auto rewards = Mat::Zero(get_num_envs(), 1);
         Mat dones;
@@ -47,7 +49,6 @@ public:
         } else{
             dones = Mat::Zero(get_num_envs(), 1);
         }
-
         return {obs,rewards,dones};
     }
 

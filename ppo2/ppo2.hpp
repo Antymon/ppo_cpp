@@ -371,10 +371,11 @@ public:
             std::cout << std::endl;
 
             if(!tb_log_name.empty()){
+
                 Eigen::Map<Mat> rewards_view(mb.true_rewards->data(), n_envs, n_steps);
                 Eigen::Map<Mat> dones_view(mb.dones->data(), n_envs, n_steps);
 
-                episode_reward = Utils::total_episode_reward_logger(episode_reward,rewards_view,dones_view,writer,num_timesteps);
+                episode_reward = Utils::total_episode_reward_logger(episode_reward,rewards_view,dones_view,writer,num_timesteps-n_batch);
             }
         }
 

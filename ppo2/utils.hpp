@@ -83,10 +83,12 @@ public:
             std::vector<int> dones_idx{};
 
             for (int step = 0; step < steps; ++step){
-                if(masks_view(env_idx,step) == 1.){
+                if(masks_view(env_idx,step) == 1.f){
                     dones_idx.push_back(step);
+                    //std::cout<< "#9" << std::endl;
                 }
             }
+
 
             if(dones_idx.size() == 0){
                 rew_acc(env_idx,0) += rewards_view.row(env_idx).sum();
