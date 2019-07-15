@@ -3,8 +3,8 @@
 //
 
 #include "ppo2/ppo2.hpp"
-#include "ppo2/env.hpp"
-#include "ppo2/cart_pole_v1_env_mock.hpp"
+#include "env/env.hpp"
+#include "env/cart_pole_v1_env_mock.hpp"
 
 
 int main(){

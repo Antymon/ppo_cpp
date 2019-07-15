@@ -1,7 +1,3 @@
-#include <utility>
-
-#include <utility>
-
 //
 // Created by szymon on 10/07/19.
 //
@@ -9,11 +5,12 @@
 #ifndef PPO_CPP_PPO2_HPP
 #define PPO_CPP_PPO2_HPP
 
+#include <utility>
 #include <memory>
 #include "Eigen/Dense"
 #include <string>
 #include "base_class.hpp"
-#include "env.hpp"
+#include "../env/env.hpp"
 #include <iostream>
 #include "session_creator.hpp"
 #include "policies.hpp"
@@ -270,7 +267,7 @@ public:
         //ToDo impl
     }
 
-    void learn(int total_timesteps, std::string tb_log_name = "PPO2") {
+    void learn(int total_timesteps, const std::string& tb_log_name = "PPO2") {
 
         bool new_tb_log = _init_num_timesteps();
 
@@ -346,24 +343,32 @@ public:
 
                     int loss_index = start/batch_size + epoch_num*nminibatches;
 
+//                    std::cout << "#6" << std::endl;
+//                    std::cout << losses << std::endl;
+//                    std::cout << loss_index << std::endl;
 
-                    std::cout << "#6" << std::endl;
                     mb_loss_vals->block(loss_index,0,1,5) = losses;
                 }
+
+                //std::cout << "epoch " << epoch_num << std::endl;
             }
-            std::cout << "#7" << std::endl;
+//            std::cout << "#7" << std::endl;
 
             auto loss_vals = mb_loss_vals->colwise().mean();
 
             auto t_now = std::chrono::system_clock::now();
 
-            int fps = static_cast<int>(n_batch / (t_now - t_start).count());
+            auto duration = (std::chrono::duration_cast<std::chrono::milliseconds>(t_now - t_start)).count();
+
+            int fps = static_cast<int>(n_batch*1000 / duration);
 
             std::cout << fps << ",";
 
             for (int i = 0; i < 5; ++i){
-                std::cout << loss_vals(i,0) << ",";
+                std::cout << loss_vals(0,i) << ",";
             }
+
+            std::cout << std::endl;
 
             if(!tb_log_name.empty()){
                 Eigen::Map<Mat> rewards_view(mb.true_rewards->data(), n_envs, n_steps);
@@ -460,13 +465,10 @@ private:
         //summary proto string that needs to be decoded and fed into tb
         //std::cout << tensor_outputs[0].scalar<std::string>()() << std::endl;
 
-        Mat losses{5,1};
+        Mat losses{1,5};
 
         for(int i = 1; i<tensor_outputs.size(); ++i){
-            Mat output;
-            Utils::convert_tensor(tensor_outputs[i],output);
-            losses(i-1,0)=output(0,0);
-
+            losses(0,i-1)=tensor_outputs[i].scalar<float>()();
         }
 
         return losses;

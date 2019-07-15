@@ -5,7 +5,7 @@
 #ifndef PPO_CPP_BASE_CLASS_HPP
 #define PPO_CPP_BASE_CLASS_HPP
 
-#include "env.hpp"
+#include "../env/env.hpp"
 
 class BaseRLModel {
 public:
