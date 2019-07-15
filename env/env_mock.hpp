@@ -1,6 +1,8 @@
 //
 // Created by szymon on 10/07/19.
 //
+//quasi OpenAI gym env interface
+//
 
 #ifndef PPO_CPP_CART_POLE_ENV_HPP
 #define PPO_CPP_CART_POLE_ENV_HPP
@@ -11,9 +13,9 @@
 
 typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Mat;
 
-class CartPoleEnv : public virtual Env{
+class EnvMock : public virtual Env{
 public:
-    CartPoleEnv(int num_envs):Env(num_envs), total_step{0}{
+    EnvMock(int num_envs):Env(num_envs), total_step{0}{
 
     }
 

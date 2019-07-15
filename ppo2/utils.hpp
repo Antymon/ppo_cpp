@@ -7,6 +7,7 @@
 
 #include <tensorflow/core/framework/tensor.h>
 #include "tensorboard.hpp"
+#include <algorithm>
 
 typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Mat;
 
@@ -71,6 +72,13 @@ public:
         t.scalar<float>()() = scalar;
     }
 
+    template<class T>
+    static constexpr const T& clamp( const T& v, const T& lo, const T& hi )
+    {
+        return assert( hi != lo),
+                (v < lo) ? lo : (hi < v) ? hi : v;
+    }
+
     static Mat total_episode_reward_logger(Mat rew_acc, Eigen::Map<Mat> rewards_view, Eigen::Map<Mat> masks_view, TensorboardWriter& writer, int total_steps){
         assert(rew_acc.rows() == rewards_view.rows() && rewards_view.rows() == masks_view.rows());
         assert(rew_acc.cols() == 1 && rewards_view.cols() == masks_view.cols());
@@ -83,14 +91,14 @@ public:
             std::vector<int> dones_idx{};
 
             for (int step = 0; step < steps; ++step){
-                if(masks_view(env_idx,step) == 1.f){
+                if(masks_view(env_idx,step) > .5f){ //in theory those values should be 0. or 1. but for the sake of limited precision comparing against .5
                     dones_idx.push_back(step);
                     //std::cout<< "#9" << std::endl;
                 }
             }
 
 
-            if(dones_idx.size() == 0){
+            if(dones_idx.empty()){
                 rew_acc(env_idx,0) += rewards_view.row(env_idx).sum();
             } else {
                 rew_acc(env_idx,0) += rewards_view.block(env_idx,0,1,dones_idx[0]).sum();

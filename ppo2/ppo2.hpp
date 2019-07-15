@@ -1,6 +1,9 @@
 //
 // Created by szymon on 10/07/19.
 //
+// Graph Reading cpp counterpart of modified PPO2 implementation from Stable-Baselines
+// It executes training but the graph needs to be read from outside
+//
 
 #ifndef PPO_CPP_PPO2_HPP
 #define PPO_CPP_PPO2_HPP

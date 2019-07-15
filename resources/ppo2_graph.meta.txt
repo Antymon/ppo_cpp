@@ -1797,7 +1797,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 4
+              size: 1
             }
           }
         }
@@ -1817,7 +1817,7 @@ graph_def {
             size: -1
           }
           dim {
-            size: 4
+            size: 1
           }
         }
       }
@@ -1873,7 +1873,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 4
+              size: 1
             }
           }
         }
@@ -2168,7 +2168,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 4
+              size: 1
             }
           }
         }
@@ -2192,7 +2192,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -2214,13 +2214,13 @@ graph_def {
           dtype: DT_FLOAT
           tensor_shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
             }
           }
-          tensor_content: "\023\014\243>\246&\014\276\260\363\245?\022y`;<\201A\277F\230\353\276u=^\277\246]q\277F\002\226>M\366\210?\025\3078\277\2452\026\276"
+          tensor_content: "\\m&\275\246\243,?$\007\237?"
         }
       }
     }
@@ -2242,7 +2242,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -2268,7 +2268,7 @@ graph_def {
       value {
         shape {
           dim {
-            size: 4
+            size: 1
           }
           dim {
             size: 3
@@ -2308,7 +2308,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -2354,7 +2354,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -2644,7 +2644,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -2666,13 +2666,13 @@ graph_def {
           dtype: DT_FLOAT
           tensor_shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
             }
           }
-          tensor_content: "q\304T\276N,\317>h3\245\277~\037\357\276\375.\221?\235\263~>\252\314\225\277\003\312\026\276%v\254>\202\206\033\277\r\010:\277M\037\314\276"
+          tensor_content: "\'\226c\276J\355]\277\333)\214\277"
         }
       }
     }
@@ -2694,7 +2694,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -2720,7 +2720,7 @@ graph_def {
       value {
         shape {
           dim {
-            size: 4
+            size: 1
           }
           dim {
             size: 3
@@ -2760,7 +2760,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -2806,7 +2806,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -3124,7 +3124,7 @@ graph_def {
               size: 3
             }
           }
-          tensor_content: "\345\t_\277kj\036\277\017!m\277\330\021\216?\204\226\303\276q\354I\277ai\302=\207@\233\277\260\2238?"
+          tensor_content: "h\243a\277\231j\215?|\177M=0\2208\276\347\300S\276\324\224\261?j\253\213?M\267[?[\024\212>"
         }
       }
     }
@@ -3576,7 +3576,7 @@ graph_def {
               size: 3
             }
           }
-          tensor_content: "\363\360V\277Ge)?\211\004m?\035\367\023\277\364?>?\274\023\207\277\215\364z\277#\241\200\277\357\337.\276"
+          tensor_content: "\375\006\331\276!\374A\277\013\343\216\277\256\347\"?\234p\222\277L\363\010?\027H\230\277\251\024\257\276=\022/?"
         }
       }
     }
@@ -4028,7 +4028,7 @@ graph_def {
               size: 1
             }
           }
-          tensor_content: "/S\357=+>\020\277D^Q?"
+          tensor_content: "\351EE?\216\231\263>\3057\010?"
         }
       }
     }
@@ -4429,7 +4429,7 @@ graph_def {
               size: 3
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -4451,10 +4451,10 @@ graph_def {
               size: 3
             }
             dim {
-              size: 2
+              size: 18
             }
           }
-          tensor_content: "\017C\266\273\334\016\030;y\t\010\274\350\221\226\272\037\307\266\271\354@\036\274"
+          tensor_content: "2\236\257\266\002V\025;\350/?\273~\370?;p\301{\27307\351\272\331\326R\271R\006\035;\326\266-\273k\344\232\273\326T\264\272p\\!:\025\226@\272\037y\345:+\362\177:*\303\r;\336\375\220:\033+b\273\006U\234\270c\320;;*\326\227\271\264\222\224:\226\234\250\272\212\023\373:\317\017\312:\316i\223\272\344\302\301;n\312$\273r8\3428\362\025W\272\370\200\204\273\213\036N\273p\272=\273\'C\375:\010A)\272-D[:\267\0225\272p\373\246:v\\\302\272m\366\262\273\027\346#\273\373eg;\022\276\255\2724\377\320\272c\221F\273\274\366\214\272\005x\t\273X;\235\272EL;\273\245\367\t;\031\216J:\3732\0229\334+\335\272\276~U;"
         }
       }
     }
@@ -4479,7 +4479,7 @@ graph_def {
               size: 3
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -4505,7 +4505,7 @@ graph_def {
             size: 3
           }
           dim {
-            size: 2
+            size: 18
           }
         }
       }
@@ -4545,7 +4545,7 @@ graph_def {
               size: 3
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -4591,7 +4591,7 @@ graph_def {
               size: 3
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -4615,7 +4615,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -4634,7 +4634,7 @@ graph_def {
           dtype: DT_FLOAT
           tensor_shape {
             dim {
-              size: 2
+              size: 18
             }
           }
           float_val: 0.0
@@ -4659,7 +4659,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -4682,7 +4682,7 @@ graph_def {
       value {
         shape {
           dim {
-            size: 2
+            size: 18
           }
         }
       }
@@ -4719,7 +4719,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -4762,7 +4762,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -4789,7 +4789,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -4828,7 +4828,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -4855,7 +4855,7 @@ graph_def {
               size: 1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -4877,7 +4877,7 @@ graph_def {
               size: 1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
           float_val: 0.0
@@ -4905,7 +4905,7 @@ graph_def {
               size: 1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -4931,7 +4931,7 @@ graph_def {
             size: 1
           }
           dim {
-            size: 2
+            size: 18
           }
         }
       }
@@ -4971,7 +4971,7 @@ graph_def {
               size: 1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -5017,7 +5017,7 @@ graph_def {
               size: 1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -5074,7 +5074,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -5101,7 +5101,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -5171,7 +5171,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 4
+              size: 36
             }
           }
         }
@@ -5198,7 +5198,7 @@ graph_def {
               size: 3
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -5220,10 +5220,10 @@ graph_def {
               size: 3
             }
             dim {
-              size: 2
+              size: 18
             }
           }
-          tensor_content: "\332\007\217:\340\223k;(\263\035\274\333\2461;\301\265\";\277K\022<"
+          tensor_content: "\233\346\013;8\241\363\271\010%\003\273\034-\246\272\027\226\206\273)*\325\272<L\005\273\232\371<;\007\365\034;\'\370\017\272\201U1\273\362\266L:\315p\262\271\261Cp\272`\354\211\272\234\266\310:\021\360\304;]\251\350\272\202S(\273NX\024:\035\256\272\272\014\356\365\270\t\221B\273\361\352P;\013\377\314\272\314\265@\272\215]\353\270\354\202k\273V\276\035;\365\034\215\273J<s;\001\264=;s\311\360\272\264:\315:\356\021p:9\302\342:\262\034&\273\322\034q:\002\331\246;U1F\272\375\255/;\263\324\351:R\211\030\273\360\';:Y\314\221;\370e.;\377\240\026:\247r)\271\203)\340:\2543\000;n\266\016;K\242)\272\217dB;\033\351\270\272"
         }
       }
     }
@@ -5248,7 +5248,7 @@ graph_def {
               size: 3
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -5274,7 +5274,7 @@ graph_def {
             size: 3
           }
           dim {
-            size: 2
+            size: 18
           }
         }
       }
@@ -5314,7 +5314,7 @@ graph_def {
               size: 3
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -5360,7 +5360,7 @@ graph_def {
               size: 3
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -5384,7 +5384,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -5403,7 +5403,7 @@ graph_def {
           dtype: DT_FLOAT
           tensor_shape {
             dim {
-              size: 2
+              size: 18
             }
           }
           float_val: 0.0
@@ -5428,7 +5428,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -5451,7 +5451,7 @@ graph_def {
       value {
         shape {
           dim {
-            size: 2
+            size: 18
           }
         }
       }
@@ -5488,7 +5488,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -5531,7 +5531,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -5558,7 +5558,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -5597,7 +5597,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -5684,7 +5684,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
           shape {
@@ -5692,7 +5692,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -5724,7 +5724,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -5839,7 +5839,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -5884,7 +5884,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -5911,7 +5911,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -5938,7 +5938,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -5965,7 +5965,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -6022,7 +6022,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -6049,7 +6049,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -6076,7 +6076,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -6102,7 +6102,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -6827,7 +6827,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 4
+              size: 1
             }
           }
         }
@@ -6847,7 +6847,7 @@ graph_def {
             size: -1
           }
           dim {
-            size: 4
+            size: 1
           }
         }
       }
@@ -6903,7 +6903,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 4
+              size: 1
             }
           }
         }
@@ -7198,7 +7198,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 4
+              size: 1
             }
           }
         }
@@ -7659,7 +7659,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -7698,7 +7698,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -7755,7 +7755,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -7782,7 +7782,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -7852,7 +7852,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 4
+              size: 36
             }
           }
         }
@@ -7879,7 +7879,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -7918,7 +7918,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -8005,7 +8005,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
           shape {
@@ -8013,7 +8013,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -8045,7 +8045,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -8160,7 +8160,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -8205,7 +8205,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -8232,7 +8232,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -8259,7 +8259,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -8286,7 +8286,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -8343,7 +8343,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -8370,7 +8370,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -8397,7 +8397,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -8423,7 +8423,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -9148,7 +9148,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -9168,7 +9168,7 @@ graph_def {
             size: -1
           }
           dim {
-            size: 2
+            size: 18
           }
         }
       }
@@ -9374,7 +9374,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -9401,7 +9401,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -9427,7 +9427,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -9997,7 +9997,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -14747,7 +14747,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -15662,7 +15662,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -18990,7 +18990,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -20084,7 +20084,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -20237,7 +20237,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -20264,7 +20264,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -20603,7 +20603,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -20670,7 +20670,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -20696,7 +20696,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -20723,7 +20723,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -20750,7 +20750,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -20777,7 +20777,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -20844,7 +20844,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -21076,7 +21076,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -21164,7 +21164,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -21191,7 +21191,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -21260,7 +21260,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -21300,7 +21300,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 4
+              size: 36
             }
           }
         }
@@ -21710,7 +21710,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -21744,7 +21744,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -21889,7 +21889,7 @@ graph_def {
               size: 2
             }
           }
-          tensor_content: "\001\000\000\000\002\000\000\000"
+          tensor_content: "\001\000\000\000\022\000\000\000"
         }
       }
     }
@@ -21983,7 +21983,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -22050,7 +22050,7 @@ graph_def {
               size: 1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -22195,7 +22195,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -22262,7 +22262,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -22289,7 +22289,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -22616,7 +22616,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -22683,7 +22683,7 @@ graph_def {
               size: 1
             }
           }
-          int_val: 2
+          int_val: 18
         }
       }
     }
@@ -22777,7 +22777,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -22841,7 +22841,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -22868,7 +22868,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 4
+              size: 1
             }
           }
         }
@@ -22904,7 +22904,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -22985,7 +22985,7 @@ graph_def {
               size: 3
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -23606,7 +23606,7 @@ graph_def {
               size: -1
             }
             dim {
-              size: 4
+              size: 1
             }
           }
         }
@@ -23642,7 +23642,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -24516,7 +24516,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -24550,7 +24550,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -24648,7 +24648,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -24682,7 +24682,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -25179,7 +25179,7 @@ graph_def {
               size: 3
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -25213,7 +25213,7 @@ graph_def {
               size: 3
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -25245,7 +25245,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -25276,7 +25276,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -25311,7 +25311,7 @@ graph_def {
               size: 1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -25345,7 +25345,7 @@ graph_def {
               size: 1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -25675,7 +25675,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -25697,7 +25697,7 @@ graph_def {
           dtype: DT_FLOAT
           tensor_shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -25725,7 +25725,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -25751,7 +25751,7 @@ graph_def {
       value {
         shape {
           dim {
-            size: 4
+            size: 1
           }
           dim {
             size: 3
@@ -25791,7 +25791,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -25837,7 +25837,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -25864,7 +25864,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -25886,7 +25886,7 @@ graph_def {
           dtype: DT_FLOAT
           tensor_shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -25914,7 +25914,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -25940,7 +25940,7 @@ graph_def {
       value {
         shape {
           dim {
-            size: 4
+            size: 1
           }
           dim {
             size: 3
@@ -25980,7 +25980,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -26026,7 +26026,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -26395,7 +26395,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -26417,7 +26417,7 @@ graph_def {
           dtype: DT_FLOAT
           tensor_shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -26445,7 +26445,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -26471,7 +26471,7 @@ graph_def {
       value {
         shape {
           dim {
-            size: 4
+            size: 1
           }
           dim {
             size: 3
@@ -26511,7 +26511,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -26557,7 +26557,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -26584,7 +26584,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -26606,7 +26606,7 @@ graph_def {
           dtype: DT_FLOAT
           tensor_shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -26634,7 +26634,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -26660,7 +26660,7 @@ graph_def {
       value {
         shape {
           dim {
-            size: 4
+            size: 1
           }
           dim {
             size: 3
@@ -26700,7 +26700,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -26746,7 +26746,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -29278,7 +29278,7 @@ graph_def {
               size: 3
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -29300,7 +29300,7 @@ graph_def {
               size: 3
             }
             dim {
-              size: 2
+              size: 18
             }
           }
           float_val: 0.0
@@ -29328,7 +29328,7 @@ graph_def {
               size: 3
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -29354,7 +29354,7 @@ graph_def {
             size: 3
           }
           dim {
-            size: 2
+            size: 18
           }
         }
       }
@@ -29394,7 +29394,7 @@ graph_def {
               size: 3
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -29440,7 +29440,7 @@ graph_def {
               size: 3
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -29467,7 +29467,7 @@ graph_def {
               size: 3
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -29489,7 +29489,7 @@ graph_def {
               size: 3
             }
             dim {
-              size: 2
+              size: 18
             }
           }
           float_val: 0.0
@@ -29517,7 +29517,7 @@ graph_def {
               size: 3
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -29543,7 +29543,7 @@ graph_def {
             size: 3
           }
           dim {
-            size: 2
+            size: 18
           }
         }
       }
@@ -29583,7 +29583,7 @@ graph_def {
               size: 3
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -29629,7 +29629,7 @@ graph_def {
               size: 3
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -29653,7 +29653,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -29672,7 +29672,7 @@ graph_def {
           dtype: DT_FLOAT
           tensor_shape {
             dim {
-              size: 2
+              size: 18
             }
           }
           float_val: 0.0
@@ -29697,7 +29697,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -29720,7 +29720,7 @@ graph_def {
       value {
         shape {
           dim {
-            size: 2
+            size: 18
           }
         }
       }
@@ -29757,7 +29757,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -29800,7 +29800,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -29824,7 +29824,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -29843,7 +29843,7 @@ graph_def {
           dtype: DT_FLOAT
           tensor_shape {
             dim {
-              size: 2
+              size: 18
             }
           }
           float_val: 0.0
@@ -29868,7 +29868,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -29891,7 +29891,7 @@ graph_def {
       value {
         shape {
           dim {
-            size: 2
+            size: 18
           }
         }
       }
@@ -29928,7 +29928,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -29971,7 +29971,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -29998,7 +29998,7 @@ graph_def {
               size: 1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -30020,7 +30020,7 @@ graph_def {
               size: 1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
           float_val: 0.0
@@ -30048,7 +30048,7 @@ graph_def {
               size: 1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -30074,7 +30074,7 @@ graph_def {
             size: 1
           }
           dim {
-            size: 2
+            size: 18
           }
         }
       }
@@ -30114,7 +30114,7 @@ graph_def {
               size: 1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -30160,7 +30160,7 @@ graph_def {
               size: 1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -30187,7 +30187,7 @@ graph_def {
               size: 1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -30209,7 +30209,7 @@ graph_def {
               size: 1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
           float_val: 0.0
@@ -30237,7 +30237,7 @@ graph_def {
               size: 1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -30263,7 +30263,7 @@ graph_def {
             size: 1
           }
           dim {
-            size: 2
+            size: 18
           }
         }
       }
@@ -30303,7 +30303,7 @@ graph_def {
               size: 1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -30349,7 +30349,7 @@ graph_def {
               size: 1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -30479,7 +30479,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -30586,7 +30586,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 4
+              size: 1
             }
             dim {
               size: 3
@@ -31017,7 +31017,7 @@ graph_def {
               size: 3
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -31069,7 +31069,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 2
+              size: 18
             }
           }
         }
@@ -31124,7 +31124,7 @@ graph_def {
               size: 1
             }
             dim {
-              size: 2
+              size: 18
             }
           }
         }

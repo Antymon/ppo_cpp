@@ -1,0 +1,705 @@
+<?xml version="1.0" ?>
+<robot name="pexod" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- MATERIALS -->
+  <material name="Blue">
+    <color rgba="0 0 1 1"/>
+  </material>
+  <material name="Red">
+    <color rgba="1 0 0 1"/>
+  </material>
+  <material name="Green">
+    <color rgba="0 1 0 1"/>
+  </material>
+  <material name="Yellow">
+    <color rgba="1 1 0 1"/>
+  </material>
+  <material name="LightGrey">
+    <color rgba="0.6 0.6 0.6 1.0"/>
+  </material>
+  <!-- END OF MATERIALS -->
+
+  <!-- TORSO -->
+  <link name="base_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.228 0.181 0.042"/>
+      </geometry>
+      <material name="Blue"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.228 0.181 0.042"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <!-- CENTER OF MASS -->
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.6791"/>
+      <!-- box inertia: 1/12*m(y^2+z^2), ... -->
+      <inertia ixx="0.001854" ixy="0" ixz="0" iyy="0.003218" iyz="0" izz="0.004888"/>
+    </inertial>
+  </link>
+  <!-- XACRO MACRO FOR LEGS LINKS/JOINTS -->
+  <!-- END OF LEG LINKS/JOINTS -->
+  <joint name="body_leg_0" type="revolute">
+    <parent link="base_link"/>
+    <child link="leg_0_1"/>
+    <limit effort="4.0" lower="-1.57079632679" upper="1.57079632679" velocity="5.0"/>
+    <origin rpy="0 0 -0.7864" xyz="0.093 -0.053 0"/>
+    <!-- <xacro:if value="${index == 5 or index == 4 or index == 3}">
+                <axis xyz="0 0 1"/>
+            </xacro:if>
+            <xacro:if value="${index == 2 or index == 1 or index == 0}"> -->
+    <axis xyz="0 0 1"/>
+    <!-- </xacro:if> -->
+    <dynamics damping="0.0"/>
+  </joint>
+  <link name="leg_0_1">
+    <visual>
+      <origin rpy="0 0 0" xyz="0.028 0 0"/>
+      <geometry>
+        <box size="0.061 0.041 0.041"/>
+      </geometry>
+      <material name="Red"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.028 0 0"/>
+      <geometry>
+        <box size="0.061 0.041 0.041"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <!-- CENTER OF MASS -->
+      <origin rpy="0 0 0" xyz="0.028 0 0"/>
+      <mass value="0.0199"/>
+      <!-- box inertia: 1/12*m(y^2+z^2), ... -->
+      <inertia ixx="6.158e-06" ixy="0" ixz="0" iyy="5.830e-06" iyz="0" izz="5.830e-06"/>
+    </inertial>
+  </link>
+  <joint name="leg_0_1_2" type="revolute">
+    <parent link="leg_0_1"/>
+    <child link="leg_0_2"/>
+    <limit effort="4.0" lower="-1.570796" upper="1.570796" velocity="5.0"/>
+    <origin rpy="0 0 0" xyz="0.056 0 0"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.0"/>
+  </joint>
+  <link name="leg_0_2">
+    <visual>
+      <origin rpy="0 0 0" xyz="0.0405 0 0"/>
+      <geometry>
+        <box size="0.1035 0.0424 0.0285"/>
+      </geometry>
+      <material name="Blue"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0405 0 0"/>
+      <geometry>
+        <box size="0.0835 0.0424 0.0285"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <!-- CENTER OF MASS -->
+      <origin rpy="0 0 0" xyz="0.0405 0 0"/>
+      <mass value="0.1872"/>
+      <!-- box inertia: 1/12*m(y^2+z^2), ... -->
+      <inertia ixx="3.154e-05" ixy="0" ixz="0" iyy="1.896e-04" iyz="0" izz="1.972e-04"/>
+    </inertial>
+  </link>
+  <joint name="leg_0_2_3" type="revolute">
+    <parent link="leg_0_2"/>
+    <child link="leg_0_3"/>
+    <limit effort="4.0" lower="-1.570796" upper="1.570796" velocity="5.0"/>
+    <origin rpy="0 0 0" xyz="0.081 0 0"/>
+    <axis xyz="0 -1 0"/>
+    <dynamics damping="0.0"/>
+  </joint>
+  <link name="leg_0_3">
+    <visual>
+      <origin rpy="0 0 0" xyz="0.039 0 -0.03195"/>
+      <geometry>
+        <cylinder length="0.158" radius="0.026"/>
+      </geometry>
+      <material name="Red"/>
+    </visual>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.039 0 -0.11095"/>
+      <geometry>
+        <sphere radius="0.025"/>
+      </geometry>
+      <material name="Red"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.039 0 -0.03195"/>
+      <geometry>
+        <box size="0.026 0.026 0.158"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.039 0 -0.11095"/>
+      <geometry>
+        <sphere radius="0.025"/>
+      </geometry>
+      <material name="Red"/>
+    </collision>
+    <inertial>
+      <!-- CENTER OF MASS -->
+      <origin rpy="0 0 0" xyz="0.039 0 -0.03195"/>
+      <mass value="0.0911"/>
+      <!-- box inertia: 1/12*m(y^2+z^2), ... -->
+      <inertia ixx="1.668e-04" ixy="0" ixz="9.703e-06" iyy="1.605e-04" iyz="0" izz="2.741e-05"/>
+    </inertial>
+  </link>
+
+  <joint name="body_leg_1" type="revolute">
+    <parent link="base_link"/>
+    <child link="leg_1_1"/>
+    <limit effort="4.0" lower="-1.57079632679" upper="1.57079632679" velocity="5.0"/>
+    <origin rpy="0 0 -1.5708" xyz="0.00 -0.075 0"/>
+    <!-- <xacro:if value="${index == 5 or index == 4 or index == 3}">
+                <axis xyz="0 0 1"/>
+            </xacro:if>
+            <xacro:if value="${index == 2 or index == 1 or index == 0}"> -->
+    <axis xyz="0 0 1"/>
+    <!-- </xacro:if> -->
+    <dynamics damping="0.0"/>
+  </joint>
+  <link name="leg_1_1">
+    <visual>
+      <origin rpy="0 0 0" xyz="0.028 0 0"/>
+      <geometry>
+	<box size="0.061 0.041 0.041"/>
+      </geometry>
+      <material name="Red"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.028 0.00 0"/>
+      <geometry>
+        <box size="0.061 0.041 0.041"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <!-- CENTER OF MASS -->
+      <origin rpy="0 0 0" xyz="0.028 0 0"/>
+      <mass value="0.0199"/>
+      <!-- box inertia: 1/12*m(y^2+z^2), ... -->
+      <inertia ixx="6.158e-06" ixy="0" ixz="0" iyy="5.830e-06" iyz="0" izz="5.830e-06"/>
+    </inertial>
+  </link>
+  <joint name="leg_1_1_2" type="revolute">
+    <parent link="leg_1_1"/>
+    <child link="leg_1_2"/>
+    <limit effort="4.0" lower="-1.570796" upper="1.570796" velocity="5.0"/>
+    <origin rpy="0 0 0" xyz="0.056 0 0"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.0"/>
+  </joint>
+  <link name="leg_1_2">
+    <visual>
+      <origin rpy="0 0 0" xyz="0.0405 0 0"/>
+      <geometry>
+        <box size="0.1035 0.0424 0.0285"/>
+      </geometry>
+      <material name="Blue"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0405 0 0"/>
+      <geometry>
+        <box size="0.0835 0.0424 0.0285"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <!-- CENTER OF MASS -->
+      <origin rpy="0 0 0" xyz="0.0405 0 0"/>
+      <mass value="0.1872"/>
+      <!-- box inertia: 1/12*m(y^2+z^2), ... -->
+      <inertia ixx="3.154e-05" ixy="0" ixz="0" iyy="1.896e-04" iyz="0" izz="1.972e-04"/>
+    </inertial>
+  </link>
+  <joint name="leg_1_2_3" type="revolute">
+    <parent link="leg_1_2"/>
+    <child link="leg_1_3"/>
+    <limit effort="4.0" lower="-1.570796" upper="1.570796" velocity="5.0"/>
+    <origin rpy="0 0 0" xyz="0.081 0 0"/>
+    <axis xyz="0 -1 0"/>
+    <dynamics damping="0.0"/>
+  </joint>
+  <link name="leg_1_3">
+    <visual>
+      <origin rpy="0 0 0" xyz="0.039 0 -0.03195"/>
+      <geometry>
+        <cylinder length="0.158" radius="0.026"/>
+      </geometry>
+      <material name="Red"/>
+    </visual>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.039 0 -0.11095"/>
+      <geometry>
+        <sphere radius="0.025"/>
+      </geometry>
+      <material name="Red"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.039 0 -0.03195"/>
+      <geometry>
+        <box size="0.026 0.026 0.158"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.039 0 -0.11095"/>
+      <geometry>
+        <sphere radius="0.025"/>
+      </geometry>
+      <material name="Red"/>
+    </collision>
+    <inertial>
+      <!-- CENTER OF MASS -->
+      <origin rpy="0 0 0" xyz="0.039 0 -0.03195"/>
+      <mass value="0.0911"/>
+      <!-- box inertia: 1/12*m(y^2+z^2), ... -->
+      <inertia ixx="1.668e-04" ixy="0" ixz="9.703e-06" iyy="1.605e-04" iyz="0" izz="2.741e-05"/>
+    </inertial>
+  </link>
+
+  <joint name="body_leg_2" type="revolute">
+    <parent link="base_link"/>
+    <child link="leg_2_1"/>
+    <limit effort="4.0" lower="-1.57079632679" upper="1.57079632679" velocity="5.0"/> <!-- N.m and rad/s? -->
+    <origin rpy="0 0 -2.3562" xyz="-0.093 -0.053 0"/>
+    <!-- <xacro:if value="${index == 5 or index == 4 or index == 3}">
+                <axis xyz="0 0 1"/>
+            </xacro:if>
+            <xacro:if value="${index == 2 or index == 1 or index == 0}"> -->
+    <axis xyz="0 0 1"/>
+    <!-- </xacro:if> -->
+    <dynamics damping="0.0"/>
+  </joint>
+  <link name="leg_2_1">
+    <visual>
+      <origin rpy="0 0 0" xyz="0.028 0 0"/>
+      <geometry>
+        <!-- <cylinder length="0.061" radius="0.0205"/> -->
+	<box size="0.061 0.041 0.041"/>
+      </geometry>
+      <material name="Red"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.028 0 0"/>
+      <geometry>
+        <box size="0.061 0.041 0.041"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <!-- CENTER OF MASS -->
+      <origin rpy="1.57079632679 0 0" xyz="0.00 0.028 0"/>
+      <mass value="0.0199"/>
+      <!-- box inertia: 1/12*m(y^2+z^2), ... -->
+      <inertia ixx="6.158e-06" ixy="0" ixz="0" iyy="5.830e-06" iyz="0" izz="5.830e-06"/>
+    </inertial>
+  </link>
+  <joint name="leg_2_1_2" type="revolute">
+    <parent link="leg_2_1"/>
+    <child link="leg_2_2"/>
+    <limit effort="4.0" lower="-1.570796" upper="1.570796" velocity="5.0"/>
+    <origin rpy="0 0 0" xyz="0.056 0 0"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.0"/>
+  </joint>
+  <link name="leg_2_2">
+    <visual>
+      <origin rpy="0 0 0" xyz="0.0405 0 0"/>
+      <geometry>
+        <box size="0.1035 0.0424 0.0285"/>
+      </geometry>
+      <material name="Blue"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0405 0 0"/>
+      <geometry>
+        <box size="0.0835 0.0424 0.0285"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <!-- CENTER OF MASS -->
+      <origin rpy="0 0 0" xyz="0.0405 0 0"/>
+      <mass value="0.1872"/>
+      <!-- box inertia: 1/12*m(y^2+z^2), ... -->
+      <inertia ixx="3.154e-05" ixy="0" ixz="0" iyy="1.896e-04" iyz="0" izz="1.972e-04"/>
+    </inertial>
+  </link>
+  <joint name="leg_2_2_3" type="revolute">
+    <parent link="leg_2_2"/>
+    <child link="leg_2_3"/>
+    <limit effort="4.0" lower="-1.570796" upper="1.570796" velocity="5.0"/>
+    <origin rpy="0 0 0" xyz="0.081 0 0"/>
+    <axis xyz="0 -1 0"/>
+    <dynamics damping="0.0"/>
+  </joint>
+  <link name="leg_2_3">
+    <visual>
+      <origin rpy="0 0 0" xyz="0.039 0 -0.03195"/>
+      <geometry>
+        <cylinder length="0.158" radius="0.026"/>
+      </geometry>
+      <material name="Red"/>
+    </visual>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.039 0 -0.11095"/>
+      <geometry>
+        <sphere radius="0.025"/>
+      </geometry>
+      <material name="Red"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.039 0 -0.03195"/>
+      <geometry>
+        <box size="0.026 0.026 0.158"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.039 0 -0.11095"/>
+      <geometry>
+        <sphere radius="0.025"/>
+      </geometry>
+      <material name="Red"/>
+    </collision>
+    <inertial>
+      <!-- CENTER OF MASS -->
+      <origin rpy="0 0 0" xyz="0.039 0 -0.03195"/>
+      <mass value="0.0911"/>
+      <!-- box inertia: 1/12*m(y^2+z^2), ... -->
+      <inertia ixx="1.668e-04" ixy="0" ixz="9.703e-06" iyy="1.605e-04" iyz="0" izz="2.741e-05"/>
+    </inertial>
+  </link>
+  <joint name="body_leg_3" type="revolute">
+    <parent link="base_link"/>
+    <child link="leg_3_1"/>
+    <limit effort="4.0" lower="-1.57079632679" upper="1.57079632679" velocity="5.0"/>
+    <origin rpy="0 0 2.3516" xyz="-0.093 0.053 0"/>
+    <!-- <xacro:if value="${index == 5 or index == 4 or index == 3}">
+                <axis xyz="0 0 1"/>
+            </xacro:if>
+            <xacro:if value="${index == 2 or index == 1 or index == 0}"> -->
+    <axis xyz="0 0 1"/>
+    <!-- </xacro:if> -->
+    <dynamics damping="0.0"/>
+  </joint>
+  <link name="leg_3_1">
+    <visual>
+      <origin rpy="0 0 0" xyz="0.028 0 0"/>
+      <geometry>
+	<box size="0.061 0.041 0.041"/>
+      </geometry>
+      <material name="Red"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.028 0 0"/>
+      <geometry>
+        <box size="0.061 0.041 0.041"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <!-- CENTER OF MASS -->
+      <origin rpy="0 0 0" xyz="0.028 0 0"/>
+      <mass value="0.0199"/>
+      <!-- box inertia: 1/12*m(y^2+z^2), ... -->
+      <inertia ixx="6.158e-06" ixy="0" ixz="0" iyy="5.830e-06" iyz="0" izz="5.830e-06"/>
+    </inertial>
+  </link>
+  <joint name="leg_3_1_2" type="revolute">
+    <parent link="leg_3_1"/>
+    <child link="leg_3_2"/>
+    <limit effort="4.0" lower="-1.570796" upper="1.570796" velocity="5.0"/>
+    <origin rpy="0 0 0" xyz="0.056 0 0"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.0"/>
+  </joint>
+  <link name="leg_3_2">
+    <visual>
+      <origin rpy="0 0 0" xyz="0.0405 0 0"/>
+      <geometry>
+        <box size="0.1035 0.0424 0.0285"/>
+      </geometry>
+      <material name="Blue"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0405 0 0"/>
+      <geometry>
+        <box size="0.0835 0.0424 0.0285"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <!-- CENTER OF MASS -->
+      <origin rpy="0 0 0" xyz="0.0405 0 0"/>
+      <mass value="0.1872"/>
+      <!-- box inertia: 1/12*m(y^2+z^2), ... -->
+      <inertia ixx="3.154e-05" ixy="0" ixz="0" iyy="1.896e-04" iyz="0" izz="1.972e-04"/>
+    </inertial>
+  </link>
+  <joint name="leg_3_2_3" type="revolute">
+    <parent link="leg_3_2"/>
+    <child link="leg_3_3"/>
+    <limit effort="4.0" lower="-1.570796" upper="1.570796" velocity="5.0"/>
+    <origin rpy="0 0 0" xyz="0.081 0 0"/>
+    <axis xyz="0 -1 0"/>
+    <dynamics damping="0.0"/>
+  </joint>
+  <link name="leg_3_3">
+    <visual>
+      <origin rpy="0 0 0" xyz="0.039 0 -0.03195"/>
+      <geometry>
+        <cylinder length="0.158" radius="0.026"/>
+      </geometry>
+      <material name="Red"/>
+    </visual>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.039 0 -0.11095"/>
+      <geometry>
+        <sphere radius="0.025"/>
+      </geometry>
+      <material name="Red"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.039 0 -0.03195"/>
+      <geometry>
+        <box size="0.026 0.026 0.158"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.039 0 -0.11095"/>
+      <geometry>
+        <sphere radius="0.025"/>
+      </geometry>
+      <material name="Red"/>
+    </collision>
+    <inertial>
+      <!-- CENTER OF MASS -->
+      <origin rpy="0 0 0" xyz="0.039 0 -0.03195"/>
+      <mass value="0.0911"/>
+      <!-- box inertia: 1/12*m(y^2+z^2), ... -->
+      <inertia ixx="1.668e-04" ixy="0" ixz="9.703e-06" iyy="1.605e-04" iyz="0" izz="2.741e-05"/>
+    </inertial>
+  </link>
+  <joint name="body_leg_4" type="revolute">
+    <parent link="base_link"/>
+    <child link="leg_4_1"/>
+    <limit effort="4.0" lower="-1.57079632679" upper="1.57079632679" velocity="5.0"/>
+    <origin rpy="0 0 1.5708" xyz=" 0.00 0.075 0"/>
+    <!-- <xacro:if value="${index == 5 or index == 4 or index == 3}">
+                <axis xyz="0 0 1"/>
+            </xacro:if>
+            <xacro:if value="${index == 2 or index == 1 or index == 0}"> -->
+    <axis xyz="0 0 1"/>
+    <!-- </xacro:if> -->
+    <dynamics damping="0.0"/>
+  </joint>
+  <link name="leg_4_1">
+    <visual>
+      <origin rpy="0 0 0" xyz="0.028 0 0"/>
+      <geometry>
+	<box size="0.061 0.041 0.041"/>
+      </geometry>
+      <material name="Red"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.028 0 0"/>
+      <geometry>
+        <box size="0.061 0.041 0.041"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <!-- CENTER OF MASS -->
+      <origin rpy="0 0 0" xyz="0.028 0 0"/>
+      <mass value="0.0199"/>
+      <!-- box inertia: 1/12*m(y^2+z^2), ... -->
+      <inertia ixx="6.158e-06" ixy="0" ixz="0" iyy="5.830e-06" iyz="0" izz="5.830e-06"/>
+    </inertial>
+  </link>
+  <joint name="leg_4_1_2" type="revolute">
+    <parent link="leg_4_1"/>
+    <child link="leg_4_2"/>
+    <limit effort="4.0" lower="-1.570796" upper="1.570796" velocity="5.0"/>
+    <origin rpy="0 0 0" xyz="0.056 0 0"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.0"/>
+  </joint>
+  <link name="leg_4_2">
+    <visual>
+      <origin rpy="0 0 0" xyz="0.0405 0 0"/>
+      <geometry>
+        <box size="0.1035 0.0424 0.0285"/>
+      </geometry>
+      <material name="Blue"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0405 0 0"/>
+      <geometry>
+        <box size="0.0835 0.0424 0.0285"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <!-- CENTER OF MASS -->
+      <origin rpy="0 0 0" xyz="0.0405 0 0"/>
+      <mass value="0.1872"/>
+      <!-- box inertia: 1/12*m(y^2+z^2), ... -->
+      <inertia ixx="3.154e-05" ixy="0" ixz="0" iyy="1.896e-04" iyz="0" izz="1.972e-04"/>
+    </inertial>
+  </link>
+  <joint name="leg_4_2_3" type="revolute">
+    <parent link="leg_4_2"/>
+    <child link="leg_4_3"/>
+    <limit effort="4.0" lower="-1.570796" upper="1.570796" velocity="5.0"/>
+    <origin rpy="0 0 0" xyz="0.081 0 0"/>
+    <axis xyz="0 -1 0"/>
+    <dynamics damping="0.0"/>
+  </joint>
+  <link name="leg_4_3">
+    <visual>
+      <origin rpy="0 0 0" xyz="0.039 0 -0.03195"/>
+      <geometry>
+        <cylinder length="0.158" radius="0.026"/>
+      </geometry>
+      <material name="Red"/>
+    </visual>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.039 0 -0.11095"/>
+      <geometry>
+        <sphere radius="0.025"/>
+      </geometry>
+      <material name="Red"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.039 0 -0.03195"/>
+      <geometry>
+        <box size="0.026 0.026 0.158"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.039 0 -0.11095"/>
+      <geometry>
+        <sphere radius="0.025"/>
+      </geometry>
+      <material name="Red"/>
+    </collision>
+    <inertial>
+      <!-- CENTER OF MASS -->
+      <origin rpy="0 0 0" xyz="0.039 0 -0.03195"/>
+      <mass value="0.0911"/>
+      <!-- box inertia: 1/12*m(y^2+z^2), ... -->
+      <inertia ixx="1.668e-04" ixy="0" ixz="9.703e-06" iyy="1.605e-04" iyz="0" izz="2.741e-05"/>
+    </inertial>
+  </link>
+  <joint name="body_leg_5" type="revolute">
+    <parent link="base_link"/>
+    <child link="leg_5_1"/>
+    <limit effort="4.0" lower="-1.57079632679" upper="1.57079632679" velocity="5.0"/>
+    <origin rpy="0 0 0.7854" xyz="0.093 0.053 0"/>
+    <!-- <xacro:if value="${index == 5 or index == 4 or index == 3}">
+                <axis xyz="0 0 1"/>
+            </xacro:if>
+            <xacro:if value="${index == 2 or index == 1 or index == 0}"> -->
+    <axis xyz="0 0 1"/>
+    <!-- </xacro:if> -->
+    <dynamics damping="0.0"/>
+  </joint>
+  <link name="leg_5_1">
+    <visual>
+      <origin rpy="0 0 0" xyz="0.028 0 0"/>
+      <geometry>
+        <box size="0.061 0.041 0.041"/>
+      </geometry>
+      <material name="Red"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.028 0 0"/>
+      <geometry>
+        <box size="0.061 0.041 0.041"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <!-- CENTER OF MASS -->
+      <origin rpy="0 0 0" xyz="0.028 0 0"/>
+      <mass value="0.0199"/>
+      <!-- box inertia: 1/12*m(y^2+z^2), ... -->
+      <inertia ixx="6.158e-06" ixy="0" ixz="0" iyy="5.830e-06" iyz="0" izz="5.830e-06"/>
+    </inertial>
+  </link>
+  <joint name="leg_5_1_2" type="revolute">
+    <parent link="leg_5_1"/>
+    <child link="leg_5_2"/>
+    <limit effort="4.0" lower="-1.570796" upper="1.570796" velocity="5.0"/>
+    <origin rpy="0 0 0" xyz="0.056 0 0"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.0"/>
+  </joint>
+  <link name="leg_5_2">
+    <visual>
+      <origin rpy="0 0 0" xyz="0.0405 0 0"/>
+      <geometry>
+        <box size="0.1035 0.0424 0.0285"/>
+      </geometry>
+      <material name="Blue"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0405 0 0"/>
+      <geometry>
+        <box size="0.0835 0.0424 0.0285"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <!-- CENTER OF MASS -->
+      <origin rpy="0 0 0" xyz="0.0405 0 0"/>
+      <mass value="0.1872"/>
+      <!-- box inertia: 1/12*m(y^2+z^2), ... -->
+      <inertia ixx="3.154e-05" ixy="0" ixz="0" iyy="1.896e-04" iyz="0" izz="1.972e-04"/>
+    </inertial>
+  </link>
+  <joint name="leg_5_2_3" type="revolute">
+    <parent link="leg_5_2"/>
+    <child link="leg_5_3"/>
+    <limit effort="4.0" lower="-1.570796" upper="1.570796" velocity="5.0"/>
+    <origin rpy="0 0 0" xyz="0.081 0 0"/>
+    <axis xyz="0 -1 0"/>
+    <dynamics damping="0.0"/>
+  </joint>
+  <link name="leg_5_3">
+    <visual>
+      <origin rpy="0 0 0" xyz="0.039 0 -0.03195"/>
+      <geometry>        
+	<cylinder length="0.158" radius="0.026"/>
+      </geometry>
+      <material name="Red"/>
+    </visual>
+    <visual>
+      <origin rpy="0 0 0" xyz="0.039 0 -0.11095"/>
+      <geometry>
+        <sphere radius="0.025"/>
+      </geometry>
+      <material name="Red"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.039 0 -0.03195"/>
+      <geometry>
+        <box size="0.026 0.026 0.158"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.039 0 -0.11095"/>
+      <geometry>
+        <sphere radius="0.025"/>
+      </geometry>
+      <material name="Red"/>
+    </collision>
+    <inertial>
+      <!-- CENTER OF MASS -->
+      <origin rpy="0 0 0" xyz="0.039 0 -0.03195"/>
+      <mass value="0.0911"/>
+      <!-- box inertia: 1/12*m(y^2+z^2), ... -->
+      <inertia ixx="1.668e-04" ixy="0" ixz="9.703e-06" iyy="1.605e-04" iyz="0" izz="2.741e-05"/>
+    </inertial>
+  </link>
+  <!-- END OF LEG LINKS/JOINTS -->
+</robot>
+
