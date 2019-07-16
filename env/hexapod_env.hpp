@@ -43,7 +43,8 @@ public:
         simulation_duration{simulation_duration},
         simulation{step_duration},
         min_action_value{min_action_value},
-        max_action_value{max_action_value}
+        max_action_value{max_action_value},
+        reward_accumulator{0}
     {
 
 #ifdef GRAPHIC
@@ -79,13 +80,16 @@ public:
 
         //std::cout << "reset(): time: " << simulation.world()->getTime() << " \n";
 
-        std::vector<double> ctrl = {1, 0, 0.5, 0.25, 0.25, 0.5, 1, 0.5, 0.5, 0.25, 0.75, 0.5, 1, 0, 0.5, 0.25, 0.25, 0.5, 1, 0, 0.5, 0.25, 0.75, 0.5, 1, 0.5, 0.5, 0.25, 0.25, 0.5, 1, 0, 0.5, 0.25, 0.75, 0.5};
-
         simulation.clear_robots();
         local_robot.reset();
+
         local_robot = global2::global_robot->clone();
         local_robot->skeleton()->setPosition(5, 0.15);
 
+        //this controller is not really used but alters state of robot in such a way that it is possible to do manual contorl
+        //without hexapods position will be fixed regardless of legs
+        //would be nice to extract this logic and get rid of this dummy conroller
+        std::vector<double> ctrl = {1, 0, 0.5, 0.25, 0.25, 0.5, 1, 0.5, 0.5, 0.25, 0.75, 0.5, 1, 0, 0.5, 0.25, 0.25, 0.5, 1, 0, 0.5, 0.25, 0.75, 0.5, 1, 0.5, 0.5, 0.25, 0.25, 0.5, 1, 0, 0.5, 0.25, 0.75, 0.5};
         local_robot->add_controller(std::make_shared<robot_dart::control::HexaControl>(step_duration, ctrl));
         std::static_pointer_cast<robot_dart::control::HexaControl>(local_robot->controllers()[0])
                 ->set_h_params(std::vector<double>(1, step_duration));
@@ -93,6 +97,9 @@ public:
 
         simulation.add_robot(local_robot);
         simulation.world()->setTime(0);
+
+        reward_accumulator = 0;
+        initial_position = local_robot->skeleton()->getPositions().head(6).tail(3).cast<float>();
 
         return Mat::Zero(1,get_observation_space_size());
     }
@@ -143,6 +150,8 @@ public:
         Mat rewards {Mat(1,1)};
         rewards(0,0) = s[0];
 
+        reward_accumulator+=rewards(0,0);
+
         bool done{t>=simulation_duration};
 
         Mat dones {Mat(1,1)};
@@ -158,17 +167,25 @@ public:
 
         //this should be really handled outside
         if(done){
+            float reward_error = std::abs((pos_after_step - initial_position)(0,0) - reward_accumulator);
+
             reset();
+
+            if(reward_error>1e-2){
+                std::cout << "Error: Episode reward does not agree with sum of rewards by value of: " << reward_error << std::endl;
+                assert(false);
+            }
+
         }
 
         return {obs,rewards,dones};
     }
 
-    void render(){
+    void render() override {
         simulation.graphics()->refresh();
     }
 
-    float get_time(){
+    float get_time() override {
         return simulation.world()->getTime();
     }
 
@@ -189,6 +206,8 @@ private:
     std::shared_ptr<robot_dart::Robot> local_robot;
     float min_action_value;
     float max_action_value;
+    float reward_accumulator;
+    Eigen::Vector3f initial_position;
 };
 
 #endif //PPO_CPP_HEXAPOD_ENV_HPP

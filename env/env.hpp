@@ -34,6 +34,9 @@ public:
     ////self.obs[:], rewards, self.dones
     virtual std::vector<Mat> step(const Mat& actions) = 0;
 
+    virtual void render() = 0;
+    virtual float get_time() = 0;
+
 public:
     const static std::string SPACE_CONTINOUS;
     const static std::string SPACE_DISCRETE;
