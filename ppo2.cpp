@@ -35,7 +35,7 @@ int main(){
     std::string mkdir_sys_call {"mkdir -p "+tb_path};
     system(mkdir_sys_call.c_str());
 
-    load_and_init_robot();
+    load_and_init_robot2();
 
     HexapodEnv e {1};
     PPO2 algorithm {"./exp/ppo_cpp/resources/ppo2_graph.meta.txt",e,

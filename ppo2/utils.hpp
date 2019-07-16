@@ -72,13 +72,6 @@ public:
         t.scalar<float>()() = scalar;
     }
 
-    template<class T>
-    static constexpr const T& clamp( const T& v, const T& lo, const T& hi )
-    {
-        return assert( hi != lo),
-                (v < lo) ? lo : (hi < v) ? hi : v;
-    }
-
     static Mat total_episode_reward_logger(Mat rew_acc, Eigen::Map<Mat> rewards_view, Eigen::Map<Mat> masks_view, TensorboardWriter& writer, int total_steps){
         assert(rew_acc.rows() == rewards_view.rows() && rewards_view.rows() == masks_view.rows());
         assert(rew_acc.cols() == 1 && rewards_view.cols() == masks_view.cols());
