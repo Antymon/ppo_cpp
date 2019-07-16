@@ -10,6 +10,7 @@
 #include <robot_dart/robot_dart_simu.hpp>
 #include <dart/collision/bullet/BulletCollisionDetector.hpp>
 #include <dart/constraint/ConstraintSolver.hpp>
+#include <robot_dart/control/hexa_control.hpp>
 
 #include "env.hpp"
 
@@ -67,10 +68,20 @@ public:
 
     Mat reset() override {
 
+        //std::cout << "reset(): time: " << simulation.world()->getTime() << " \n";
+
+        std::vector<double> ctrl = {1, 0, 0.5, 0.25, 0.25, 0.5, 1, 0.5, 0.5, 0.25, 0.75, 0.5, 1, 0, 0.5, 0.25, 0.25, 0.5, 1, 0, 0.5, 0.25, 0.75, 0.5, 1, 0.5, 0.5, 0.25, 0.25, 0.5, 1, 0, 0.5, 0.25, 0.75, 0.5};
+
         simulation.clear_robots();
         local_robot.reset();
         local_robot = global::global_robot->clone();
         local_robot->skeleton()->setPosition(5, 0.15);
+
+        local_robot->add_controller(std::make_shared<robot_dart::control::HexaControl>(step_duration, ctrl));
+        std::static_pointer_cast<robot_dart::control::HexaControl>(local_robot->controllers()[0])
+                ->set_h_params(std::vector<double>(1, step_duration));
+
+
         simulation.add_robot(local_robot);
         simulation.world()->setTime(0);
 
@@ -79,7 +90,9 @@ public:
 
     std::vector<Mat> step(const Mat &actions) override {
 
-        assert(actions.cols() == get_action_space_size());
+        assert(actions.cols() == action_space_size);
+
+        //std::cout << actions << std::endl;
 
         auto pos_before = local_robot->skeleton()->getPositions().head(6).tail(3).transpose();
 
@@ -95,6 +108,8 @@ public:
         for (size_t i = 0; i < action_space_size; i++)
             target_positions(i + 6) = ((i % 3 == 1) ? 1.0 : -1.0) * Utils::clamp(actions(0,i),min_action_value,max_action_value);
 
+        //std::cout << target_positions << std::endl;
+
         Eigen::VectorXd q = local_robot->skeleton()->getPositions();
         Eigen::VectorXd q_err = target_positions - q;
 
@@ -106,7 +121,6 @@ public:
 
         local_robot->skeleton()->setCommands(commands);
 
-        local_robot->update(t);
         simulation.world()->step(false);
 
         auto pos_after = local_robot->skeleton()->getPositions().head(6).tail(3).transpose();
@@ -118,14 +132,28 @@ public:
 //        std::cout << "velocity by axis:" << s/duration.Get() << std::endl;
 
 
+
+
         Mat rewards {Mat(1,1)};
         rewards(0,0) = s[0];
 
+        bool done{t>=simulation_duration};
+
         Mat dones {Mat(1,1)};
-        dones(0,0) = t>=simulation_duration?1.f:0.f;
+        dones(0,0) = done?1.f:0.f;
 
         Mat obs {Mat(1,1)};
-        obs(0,0) = t;
+        obs(0,0) = fmod(t,1);
+
+//        std::cout << rewards << std::endl;
+        std::cout << s << std::endl;
+//        std::cout << obs << std::endl;
+
+
+        //this should be really handled outside
+        if(done){
+            reset();
+        }
 
         return {obs,rewards,dones};
     }
