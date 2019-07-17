@@ -80,20 +80,23 @@ public:
 
         //std::cout << "reset(): time: " << simulation.world()->getTime() << " \n";
 
+        if (local_robot) {
+            local_robot->clear_controllers();
+        }
+
         simulation.clear_robots();
         local_robot.reset();
 
         local_robot = global2::global_robot->clone();
         local_robot->skeleton()->setPosition(5, 0.15);
 
-        //this controller is not really used but alters state of robot in such a way that it is possible to do manual contorl
-        //without hexapods position will be fixed regardless of legs
+        //this controller is dummy but alters state of robot in such a way that it is possible to do manual control
+        //without it, hexapod's position will be fixed regardless of legs
         //would be nice to extract this logic and get rid of this dummy conroller
         std::vector<double> ctrl = {1, 0, 0.5, 0.25, 0.25, 0.5, 1, 0.5, 0.5, 0.25, 0.75, 0.5, 1, 0, 0.5, 0.25, 0.25, 0.5, 1, 0, 0.5, 0.25, 0.75, 0.5, 1, 0.5, 0.5, 0.25, 0.25, 0.5, 1, 0, 0.5, 0.25, 0.75, 0.5};
         local_robot->add_controller(std::make_shared<robot_dart::control::HexaControl>(step_duration, ctrl));
         std::static_pointer_cast<robot_dart::control::HexaControl>(local_robot->controllers()[0])
                 ->set_h_params(std::vector<double>(1, step_duration));
-
 
         simulation.add_robot(local_robot);
         simulation.world()->setTime(0);

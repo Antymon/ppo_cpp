@@ -407,10 +407,11 @@ private:
         clip_range_wrapper(0,0) = cliprange_now;
 
         Mat advs {returns-values};
-        assert(advs.rows()>1);
+        assert(advs.rows()>1 && advs.cols()==1);
         float advs_mean = advs.mean();
         Mat advs_sub_mean {advs - advs_mean*Mat::Ones(advs.rows(),advs.cols())};
-        float advs_var = (advs_sub_mean.cwiseProduct(advs_sub_mean)).sum()/advs.rows();
+        //Bessel's corrected variance
+        float advs_var = (advs_sub_mean.cwiseProduct(advs_sub_mean)).sum()/(advs.rows()-1);
         advs = advs_sub_mean / (std::sqrt(advs_var) + 1e-8);
 
         tensorflow::Tensor obs_tensor{};

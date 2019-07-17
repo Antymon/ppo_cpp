@@ -9,6 +9,7 @@ include_directories("/usr/local/include/tensorflow")
 include_directories("/usr/local/include/protobuf")
 include_directories("/ppo2")
 include_directories("/env")
+include_directories("/common")
 include_directories("/usr/local/include") #dart
 include_directories("/home/szymon/robot_dart/src") #robot_dart
 
@@ -17,6 +18,7 @@ add_executable(ppo_cpp ppo2.cpp env/hexapod_env.hpp)
 add_executable(test2 test/main2.cpp)
 add_executable(test3 test/main3.cpp)
 add_executable(test4 test/main4.cpp)
+add_executable(stat_test test/stat_test.cpp common/running_statistics.hpp)
 
 target_link_libraries(ppo_cpp "/usr/local/lib/libprotobuf.so")
 target_link_libraries(ppo_cpp "/usr/local/lib/libprotoc.so")
