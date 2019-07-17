@@ -16,7 +16,7 @@ typedef Eigen::RowVectorXf RowVector;
 
 class EnvNormalize : public virtual Env {
 public:
-    EnvNormalize(
+    explicit EnvNormalize(
             Env &env,
             bool norm_obs = true,
             bool norm_reward = true,
@@ -53,7 +53,7 @@ public:
     std::vector<Mat> step(const Mat &actions) override {
         const std::vector<Mat>& results = env.step(actions);
 
-        Mat rews {std::move(results[1])};
+        Mat rews {results[1]};
 
         ret = ret * gamma + rews;
         old_obs = results[0];
@@ -61,12 +61,12 @@ public:
         if (norm_reward){
             ret_rms.update(ret);
             rews *= (ret_rms.var + epsilon * RowVector::Ones(rews.cols())).cwiseSqrt().cwiseInverse().asDiagonal();
-            rews = clamp_rewards.clamp(std::move(rews));
+            rews = clamp_rewards.clamp(rews);
         }
 
         ret = ret.cwiseProduct(ret_like_ones-results[2]);
 
-        return {std::move(obs),std::move(rews),std::move(results[2])};
+        return {std::move(obs),std::move(rews),results[2]};
     }
 
     Mat _normalize_observation(const Mat& obs){
@@ -76,7 +76,7 @@ public:
             Mat o{(obs.rowwise() - obs_rms.mean) *
                   (obs_rms.var + epsilon * RowVector::Ones(obs.cols())).cwiseSqrt().cwiseInverse().asDiagonal()};
 
-            return clamp_obs.clamp(std::move(o));
+            return clamp_obs.clamp(o);
         }
         else {
             return obs;

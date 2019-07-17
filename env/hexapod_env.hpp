@@ -16,6 +16,7 @@
 #include <robot_dart/control/hexa_control.hpp>
 
 #include "env.hpp"
+#include "../common/matrix_clamp.hpp"
 
 
 //initialising a global variable (but using a namespace) - this global variable is the robot object
@@ -45,6 +46,7 @@ public:
         min_action_value{min_action_value},
         max_action_value{max_action_value},
         reward_accumulator{0}
+        //actions_clamp{1,action_space_size,min_action_value,max_action_value}
     {
 
 #ifdef GRAPHIC
@@ -205,6 +207,7 @@ private:
     float max_action_value;
     float reward_accumulator;
     Eigen::Vector3f initial_position;
+    //MatrixClamp actions_clamp;
 };
 
 #endif //PPO_CPP_HEXAPOD_ENV_HPP
