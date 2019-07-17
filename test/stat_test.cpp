@@ -6,9 +6,22 @@
 
 #include <iostream>
 #include "../common/running_statistics.hpp"
+#include "../common/matrix_clamp.hpp"
 
 typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Mat;
 typedef Eigen::RowVectorXf RowVector;
+
+
+Mat f1(){
+    Mat m {1,1};
+    m(0,0) = 7;
+    return std::move(m);
+}
+Mat f2(){
+    const Mat& m = f1();
+    return std::move(m);
+}
+
 
 int main(){
 
@@ -39,6 +52,42 @@ int main(){
     assert((mean-rs.mean).cwiseAbs().sum() < 1e-3);
     assert((var-rs.var).cwiseAbs().sum() < 1e-3);
     //assert((sample_var-Eigen::RowVector3f(15,20.25,23)).cwiseAbs().sum() < 1e-3);
+
+
+    //test2
+    float clip_obs = 5;
+    int flattened_obs_size = 5*3;
+    Mat obs_clamp_matrix {Mat::Zero(flattened_obs_size,3)};
+    obs_clamp_matrix.block(0,0,flattened_obs_size,1) = Eigen::VectorXf::Ones(flattened_obs_size) * -clip_obs;
+    obs_clamp_matrix.block(0,2,flattened_obs_size,1) = Eigen::VectorXf::Ones(flattened_obs_size) * clip_obs;
+
+
+
+    std::cout << obs_clamp_matrix.cwiseProduct(obs_clamp_matrix) << std::endl;
+
+    //test3
+    auto obs {m1};
+    Mat o = (obs.rowwise()-mean)*(var + 1e-8*RowVector::Ones(obs.cols())).cwiseSqrt().cwiseInverse().asDiagonal();
+
+    std::cout << "o" << o << std::endl;
+    Mat p = std::move(o);
+
+    std::cout << "o" << o << std::endl;
+    std::cout << "p" << p << std::endl;
+
+    //test4
+
+    auto clamp {MatrixClamp{p,-.1f,.1f}};
+
+    std::cout << clamp.clamp(p) << std::endl;
+
+    //test 5
+    const Mat& m = f2();
+
+    std::cout << "cascading const ref lifetime check" << std::endl;
+
+    std::cout << m << std::endl;
+
 
     return 0;
 }

@@ -25,7 +25,7 @@ public:
 
     virtual int get_observation_space_size() = 0;
 
-    int get_num_envs() {
+    virtual int get_num_envs() {
         return _num_envs;
     }
 
@@ -36,6 +36,14 @@ public:
 
     virtual void render() = 0;
     virtual float get_time() = 0;
+
+protected:
+    template<class T>
+    static constexpr const T& clamp( const T& v, const T& lo, const T& hi )
+    {
+        return assert( hi != lo),
+                (v < lo) ? lo : (hi < v) ? hi : v;
+    }
 
 public:
     const static std::string SPACE_CONTINOUS;

@@ -125,7 +125,7 @@ public:
 
         Eigen::VectorXd target_positions = Eigen::VectorXd::Zero(action_space_size + 6);
         for (size_t i = 0; i < action_space_size; i++)
-            target_positions(i + 6) = ((i % 3 == 1) ? 1.0 : -1.0) * HexapodEnv::clamp(actions(0,i),min_action_value,max_action_value);
+            target_positions(i + 6) = ((i % 3 == 1) ? 1.0 : -1.0) * Env::clamp(actions(0,i),min_action_value,max_action_value);
 
         //std::cout << target_positions << std::endl;
 
@@ -193,12 +193,6 @@ public:
     }
 
 private:
-    template<class T>
-    static constexpr const T& clamp( const T& v, const T& lo, const T& hi )
-    {
-        return assert( hi != lo),
-                (v < lo) ? lo : (hi < v) ? hi : v;
-    }
 
     static const int action_space_size = 18;
     static const int observation_space_size = 1;
