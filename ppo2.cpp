@@ -6,6 +6,7 @@
 #include "env/env.hpp"
 #include "env/env_mock.hpp"
 #include "env/hexapod_env.hpp"
+#include "env/env_normalize.hpp"
 #include <execinfo.h>
 #include <signal.h>
 
@@ -38,7 +39,8 @@ int main(){
     load_and_init_robot2();
 
     HexapodEnv e {1};
-    PPO2 algorithm {"./exp/ppo_cpp/resources/ppo2_graph.meta.txt",e,
+    EnvNormalize e_norm{e};
+    PPO2 algorithm {"./exp/ppo_cpp/resources/ppo2_graph.meta.txt",e_norm,
                     0.99,2048,0,1e-3,0.5f,.5,.95,32,10,0.2,-1,tb_path
     };
 

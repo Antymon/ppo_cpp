@@ -24,9 +24,19 @@ public:
             float clip_obs = 10,
             float gamma = 0.99,
             float epsilon = 1e-8)
-            : Env(env.get_num_envs()), env{env}, norm_obs{norm_obs}, norm_reward{norm_reward},
-            ret{Mat(env.get_num_envs(),1)}, gamma{gamma}, epsilon{epsilon}, obs_rms{RunningStatistics(env.get_num_envs())},ret_rms{},
-            old_obs{Mat(env.get_num_envs(),env.get_observation_space_size())}, clamp_obs{old_obs,clip_obs}, clamp_rewards{ret,clip_reward},
+            : Env(env.get_num_envs()),
+            env{env},
+            norm_obs{norm_obs},
+            norm_reward{norm_reward},
+            ret{Mat::Zero(env.get_num_envs(),1)},
+            gamma{gamma},
+            epsilon{epsilon},
+            obs_rms{RunningStatistics(env.get_num_envs())},
+            ret_rms{},
+            old_obs{Mat(env.get_num_envs(),env.get_observation_space_size())},
+            old_rew{Mat::Zero(ret.rows(),ret.cols())},
+            clamp_obs{old_obs,clip_obs},
+            clamp_rewards{ret,clip_reward},
             ret_like_ones{Mat::Ones(ret.rows(),ret.cols())}
     {}
 
@@ -54,17 +64,26 @@ public:
         const std::vector<Mat>& results = env.step(actions);
 
         Mat rews {results[1]};
+        old_rew  = rews;
+
+//        std::cout << rews <<std::endl;
 
         ret = ret * gamma + rews;
+//        std::cout << ret  <<std::endl;
+
         old_obs = results[0];
         Mat obs{_normalize_observation(results[0])};
         if (norm_reward){
             ret_rms.update(ret);
             rews *= (ret_rms.var + epsilon * RowVector::Ones(rews.cols())).cwiseSqrt().cwiseInverse().asDiagonal();
+//            std::cout << rews <<std::endl;
             rews = clamp_rewards.clamp(rews);
+//            std::cout << rews <<std::endl;
+
         }
 
         ret = ret.cwiseProduct(ret_like_ones-results[2]);
+//        std::cout << ret <<std::endl;
 
         return {std::move(obs),std::move(rews),results[2]};
     }
@@ -85,6 +104,10 @@ public:
 
     Mat get_original_obs(){
         return old_obs;
+    }
+
+    Mat get_original_rew(){
+        return old_rew;
     }
 
     Mat reset() override {
@@ -114,9 +137,10 @@ private:
     RunningStatistics obs_rms;
     RunningStatistics ret_rms;
     Mat old_obs;
+    Mat old_rew;
     MatrixClamp clamp_obs;
     MatrixClamp clamp_rewards;
-    Mat ret_like_ones;
+    const Mat ret_like_ones;
 };
 
 

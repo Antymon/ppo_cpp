@@ -7,6 +7,7 @@
 #include <iostream>
 #include "../common/running_statistics.hpp"
 #include "../common/matrix_clamp.hpp"
+#include "logger.hpp"
 
 typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Mat;
 typedef Eigen::RowVectorXf RowVector;
@@ -87,6 +88,10 @@ int main(){
     std::cout << "cascading const ref lifetime check" << std::endl;
 
     std::cout << m << std::endl;
+
+    //test 6
+    Logger l {"oh"};
+    l = Logger("oh2");
 
 
     return 0;
