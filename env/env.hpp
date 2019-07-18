@@ -14,7 +14,8 @@ typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Ma
 class Env {
 public:
     Env(int num_envs):
-        _num_envs{num_envs} {
+        _num_envs{num_envs}
+        {
     }
 
     virtual std::string get_action_space() = 0;
@@ -37,6 +38,9 @@ public:
     virtual void render() = 0;
     virtual float get_time() = 0;
 
+    virtual Mat get_original_obs() = 0;
+
+    virtual Mat get_original_rew() = 0;
 protected:
     template<class T>
     static constexpr const T& clamp( const T& v, const T& lo, const T& hi )

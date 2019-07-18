@@ -30,13 +30,14 @@ struct MiniBatch {
     std::shared_ptr<Mat> values;
     std::shared_ptr<Mat> neglogpacs;
     std::shared_ptr<Mat> true_rewards;
+    std::shared_ptr<Mat> unnormalized_rewards;
 
-    std::vector<std::shared_ptr<Mat>> get_all() const {
-        return {obs, returns, dones, actions, values, neglogpacs, true_rewards};
+    std::vector<std::shared_ptr<Mat>> get_train_input() const {
+        return {obs, returns, dones, actions, values, neglogpacs};
     }
 
     std::vector<std::shared_ptr<Mat>> get_1_dims() const {
-        return {returns, dones, values, neglogpacs,true_rewards};
+        return {returns, dones, values, neglogpacs,true_rewards, unnormalized_rewards};
     }
 };
 
@@ -69,6 +70,7 @@ public:
         mb.values = std::make_shared<Mat>(n_steps, num_envs);
         mb.neglogpacs = std::make_shared<Mat>(n_steps, num_envs);
         mb.true_rewards = std::make_shared<Mat>(n_steps, num_envs);
+        mb.unnormalized_rewards = std::make_shared<Mat>(n_steps, num_envs);
 
         for (int step = 0; step< n_steps; ++step){
 
@@ -128,8 +130,7 @@ public:
             assert(env_step_result[1].rows() == num_envs && env_step_result[1].cols() == 1);
             mb.true_rewards->block(step,0,1, num_envs)=env_step_result[1].transpose();
 
-            //std::cout << "#3" << 3<<std::endl;
-
+            mb.unnormalized_rewards->block(step,0,1, num_envs)=env.get_original_rew().transpose();
 
         }
 
@@ -292,7 +293,7 @@ public:
             auto t_start = std::chrono::system_clock::now();
 
             const MiniBatch &mb = runner.run();
-            const auto& mb_all = mb.get_all();
+            const auto& mb_all = mb.get_train_input();
             //all batch vectors have same num of rows
             auto num_rows = mb_all[0]->rows();
             Eigen::PermutationMatrix<Eigen::Dynamic, Eigen::Dynamic> perm{num_rows};
@@ -307,8 +308,7 @@ public:
             for (int epoch_num = 0; epoch_num<noptepochs; epoch_num++) {
                 //std::random_shuffle(inds.begin(), inds.end());
 
-                //omit last one: true rewards
-                std::vector<std::shared_ptr<Mat>> mb_permutated {mb_all.size()-1};
+                std::vector<std::shared_ptr<Mat>> mb_permutated {mb_all.size()};
 
                 std::random_shuffle(perm.indices().data(), perm.indices().data() + perm.indices().size());
 
@@ -375,7 +375,9 @@ public:
 
             if(!tb_log_name.empty()){
 
-                Eigen::Map<Mat> rewards_view(mb.true_rewards->data(), n_envs, n_steps);
+                //assert((*(mb.unnormalized_rewards)-*(mb.true_rewards)).cwiseAbs().sum() < 1e-3);
+
+                Eigen::Map<Mat> rewards_view(mb.unnormalized_rewards->data(), n_envs, n_steps);
                 Eigen::Map<Mat> dones_view(mb.dones->data(), n_envs, n_steps);
 
                 episode_reward = Utils::total_episode_reward_logger(episode_reward,rewards_view,dones_view,writer,num_timesteps-n_batch);

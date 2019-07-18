@@ -91,8 +91,12 @@ int main(){
 
     //test 6
     Logger l {"oh"};
-    l = Logger("oh2");
 
+    auto& ref_l{l};
+    l = Logger("oh2");
+    std::cout << "r value oh2 died and its copy will die soon?" << std::endl;
+
+    std::cout << "oh got transformed into:" << ref_l._name << std::endl;
 
     return 0;
 }

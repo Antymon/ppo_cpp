@@ -33,9 +33,7 @@ public:
             epsilon{epsilon},
             obs_rms{RunningStatistics(env.get_num_envs())},
             ret_rms{},
-            old_obs{Mat(env.get_num_envs(),env.get_observation_space_size())},
-            old_rew{Mat::Zero(ret.rows(),ret.cols())},
-            clamp_obs{old_obs,clip_obs},
+            clamp_obs{env.get_num_envs(),env.get_observation_space_size(),clip_obs},
             clamp_rewards{ret,clip_reward},
             ret_like_ones{Mat::Ones(ret.rows(),ret.cols())}
     {}
@@ -53,7 +51,7 @@ public:
     }
 
     int get_observation_space_size() override {
-        return env.get_action_space_size();
+        return env.get_observation_space_size();
     }
 
     int get_num_envs() override {
@@ -64,14 +62,12 @@ public:
         const std::vector<Mat>& results = env.step(actions);
 
         Mat rews {results[1]};
-        old_rew  = rews;
 
 //        std::cout << rews <<std::endl;
 
         ret = ret * gamma + rews;
 //        std::cout << ret  <<std::endl;
 
-        old_obs = results[0];
         Mat obs{_normalize_observation(results[0])};
         if (norm_reward){
             ret_rms.update(ret);
@@ -82,6 +78,7 @@ public:
 
         }
 
+        //reward for terminal state will be set to 0
         ret = ret.cwiseProduct(ret_like_ones-results[2]);
 //        std::cout << ret <<std::endl;
 
@@ -102,18 +99,8 @@ public:
         }
     }
 
-    Mat get_original_obs(){
-        return old_obs;
-    }
-
-    Mat get_original_rew(){
-        return old_rew;
-    }
-
     Mat reset() override {
         const Mat& obs = env.reset();
-
-        old_obs = obs;
 
         ret = Mat::Zero(get_num_envs(),1);
         return _normalize_observation(obs);
@@ -127,6 +114,14 @@ public:
         return env.get_time();
     }
 
+    Mat get_original_obs(){
+        return env.get_original_obs();
+    }
+
+    Mat get_original_rew(){
+        return env.get_original_rew();
+    }
+
 private:
     Env& env;
     bool norm_obs;
@@ -136,8 +131,6 @@ private:
     float epsilon;
     RunningStatistics obs_rms;
     RunningStatistics ret_rms;
-    Mat old_obs;
-    Mat old_rew;
     MatrixClamp clamp_obs;
     MatrixClamp clamp_rewards;
     const Mat ret_like_ones;

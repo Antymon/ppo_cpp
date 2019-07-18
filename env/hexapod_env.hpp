@@ -45,7 +45,9 @@ public:
         simulation{step_duration},
         min_action_value{min_action_value},
         max_action_value{max_action_value},
-        reward_accumulator{0}
+        reward_accumulator{0},
+        old_obs{},
+        old_rew{Mat::Zero(get_num_envs(),1)}
         //actions_clamp{1,action_space_size,min_action_value,max_action_value}
     {
 
@@ -106,7 +108,11 @@ public:
         reward_accumulator = 0;
         initial_position = local_robot->skeleton()->getPositions().head(6).tail(3).cast<float>();
 
-        return Mat::Zero(1,get_observation_space_size());
+        Mat obs{Mat::Zero(1,get_observation_space_size())};
+
+        old_obs = obs;
+
+        return std::move(obs);
     }
 
     std::vector<Mat> step(const Mat &actions) override {
@@ -183,6 +189,9 @@ public:
 
         }
 
+        old_rew  = rewards;
+        old_obs = obs;
+
         return {obs,rewards,dones};
     }
 
@@ -193,6 +202,15 @@ public:
     float get_time() override {
         return simulation.world()->getTime();
     }
+
+    Mat get_original_obs(){
+        return old_obs;
+    }
+
+    Mat get_original_rew(){
+        return old_rew;
+    }
+
 
 private:
 
@@ -207,7 +225,8 @@ private:
     float max_action_value;
     float reward_accumulator;
     Eigen::Vector3f initial_position;
-    //MatrixClamp actions_clamp;
+    Mat old_obs;
+    Mat old_rew;
 };
 
 #endif //PPO_CPP_HEXAPOD_ENV_HPP

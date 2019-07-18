@@ -17,7 +17,7 @@ public:
     ~Logger(){
         std::cout << _name << " destructed" <<std::endl;
     }
-private:
+
     std::string _name;
 };
 #endif //PPO_CPP_LOGGER_HPP

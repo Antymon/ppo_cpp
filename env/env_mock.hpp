@@ -54,6 +54,16 @@ public:
         return {obs,rewards,dones};
     }
 
+    Mat get_original_obs(){
+        auto obs = Mat::Zero(get_num_envs(),get_observation_space_size());
+        return std::move(obs);
+    }
+
+    Mat get_original_rew(){
+        auto rewards = Mat::Zero(get_num_envs(), 1);
+        return std::move(rewards);
+    }
+
 private:
     long total_step;
 
