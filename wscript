@@ -39,6 +39,7 @@ def build(bld):
             #source = 'cpp/tf_exp.cpp',
             source = 'ppo2.cpp',
             includes = './cpp . ../../',
-            uselib = 'ROBOTDART ABSL TBB BOOST EIGEN PTHREAD MPI DART PROTOBUF TF',
+            uselib = 'ROBOTDART ABSL TBB BOOST EIGEN PTHREAD MPI DART DART_GRAPHIC PROTOBUF TF',
             #use = 'sferes2',
+            defines = ['GRAPHIC'],
             target = 'ppo_cpp')

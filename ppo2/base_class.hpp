@@ -37,7 +37,7 @@ protected:
 
 class ActorCriticRLModel : public BaseRLModel {
 public:
-    ActorCriticRLModel(Env& env) : BaseRLModel(env){
+    explicit ActorCriticRLModel(Env& env) : BaseRLModel(env){
         
     }
 };

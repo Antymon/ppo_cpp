@@ -44,6 +44,21 @@ std::vector<tensorflow::Tensor> step(const tensorflow::Tensor& obs){
     return outputs;
 }
 
+tensorflow::Tensor get_action(const tensorflow::Tensor& obs){
+
+    std::vector<tensorflow::Tensor> outputs;
+
+    tensorflow::Status s = _session->Run({{obs_ph,obs}},{action}, {}, &outputs);
+
+    if (!s.ok()) {
+        std::cout << "get_action(): evaluation step error" << std::endl;
+        std::cout << s.ToString() << std::endl;
+        assert(false);
+    }
+
+    return outputs[0];
+}
+
 tensorflow::Tensor value(const tensorflow::Tensor& obs){
 
         std::vector<tensorflow::Tensor> outputs;

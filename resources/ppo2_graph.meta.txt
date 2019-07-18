@@ -978,6 +978,25 @@ meta_info_def {
       }
     }
     op {
+      name: "PlaceholderWithDefault"
+      input_arg {
+        name: "input"
+        type_attr: "dtype"
+      }
+      output_arg {
+        name: "output"
+        type_attr: "dtype"
+      }
+      attr {
+        name: "dtype"
+        type: "type"
+      }
+      attr {
+        name: "shape"
+        type: "shape"
+      }
+    }
+    op {
       name: "Prod"
       input_arg {
         name: "input"
@@ -1186,6 +1205,58 @@ meta_info_def {
           }
         }
       }
+    }
+    op {
+      name: "RestoreV2"
+      input_arg {
+        name: "prefix"
+        type: DT_STRING
+      }
+      input_arg {
+        name: "tensor_names"
+        type: DT_STRING
+      }
+      input_arg {
+        name: "shape_and_slices"
+        type: DT_STRING
+      }
+      output_arg {
+        name: "tensors"
+        type_list_attr: "dtypes"
+      }
+      attr {
+        name: "dtypes"
+        type: "list(type)"
+        has_minimum: true
+        minimum: 1
+      }
+      is_stateful: true
+    }
+    op {
+      name: "SaveV2"
+      input_arg {
+        name: "prefix"
+        type: DT_STRING
+      }
+      input_arg {
+        name: "tensor_names"
+        type: DT_STRING
+      }
+      input_arg {
+        name: "shape_and_slices"
+        type: DT_STRING
+      }
+      input_arg {
+        name: "tensors"
+        type_list_attr: "dtypes"
+      }
+      attr {
+        name: "dtypes"
+        type: "list(type)"
+        has_minimum: true
+        minimum: 1
+      }
+      is_stateful: true
     }
     op {
       name: "ScalarSummary"
@@ -2220,7 +2291,7 @@ graph_def {
               size: 3
             }
           }
-          tensor_content: "\\m&\275\246\243,?$\007\237?"
+          tensor_content: "E\021\356\276AQ\252\277\377\026\354="
         }
       }
     }
@@ -2672,7 +2743,7 @@ graph_def {
               size: 3
             }
           }
-          tensor_content: "\'\226c\276J\355]\277\333)\214\277"
+          tensor_content: "}\311\027\277vl\202\276\031\023\241?"
         }
       }
     }
@@ -3124,7 +3195,7 @@ graph_def {
               size: 3
             }
           }
-          tensor_content: "h\243a\277\231j\215?|\177M=0\2208\276\347\300S\276\324\224\261?j\253\213?M\267[?[\024\212>"
+          tensor_content: "{M\217\277\021\242X\277\010\3352\276\027\361\003\276v\030\364\275\246\236\263?\007\272Z\277Q;\220?\226X\215<"
         }
       }
     }
@@ -3576,7 +3647,7 @@ graph_def {
               size: 3
             }
           }
-          tensor_content: "\375\006\331\276!\374A\277\013\343\216\277\256\347\"?\234p\222\277L\363\010?\027H\230\277\251\024\257\276=\022/?"
+          tensor_content: "B}\243\276\370\233\321\275\177\333\257\277}\347\250?n*\333\276\304\262\214\276\311\273\312\276\245\007\254\277\333\302D>"
         }
       }
     }
@@ -4028,7 +4099,7 @@ graph_def {
               size: 1
             }
           }
-          tensor_content: "\351EE?\216\231\263>\3057\010?"
+          tensor_content: "I\300\334\276H*\004\277Zo=?"
         }
       }
     }
@@ -4454,7 +4525,7 @@ graph_def {
               size: 18
             }
           }
-          tensor_content: "2\236\257\266\002V\025;\350/?\273~\370?;p\301{\27307\351\272\331\326R\271R\006\035;\326\266-\273k\344\232\273\326T\264\272p\\!:\025\226@\272\037y\345:+\362\177:*\303\r;\336\375\220:\033+b\273\006U\234\270c\320;;*\326\227\271\264\222\224:\226\234\250\272\212\023\373:\317\017\312:\316i\223\272\344\302\301;n\312$\273r8\3428\362\025W\272\370\200\204\273\213\036N\273p\272=\273\'C\375:\010A)\272-D[:\267\0225\272p\373\246:v\\\302\272m\366\262\273\027\346#\273\373eg;\022\276\255\2724\377\320\272c\221F\273\274\366\214\272\005x\t\273X;\235\272EL;\273\245\367\t;\031\216J:\3732\0229\334+\335\272\276~U;"
+          tensor_content: "\224\031m\273\226\277\002\270\257\326\225\273\252\301\235:f\371F\272\001y\345\272U7\0049U&\022;\2273\241\273\334\206\263:\322\317^;X8\3429}\373\010\273\030\226\247:8\027e\272\033F\252\271\032\010U\273\220\361T\272\275\223]\272iy*\270\020<f\267k\333\002\273\002n\252;\037wO\271\341\216\264\272e\021\324\271\300\r\034\273;?_:X\302T;\026\214\225:J\000\277\271W\211\025\273\202\252\232;\226\347?\271h\332\222;\r\257\331\271\360p\006\273\217\321\2449\273$%;Q\366\235\270\013\222\236\272\316\206\364\272.\240\322\272\274\324\216:\214\210\235;TJ`;\303\202G;kg;;\354J\325\272\367\345\246:\215\222\310:\344\\\352\272<\224\252\272\342\203\206;"
         }
       }
     }
@@ -5223,7 +5294,7 @@ graph_def {
               size: 18
             }
           }
-          tensor_content: "\233\346\013;8\241\363\271\010%\003\273\034-\246\272\027\226\206\273)*\325\272<L\005\273\232\371<;\007\365\034;\'\370\017\272\201U1\273\362\266L:\315p\262\271\261Cp\272`\354\211\272\234\266\310:\021\360\304;]\251\350\272\202S(\273NX\024:\035\256\272\272\014\356\365\270\t\221B\273\361\352P;\013\377\314\272\314\265@\272\215]\353\270\354\202k\273V\276\035;\365\034\215\273J<s;\001\264=;s\311\360\272\264:\315:\356\021p:9\302\342:\262\034&\273\322\034q:\002\331\246;U1F\272\375\255/;\263\324\351:R\211\030\273\360\';:Y\314\221;\370e.;\377\240\026:\247r)\271\203)\340:\2543\000;n\266\016;K\242)\272\217dB;\033\351\270\272"
+          tensor_content: "\373/*\273\334\024\234\272\0279T\272\342$N;WG\206\273\3452:;M\271\275\2728\025\214;m\177B\272\213\036\322\272\367\376\334:\323\371\222\271\305U\213\272\243V\225:\212+\355\271\266\345X\273v\220I;\303\367,\2733\2713\271\335\311\016;vSD9\346\216[\272N=\233:\332\216k\273\232\225\201\273e\361J\2721A\251:!\214\312:\213\330\260;\303kl;\257\313\013;\030w\353\271[\332\003\273\034\246\025\273\237l\357:w\237!\272<S\333:\216\322@:*\023\205\273V{\213;\304\250\250\272\305\021\006;\352\263\267\272<D\343\271\326\251;\273\246\225\320:\240u\3009\302\330\035;I\266v:#l\007\272\331]\314\272/\341#\272\263\241\214\273\336\301};"
         }
       }
     }
@@ -32238,9 +32309,1161 @@ graph_def {
       }
     }
   }
+  node {
+    name: "save/filename/input"
+    op: "Const"
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+          }
+        }
+      }
+    }
+    attr {
+      key: "dtype"
+      value {
+        type: DT_STRING
+      }
+    }
+    attr {
+      key: "value"
+      value {
+        tensor {
+          dtype: DT_STRING
+          tensor_shape {
+          }
+          string_val: "model"
+        }
+      }
+    }
+  }
+  node {
+    name: "save/filename"
+    op: "PlaceholderWithDefault"
+    input: "save/filename/input"
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+          }
+        }
+      }
+    }
+    attr {
+      key: "dtype"
+      value {
+        type: DT_STRING
+      }
+    }
+    attr {
+      key: "shape"
+      value {
+        shape {
+        }
+      }
+    }
+  }
+  node {
+    name: "save/Const"
+    op: "PlaceholderWithDefault"
+    input: "save/filename"
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+          }
+        }
+      }
+    }
+    attr {
+      key: "dtype"
+      value {
+        type: DT_STRING
+      }
+    }
+    attr {
+      key: "shape"
+      value {
+        shape {
+        }
+      }
+    }
+  }
+  node {
+    name: "save/SaveV2/tensor_names"
+    op: "Const"
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 15
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "dtype"
+      value {
+        type: DT_STRING
+      }
+    }
+    attr {
+      key: "value"
+      value {
+        tensor {
+          dtype: DT_STRING
+          tensor_shape {
+            dim {
+              size: 15
+            }
+          }
+          string_val: "model/pi/b"
+          string_val: "model/pi/logstd"
+          string_val: "model/pi/w"
+          string_val: "model/pi_fc0/b"
+          string_val: "model/pi_fc0/w"
+          string_val: "model/pi_fc1/b"
+          string_val: "model/pi_fc1/w"
+          string_val: "model/q/b"
+          string_val: "model/q/w"
+          string_val: "model/vf/b"
+          string_val: "model/vf/w"
+          string_val: "model/vf_fc0/b"
+          string_val: "model/vf_fc0/w"
+          string_val: "model/vf_fc1/b"
+          string_val: "model/vf_fc1/w"
+        }
+      }
+    }
+  }
+  node {
+    name: "save/SaveV2/shape_and_slices"
+    op: "Const"
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 15
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "dtype"
+      value {
+        type: DT_STRING
+      }
+    }
+    attr {
+      key: "value"
+      value {
+        tensor {
+          dtype: DT_STRING
+          tensor_shape {
+            dim {
+              size: 15
+            }
+          }
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+        }
+      }
+    }
+  }
+  node {
+    name: "save/SaveV2"
+    op: "SaveV2"
+    input: "save/Const"
+    input: "save/SaveV2/tensor_names"
+    input: "save/SaveV2/shape_and_slices"
+    input: "model/pi/b"
+    input: "model/pi/logstd"
+    input: "model/pi/w"
+    input: "model/pi_fc0/b"
+    input: "model/pi_fc0/w"
+    input: "model/pi_fc1/b"
+    input: "model/pi_fc1/w"
+    input: "model/q/b"
+    input: "model/q/w"
+    input: "model/vf/b"
+    input: "model/vf/w"
+    input: "model/vf_fc0/b"
+    input: "model/vf_fc0/w"
+    input: "model/vf_fc1/b"
+    input: "model/vf_fc1/w"
+    attr {
+      key: "dtypes"
+      value {
+        list {
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+        }
+      }
+    }
+  }
+  node {
+    name: "save/control_dependency"
+    op: "Identity"
+    input: "save/Const"
+    input: "^save/SaveV2"
+    attr {
+      key: "T"
+      value {
+        type: DT_STRING
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@save/Const"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+          }
+        }
+      }
+    }
+  }
+  node {
+    name: "save/RestoreV2/tensor_names"
+    op: "Const"
+    device: "/device:CPU:0"
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 15
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "dtype"
+      value {
+        type: DT_STRING
+      }
+    }
+    attr {
+      key: "value"
+      value {
+        tensor {
+          dtype: DT_STRING
+          tensor_shape {
+            dim {
+              size: 15
+            }
+          }
+          string_val: "model/pi/b"
+          string_val: "model/pi/logstd"
+          string_val: "model/pi/w"
+          string_val: "model/pi_fc0/b"
+          string_val: "model/pi_fc0/w"
+          string_val: "model/pi_fc1/b"
+          string_val: "model/pi_fc1/w"
+          string_val: "model/q/b"
+          string_val: "model/q/w"
+          string_val: "model/vf/b"
+          string_val: "model/vf/w"
+          string_val: "model/vf_fc0/b"
+          string_val: "model/vf_fc0/w"
+          string_val: "model/vf_fc1/b"
+          string_val: "model/vf_fc1/w"
+        }
+      }
+    }
+  }
+  node {
+    name: "save/RestoreV2/shape_and_slices"
+    op: "Const"
+    device: "/device:CPU:0"
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 15
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "dtype"
+      value {
+        type: DT_STRING
+      }
+    }
+    attr {
+      key: "value"
+      value {
+        tensor {
+          dtype: DT_STRING
+          tensor_shape {
+            dim {
+              size: 15
+            }
+          }
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+        }
+      }
+    }
+  }
+  node {
+    name: "save/RestoreV2"
+    op: "RestoreV2"
+    input: "save/Const"
+    input: "save/RestoreV2/tensor_names"
+    input: "save/RestoreV2/shape_and_slices"
+    device: "/device:CPU:0"
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+        }
+      }
+    }
+    attr {
+      key: "dtypes"
+      value {
+        list {
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+        }
+      }
+    }
+  }
+  node {
+    name: "save/Assign"
+    op: "Assign"
+    input: "model/pi/b"
+    input: "save/RestoreV2"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/pi/b"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 18
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_1"
+    op: "Assign"
+    input: "model/pi/logstd"
+    input: "save/RestoreV2:1"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/pi/logstd"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 1
+            }
+            dim {
+              size: 18
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_2"
+    op: "Assign"
+    input: "model/pi/w"
+    input: "save/RestoreV2:2"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/pi/w"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 3
+            }
+            dim {
+              size: 18
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_3"
+    op: "Assign"
+    input: "model/pi_fc0/b"
+    input: "save/RestoreV2:3"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/pi_fc0/b"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 3
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_4"
+    op: "Assign"
+    input: "model/pi_fc0/w"
+    input: "save/RestoreV2:4"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/pi_fc0/w"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 1
+            }
+            dim {
+              size: 3
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_5"
+    op: "Assign"
+    input: "model/pi_fc1/b"
+    input: "save/RestoreV2:5"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/pi_fc1/b"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 3
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_6"
+    op: "Assign"
+    input: "model/pi_fc1/w"
+    input: "save/RestoreV2:6"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/pi_fc1/w"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 3
+            }
+            dim {
+              size: 3
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_7"
+    op: "Assign"
+    input: "model/q/b"
+    input: "save/RestoreV2:7"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/q/b"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 18
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_8"
+    op: "Assign"
+    input: "model/q/w"
+    input: "save/RestoreV2:8"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/q/w"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 3
+            }
+            dim {
+              size: 18
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_9"
+    op: "Assign"
+    input: "model/vf/b"
+    input: "save/RestoreV2:9"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/vf/b"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 1
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_10"
+    op: "Assign"
+    input: "model/vf/w"
+    input: "save/RestoreV2:10"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/vf/w"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 3
+            }
+            dim {
+              size: 1
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_11"
+    op: "Assign"
+    input: "model/vf_fc0/b"
+    input: "save/RestoreV2:11"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/vf_fc0/b"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 3
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_12"
+    op: "Assign"
+    input: "model/vf_fc0/w"
+    input: "save/RestoreV2:12"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/vf_fc0/w"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 1
+            }
+            dim {
+              size: 3
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_13"
+    op: "Assign"
+    input: "model/vf_fc1/b"
+    input: "save/RestoreV2:13"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/vf_fc1/b"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 3
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_14"
+    op: "Assign"
+    input: "model/vf_fc1/w"
+    input: "save/RestoreV2:14"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/vf_fc1/w"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 3
+            }
+            dim {
+              size: 3
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/restore_all"
+    op: "NoOp"
+    input: "^save/Assign"
+    input: "^save/Assign_1"
+    input: "^save/Assign_10"
+    input: "^save/Assign_11"
+    input: "^save/Assign_12"
+    input: "^save/Assign_13"
+    input: "^save/Assign_14"
+    input: "^save/Assign_2"
+    input: "^save/Assign_3"
+    input: "^save/Assign_4"
+    input: "^save/Assign_5"
+    input: "^save/Assign_6"
+    input: "^save/Assign_7"
+    input: "^save/Assign_8"
+    input: "^save/Assign_9"
+  }
   versions {
     producer: 38
   }
+}
+saver_def {
+  filename_tensor_name: "save/Const:0"
+  save_tensor_name: "save/control_dependency:0"
+  restore_op_name: "save/restore_all"
+  max_to_keep: 5
+  keep_checkpoint_every_n_hours: 10000.0
+  version: V2
 }
 collection_def {
   key: "summaries"

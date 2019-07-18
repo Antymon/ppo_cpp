@@ -1,3 +1,5 @@
+#include <utility>
+
 //
 // Created by szymon on 10/07/19.
 //
@@ -251,13 +253,15 @@ public:
         entropy,
         approxkl,
         clipfrac
-    }
+    },
+    graph_def{}
     {
         n_batch = n_envs * n_steps;
 
         std::cout << "ppo2 " << std::endl;
+
         SessionCreator sc{};
-        _session = std::move(sc.load_graph(std::move(model_filename)));
+        _session = std::move(sc.load_graph(std::move(model_filename),graph_def));
 
         if (_session == nullptr || !_session) {
             std::cout<<"session cannot be nullptr"<<std::endl;
@@ -268,7 +272,48 @@ public:
     }
 
     void save(std::string save_path) {
-        //ToDo impl
+        tensorflow::Tensor checkpointPathTensor(tensorflow::DT_STRING, tensorflow::TensorShape());
+        checkpointPathTensor.scalar<std::string>()() = save_path;
+
+        std::cout << graph_def.saver_def().filename_tensor_name() << "\n";
+        std::cout << graph_def.saver_def().save_tensor_name() << "\n";
+        std::cout << save_path << "\n";
+
+        auto status = _session->Run(
+                {{graph_def.saver_def().filename_tensor_name(), checkpointPathTensor},},
+                {},
+                {graph_def.saver_def().save_tensor_name()},
+                nullptr);
+        if (!status.ok())
+            std::cout << "Error saving checkpoint to " << save_path << ": " << status.ToString() << std::endl;
+        else
+            std::cout << "Success save weights !! " << "\n";
+    }
+
+    void load(std::string save_path){
+        tensorflow::Tensor checkpointPathTensor(tensorflow::DT_STRING, tensorflow::TensorShape());
+        checkpointPathTensor.scalar<std::string>()() = save_path;
+        std::vector<std::pair<std::string,tensorflow::Tensor>> feed_dict = {{graph_def.saver_def().filename_tensor_name(), checkpointPathTensor}};
+        auto status = _session->Run(feed_dict, {}, {graph_def.saver_def().restore_op_name()}, nullptr);
+
+        if (!status.ok())
+            std::cout << "Error loading checkpoint from " << save_path << ": " << status.ToString() << std::endl;
+        else
+            std::cout << "Success load weights !! " << "\n";
+    }
+
+    Mat eval(const Mat &obs) const {
+
+        auto tensor_obs = tensorflow::Tensor();
+        Utils::convert_mat(obs,tensor_obs);
+
+        tensorflow::Tensor tensor_actions =  act_model->get_action(tensor_obs);
+
+        Mat actions;
+        Utils::convert_tensor(tensor_actions,actions,env.get_action_space());
+        assert(actions.rows()==1 && actions.cols()==env.get_action_space_size());
+
+        return actions;
     }
 
     void learn(int total_timesteps, const std::string& tb_log_name = "PPO2") {
@@ -523,6 +568,7 @@ private:
     Mat episode_reward;
 
     const std::vector<std::string> output_placeholders;
+    tensorflow::MetaGraphDef graph_def;
 
 };
 

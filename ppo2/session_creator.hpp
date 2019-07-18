@@ -20,7 +20,7 @@ class SessionCreator {
 
 public:
 
-    std::unique_ptr<tensorflow::Session> load_graph(std::string graph_file_name) {
+    std::unique_ptr<tensorflow::Session> load_graph(std::string graph_file_name, tensorflow::MetaGraphDef& graph_def) {
 
         std::unique_ptr<tensorflow::Session> session;
 
@@ -28,7 +28,6 @@ public:
         std::cout << "start initalize session and loading graph" << "\n";
         // First we load and initialize the model.
 
-        tensorflow::MetaGraphDef graph_def;
         tensorflow::SessionOptions opts;
         //opts.config.mutable_gpu_options()->set_per_process_gpu_memory_fraction(1);
         opts.config.mutable_gpu_options()->set_allow_growth(true);

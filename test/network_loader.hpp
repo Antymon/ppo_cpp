@@ -82,19 +82,19 @@ public:
             std::cout << "Success load graph !! " << "\n";
 
         // Read weights from the saved checkpoint
-//        Tensor checkpointPathTensor(DT_STRING, TensorShape());
-//        checkpointPathTensor.scalar<std::string>()() = graph_file_name;
-//
-//        status = _session->Run(
-//                {{graph_def.saver_def().filename_tensor_name(), checkpointPathTensor},},
-//                {},
-//                {graph_def.saver_def().restore_op_name()},
-//                nullptr);
-//        if (!status.ok())
-//            std::cout << "Error loading checkpoint from " << graph_file_name << ": " << status.ToString() << std::endl;
-//        else
-//            std::cout << "Success load weights !! " << "\n";
-//
+        Tensor checkpointPathTensor(DT_STRING, TensorShape());
+        checkpointPathTensor.scalar<std::string>()() = graph_file_name;
+
+        status = _session->Run(
+                {{graph_def.saver_def().filename_tensor_name(), checkpointPathTensor},},
+                {},
+                {graph_def.saver_def().restore_op_name()},
+                nullptr);
+        if (!status.ok())
+            std::cout << "Error loading checkpoint from " << graph_file_name << ": " << status.ToString() << std::endl;
+        else
+            std::cout << "Success load weights !! " << "\n";
+
         return Status::OK();
     }
 

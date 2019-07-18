@@ -7,6 +7,7 @@
 #include "env/env_mock.hpp"
 #include "env/hexapod_env.hpp"
 #include "env/env_normalize.hpp"
+#include "args.hxx"
 #include <execinfo.h>
 #include <signal.h>
 
@@ -26,13 +27,19 @@ void handle_segfault_signal(int sig) {
     exit(1);
 }
 
-int main(){
+int main(int argc, char **argv)
+{
+    args::ArgumentParser parser("This is a gait viewer program.", "This goes after the options.");
+    args::HelpFlag help(parser, "help", "Display this help menu", {'h', "help"});
+
+    args::ValueFlag<std::string> load_path(parser, "path", "Serialized model to visualize", {'p',"path"});
 
     signal(SIGSEGV, handle_segfault_signal);
 
     //shell-dependant timestamped directory creation
     auto seconds = time (nullptr);
-    std::string tb_path {"./exp/ppo_cpp/tensorboard/ppo_"+std::to_string(seconds)+"/"};
+    std::string run_id {"ppo_"+std::to_string(seconds)};
+    std::string tb_path {"./exp/ppo_cpp/tensorboard/"+run_id+"/"};
     std::string mkdir_sys_call {"mkdir -p "+tb_path};
     system(mkdir_sys_call.c_str());
 
@@ -44,7 +51,31 @@ int main(){
                     0.99,2048,0,1e-3,0.5f,.5,.95,32,10,0.2,-1,tb_path
     };
 
-    algorithm.learn(static_cast<int>(2e7));
+    if(!load_path) {
+        algorithm.learn(static_cast<int>(2e7));
+        algorithm.save("./exp/ppo_cpp/checkpoints/" + run_id + ".pkl");
+    } else {
+        algorithm.load(load_path.Get());
+
+        Mat obs{e_norm.reset()};
+
+        float episode_reward = 0;
+
+        while (true){
+           Mat a = algorithm.eval(obs);
+           std::vector<Mat> outputs = e_norm.step(a);
+           obs = std::move(outputs[0]);
+           e_norm.render();
+           std::cout << "step reward: " << outputs[1] << std::endl;
+           episode_reward+= outputs[1](0,0);
+           if(outputs[2](0,0)>.5){
+               std::cout << "episode reward: " << episode_reward << std::endl;
+               episode_reward = 0;
+           }
+        }
+    }
+
+
 
     return 0;
 }
