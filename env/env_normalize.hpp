@@ -10,14 +10,16 @@
 #include "hexapod_env.hpp"
 #include "../common/matrix_clamp.hpp"
 #include <Eigen/Dense>
+#include <fstream>
+#include "../json.hpp"
 
 typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Mat;
-typedef Eigen::RowVectorXf RowVector;
 
 class EnvNormalize : public virtual Env {
 public:
     explicit EnvNormalize(
             Env &env,
+            bool training,
             bool norm_obs = true,
             bool norm_reward = true,
             float clip_reward = 10,
@@ -35,7 +37,8 @@ public:
             ret_rms{},
             clamp_obs{env.get_num_envs(),env.get_observation_space_size(),clip_obs},
             clamp_rewards{ret,clip_reward},
-            ret_like_ones{Mat::Ones(ret.rows(),ret.cols())}
+            ret_like_ones{Mat::Ones(ret.rows(),ret.cols())},
+            training{training}
     {}
 
     std::string get_action_space() override {
@@ -70,8 +73,11 @@ public:
 
         Mat obs{_normalize_observation(results[0])};
         if (norm_reward){
-            ret_rms.update(ret);
-            rews *= (ret_rms.var + epsilon * RowVector::Ones(rews.cols())).cwiseSqrt().cwiseInverse().asDiagonal();
+            if(training)
+                ret_rms.update(ret);
+//            std::cout << "ret[mean: " << ret_rms.mean << ", var" << ret_rms.var << "]"<<std::endl;
+
+            rews *= (ret_rms.var.row(0) + epsilon * Mat::Ones(1,rews.cols())).cwiseSqrt().cwiseInverse().row(0).asDiagonal();
 //            std::cout << rews <<std::endl;
             rews = clamp_rewards.clamp(rews);
 //            std::cout << rews <<std::endl;
@@ -87,10 +93,13 @@ public:
 
     Mat _normalize_observation(const Mat& obs){
         if (norm_obs) {
-            obs_rms.update(obs);
+            if(training)
+                obs_rms.update(obs);
 
-            Mat o{(obs.rowwise() - obs_rms.mean) *
-                  (obs_rms.var + epsilon * RowVector::Ones(obs.cols())).cwiseSqrt().cwiseInverse().asDiagonal()};
+            Mat o{(obs.rowwise() - obs_rms.mean.row(0)) *
+                  (obs_rms.var.row(0) + epsilon * Mat::Ones(1,obs.cols())).cwiseSqrt().cwiseInverse().row(0).asDiagonal()};
+
+//            std::cout << "obs[mean: " << obs_rms.mean << ", var: " << obs_rms.var << "], ";
 
             return clamp_obs.clamp(o);
         }
@@ -114,12 +123,49 @@ public:
         return env.get_time();
     }
 
-    Mat get_original_obs(){
+    Mat get_original_obs() override{
         return env.get_original_obs();
     }
 
-    Mat get_original_rew(){
+    Mat get_original_rew() override{
         return env.get_original_rew();
+    }
+
+    void save(const std::string& path) override{
+        nlohmann::json json_file{};
+        serialize(json_file);
+
+        std::ofstream myfile (path + ".json");
+        if (myfile.is_open())
+        {
+            myfile << json_file.dump();
+            myfile.close();
+        }
+        else std::cout << "Unable to open file for saving";
+    }
+
+    void load(const std::string& path) override {
+        std::ifstream in (path+".json");
+        if (in.is_open())
+        {
+            std::stringstream sstr;
+            sstr << in.rdbuf();
+            nlohmann::json json_info = nlohmann::json::parse(sstr.str());
+            deserialize(json_info);
+            in.close();
+        }
+        else std::cout << "Unable to open file for loading";
+    }
+
+private:
+    void serialize(nlohmann::json& json){
+        obs_rms.serialize(json["obs_rms"]);
+        ret_rms.serialize(json["ret_rms"]);
+    }
+
+    void deserialize(nlohmann::json& json){
+        obs_rms.deserialize(json["obs_rms"]);
+        ret_rms.deserialize(json["ret_rms"]);
     }
 
 private:
@@ -134,6 +180,7 @@ private:
     MatrixClamp clamp_obs;
     MatrixClamp clamp_rewards;
     const Mat ret_like_ones;
+    bool training;
 };
 
 

@@ -7,15 +7,15 @@
 #define PPO_CPP_RUNNING_STATISTICS_HPP
 
 #include <Eigen/Dense>
+#include "../json.hpp"
 
 typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Mat;
-typedef Eigen::RowVectorXf RowVector;
 
 class RunningStatistics{
 public:
     explicit RunningStatistics(int space_size = 1, float epsilon=1e-6)
-    : mean{RowVector::Zero(space_size)}
-    , var{RowVector::Ones(space_size)}
+    : mean{Mat::Zero(1,space_size)}
+    , var{Mat::Ones(1,space_size)}
     , count{epsilon}
     , space_size{space_size}
     {
@@ -27,18 +27,18 @@ public:
 
         int batch_count = batch.rows();
 
-        const RowVector& batch_mean = RunningStatistics::get_mean(batch);
-        const RowVector& batch_variance = RunningStatistics::get_variance(batch, batch_mean);
+        const Mat& batch_mean = RunningStatistics::get_mean(batch);
+        const Mat& batch_variance = RunningStatistics::get_variance(batch, batch_mean);
 
         update_from_moments(batch_mean, batch_variance, batch_count);
     }
 
-    static RowVector get_mean(const Mat& batch){
-        RowVector batch_mean = batch.colwise().mean();
+    static Mat get_mean(const Mat& batch){
+        Mat batch_mean = batch.colwise().mean();
         return batch_mean;
     }
 
-    static RowVector get_m2(const Mat& batch, const RowVector& batch_mean){
+    static Mat get_m2(const Mat& batch, const Mat& batch_mean){
         //assert(batch_mean.rows() == 1 && batch_mean.cols() == space_size);
         int batch_count = batch.rows();
 
@@ -47,7 +47,7 @@ public:
         return (batch_sub_mean.cwiseProduct(batch_sub_mean)).colwise().sum();
     }
 
-    static RowVector get_variance (const Mat& batch, const RowVector& batch_mean){
+    static Mat get_variance (const Mat& batch, const Mat& batch_mean){
         int batch_count = batch.rows();
         return get_m2(batch,batch_mean)/ static_cast<double>(batch_count);
     }
@@ -57,20 +57,34 @@ public:
 //        return get_m2(batch,batch_mean)/ static_cast<double>(batch_count-1);
 //    }
 
-private:
-    void update_from_moments(const RowVector& batch_mean, const RowVector& batch_var, double batch_count){
+    void serialize(nlohmann::json& json){
+        json["var"] = std::move(std::vector<float>(var.data(), var.data() + var.rows() * var.cols()));
+        json["mean"] = std::move(std::vector<float>(mean.data(), mean.data() + mean.rows() * mean.cols()));
+    }
 
-        RowVector delta = batch_mean - mean;
+    void deserialize(nlohmann::json& json){
+
+        float* ptr = &json["var"].get<std::vector<float>>()[0];
+        var = Eigen::Map<Mat>(ptr, 1, var.cols());
+
+        float* ptr2 = &json["mean"].get<std::vector<float>>()[0];
+        mean = Eigen::Map<Mat>(ptr2, 1, mean.cols());
+    }
+
+private:
+    void update_from_moments(const Mat& batch_mean, const Mat& batch_var, double batch_count){
+
+        Mat delta = batch_mean - mean;
 
         double total_count = count + batch_count;
 
         mean = mean + delta * batch_count/total_count;
 
         //m2's from variances
-        RowVector m_a = var * count;
-        RowVector m_b = batch_var * batch_count;
+        Mat m_a = var * count;
+        Mat m_b = batch_var * batch_count;
 
-        RowVector m_2 = m_a + m_b + delta.cwiseProduct(delta) * count * batch_count / total_count;
+        Mat m_2 = m_a + m_b + delta.cwiseProduct(delta) * count * batch_count / total_count;
         var = m_2 / total_count;
 
         count = batch_count + count;
@@ -78,8 +92,8 @@ private:
 
 
 public:
-    RowVector mean;
-    RowVector var;
+    Mat mean;
+    Mat var;
     double count;
 private:
     int space_size;

@@ -41,6 +41,15 @@ public:
     virtual Mat get_original_obs() = 0;
 
     virtual Mat get_original_rew() = 0;
+
+    virtual void save(const std::string& path){
+
+    }
+
+    virtual void load(const std::string& path){
+
+    }
+
 protected:
     template<class T>
     static constexpr const T& clamp( const T& v, const T& lo, const T& hi )
