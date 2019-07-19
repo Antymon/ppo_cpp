@@ -457,8 +457,7 @@ private:
         assert(advs.rows()>1 && advs.cols()==1);
         float advs_mean = advs.mean();
         Mat advs_sub_mean {advs - advs_mean*Mat::Ones(advs.rows(),advs.cols())};
-        //Bessel's corrected variance
-        float advs_var = (advs_sub_mean.cwiseProduct(advs_sub_mean)).sum()/(advs.rows()-1);
+        float advs_var = (advs_sub_mean.cwiseProduct(advs_sub_mean)).sum()/advs.rows();
         advs = advs_sub_mean / (std::sqrt(advs_var) + 1e-8);
 
         tensorflow::Tensor obs_tensor{};

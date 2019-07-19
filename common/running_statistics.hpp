@@ -52,10 +52,10 @@ public:
         return get_m2(batch,batch_mean)/ static_cast<double>(batch_count);
     }
 
-    static RowVector get_sample_variance (const Mat& batch, const RowVector& batch_mean){
-        int batch_count = batch.rows();
-        return get_m2(batch,batch_mean)/ static_cast<double>(batch_count-1);
-    }
+//    static RowVector get_sample_variance (const Mat& batch, const RowVector& batch_mean){
+//        int batch_count = batch.rows();
+//        return get_m2(batch,batch_mean)/ static_cast<double>(batch_count-1);
+//    }
 
 private:
     void update_from_moments(const RowVector& batch_mean, const RowVector& batch_var, double batch_count){
