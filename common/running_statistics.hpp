@@ -64,11 +64,20 @@ public:
 
     void deserialize(nlohmann::json& json){
 
-        float* ptr = &json["var"].get<std::vector<float>>()[0];
+        auto var_v {json["var"].get<std::vector<float>>()};
+        auto mean_v {json["mean"].get<std::vector<float>>()};
+//
+//        std::cout << "var" << var_v[0] << std::endl;
+//        std::cout << "mean" << mean_v[0] << std::endl;
+
+        float* ptr = &(var_v[0]);
         var = Eigen::Map<Mat>(ptr, 1, var.cols());
 
-        float* ptr2 = &json["mean"].get<std::vector<float>>()[0];
+        float* ptr2 = &(mean_v[0]);
         mean = Eigen::Map<Mat>(ptr2, 1, mean.cols());
+//
+//        std::cout << "var" <<var << std::endl;
+//        std::cout << "mean" <<mean << std::endl;
     }
 
 private:

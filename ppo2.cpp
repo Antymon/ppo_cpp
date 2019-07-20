@@ -34,6 +34,7 @@ void playback(Env& e_norm, PPO2& algorithm){
     Mat obs{e_norm.reset()};
     float episode_reward = 0;
     while (true){
+        std::cout << "obs: " << obs << std::endl;
         Mat a = algorithm.eval(obs);
         std::vector<Mat> outputs = e_norm.step(a);
         obs = std::move(outputs[0]);
@@ -49,24 +50,43 @@ void playback(Env& e_norm, PPO2& algorithm){
 
 int main(int argc, char **argv)
 {
+    signal(SIGSEGV, handle_segfault_signal);
+
     args::ArgumentParser parser("This is a gait viewer program.", "This goes after the options.");
     args::HelpFlag help(parser, "help", "Display this help menu", {'h', "help"});
     args::ValueFlag<std::string> load_path(parser, "path", "Serialized model to visualize", {'p',"path"});
 
-    signal(SIGSEGV, handle_segfault_signal);
-
-    //shell-dependant timestamped directory creation
+    try
+    {
+        parser.ParseCLI(argc, argv);
+    }
+    catch (args::Help)
+    {
+        std::cout << parser;
+        return 0;
+    }
+    catch (args::ParseError e)
+    {
+        std::cerr << e.what() << std::endl;
+        std::cerr << parser;
+        return 1;
+    }
+    catch (args::ValidationError e)
+    {
+        std::cerr << e.what() << std::endl;
+        std::cerr << parser;
+        return 1;
+    }
 
     auto seconds = time (nullptr);
     std::string run_id {"ppo_"+std::to_string(seconds)};
     std::string tb_path {"./exp/ppo_cpp/tensorboard/"+run_id+"/"};
-    std::string mkdir_sys_call {"mkdir -p "+tb_path};
-    system(mkdir_sys_call.c_str());
-
-    load_and_init_robot2();
 
     bool training = !load_path;
+//    std::cout << "load_path: " << load_path.Get() << std::endl;
+//    std::cout << "training: " << training << std::endl;
 
+    load_and_init_robot2();
     HexapodEnv e {1};
     EnvNormalize e_norm{e,training};
     PPO2 algorithm {"./exp/ppo_cpp/resources/ppo2_graph.meta.txt",e_norm,
@@ -74,6 +94,10 @@ int main(int argc, char **argv)
     };
 
     if(training) {
+        //shell-dependant timestamped directory creation
+        std::string mkdir_sys_call {"mkdir -p "+tb_path};
+        system(mkdir_sys_call.c_str());
+
         algorithm.learn(static_cast<int>(2e4));
 
         std::string checkpoint_path{"./exp/ppo_cpp/checkpoints/" + run_id + ".pkl"};

@@ -164,6 +164,8 @@ private:
     }
 
     void deserialize(nlohmann::json& json){
+
+        //std::cout << "json" <<json << std::endl;
         obs_rms.deserialize(json["obs_rms"]);
         ret_rms.deserialize(json["ret_rms"]);
     }
