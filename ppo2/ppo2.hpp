@@ -271,7 +271,13 @@ public:
         act_model = std::make_unique<MlpPolicy>(_session);
     }
 
-    void save(std::string save_path) {
+    void save(std::string save_path, int save_id = -1) {
+
+        //add postfix when number of saves
+        if(save_id >=0){
+            save_path += "." + std::to_string(save_id);
+        }
+
         tensorflow::Tensor checkpointPathTensor(tensorflow::DT_STRING, tensorflow::TensorShape());
         checkpointPathTensor.scalar<std::string>()() = save_path;
 
@@ -286,8 +292,10 @@ public:
                 nullptr);
         if (!status.ok())
             std::cout << "Error saving checkpoint to " << save_path << ": " << status.ToString() << std::endl;
-        else
+        else {
             std::cout << "Success save weights !! " << "\n";
+            env.save(std::move(save_path));
+        }
     }
 
     void load(std::string save_path){
@@ -298,8 +306,10 @@ public:
 
         if (!status.ok())
             std::cout << "Error loading checkpoint from " << save_path << ": " << status.ToString() << std::endl;
-        else
+        else {
             std::cout << "Success load weights !! " << "\n";
+            env.load(std::move(save_path));
+        }
     }
 
     Mat eval(const Mat &obs) const {
@@ -316,10 +326,9 @@ public:
         return actions;
     }
 
-    void learn(int total_timesteps, const std::string& tb_log_name = "PPO2") {
+    void learn(int total_timesteps, int num_saves=0, const std::string& save_path = "", const std::string& tb_log_name = "PPO2") {
 
         bool new_tb_log = _init_num_timesteps();
-
 
         TensorboardWriter writer {tensorboard_log, tb_log_name, new_tb_log};
 
@@ -330,6 +339,12 @@ public:
         auto t_first_start = std::chrono::system_clock::now();
 
         int n_updates = total_timesteps / n_batch;
+
+        int save_interval = -1;
+        if(num_saves > 0) {
+            save_interval = static_cast<int>(std::ceil(
+                    static_cast<float>(n_updates) / static_cast<float>(num_saves)));
+        }
 
         for (int update = 1; update<=n_updates; ++update) {
             assert((n_batch % nminibatches) == 0);
@@ -427,8 +442,18 @@ public:
 
                 episode_reward = Utils::total_episode_reward_logger(episode_reward,rewards_view,dones_view,writer,num_timesteps-n_batch);
             }
+
+            if(num_saves > 0 && update%save_interval == 0){
+                assert(!save_path.empty());
+                save(save_path,update/save_interval-1);
+            }
         }
 
+        //one more save if interval didn't evenly divide num updates
+        if(num_saves>0 && num_saves%save_interval != 0){
+            assert(!save_path.empty());
+            save(save_path,n_updates/save_interval);
+        }
     }
 
 private:

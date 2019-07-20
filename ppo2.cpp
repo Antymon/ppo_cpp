@@ -48,6 +48,8 @@ void playback(Env& env, PPO2& algorithm){
     }
 }
 
+
+
 int main(int argc, char **argv)
 {
     signal(SIGSEGV, handle_signal);
@@ -68,18 +70,18 @@ int main(int argc, char **argv)
     {
         parser.ParseCLI(argc, argv);
     }
-    catch (args::Help)
+    catch (const args::Help&)
     {
         std::cout << parser;
         return 0;
     }
-    catch (args::ParseError e)
+    catch (const args::ParseError& e)
     {
         std::cerr << e.what() << std::endl;
         std::cerr << parser;
         return 1;
     }
-    catch (args::ValidationError e)
+    catch (const args::ValidationError& e)
     {
         std::cerr << e.what() << std::endl;
         std::cerr << parser;
@@ -97,7 +99,10 @@ int main(int argc, char **argv)
     load_and_init_robot2();
     HexapodEnv inner_e {1};
     EnvNormalize env{inner_e,training};
-    PPO2 algorithm {"./exp/ppo_cpp/resources/ppo2_graph.meta.txt",env,
+
+    const std::string graph_path{"./exp/ppo_cpp/resources/ppo2_graph.meta.txt"};
+
+    PPO2 algorithm {graph_path,env,
                     .99,2048,entropy.Get(),learning_rate.Get(),.5,.5,.95,32,10,clip_range.Get(),-1,tb_path
     };
 
@@ -106,17 +111,14 @@ int main(int argc, char **argv)
         std::string mkdir_sys_call {"mkdir -p "+tb_path};
         system(mkdir_sys_call.c_str());
 
-        algorithm.learn(static_cast<int>(steps.Get()));
-
         std::string checkpoint_path{"./exp/ppo_cpp/checkpoints/" + run_id + ".pkl"};
 
-        algorithm.save(checkpoint_path);
-        env.save(checkpoint_path);
+        int int_steps {static_cast<int>(steps.Get())};
 
+        algorithm.learn(int_steps,20,checkpoint_path);
 
     } else {
         algorithm.load(load_path.Get());
-        env.load(load_path.Get());
 
         playback(env,algorithm);
     }
