@@ -443,16 +443,21 @@ public:
                 episode_reward = Utils::total_episode_reward_logger(episode_reward,rewards_view,dones_view,writer,num_timesteps-n_batch);
             }
 
-            if(num_saves > 0 && update%save_interval == 0){
+            if(save_interval>0 && num_saves > 0 && update%save_interval == 0){
                 assert(!save_path.empty());
                 save(save_path,update/save_interval-1);
             }
         }
 
-        //one more save if interval didn't evenly divide num updates
-        if(num_saves>0 && num_saves%save_interval != 0){
+
+        if(num_saves>0) {
             assert(!save_path.empty());
-            save(save_path,n_updates/save_interval);
+            //one more save if interval didn't evenly divide num updates
+            if (save_interval > 0 && ((n_updates % save_interval) != 0)) {
+                save(save_path, n_updates / save_interval);
+            } else if(save_interval==0){
+                save(save_path);
+            }
         }
     }
 
