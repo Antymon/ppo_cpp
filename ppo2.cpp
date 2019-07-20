@@ -62,7 +62,7 @@ int main(int argc, char **argv)
 
     args::ValueFlag<float> learning_rate(parser, "learning rate", "Adam optimizer's learning rate", {'l',"lr","learning_rate","learningrate"},1e-3);
     args::ValueFlag<float> entropy(parser, "entropy", "Entropy to encourage exploration", {'e',"ent","entropy"},0);
-    args::ValueFlag<float> clip_range(parser, "clip range", "PPO's maximal relative change of policy likelihood", {'c',"cr","clip_range",,"cliprange"},0.2);
+    args::ValueFlag<float> clip_range(parser, "clip range", "PPO's maximal relative change of policy likelihood", {'c',"cr","clip_range","cliprange"},0.2);
 
     try
     {
