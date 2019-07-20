@@ -55,7 +55,14 @@ int main(int argc, char **argv)
 
     args::ArgumentParser parser("This is a gait viewer program.", "This goes after the options.");
     args::HelpFlag help(parser, "help", "Display this help menu", {'h', "help"});
+
     args::ValueFlag<std::string> load_path(parser, "path", "Serialized model to visualize", {'p',"path"});
+
+    args::ValueFlag<float> steps(parser, "steps", "Total number of training steps", {'s',"steps"},2e7);
+
+    args::ValueFlag<float> learning_rate(parser, "learning rate", "Adam optimizer's learning rate", {'l',"lr","learning_rate","learningrate"},1e-3);
+    args::ValueFlag<float> entropy(parser, "entropy", "Entropy to encourage exploration", {'e',"ent","entropy"},0);
+    args::ValueFlag<float> clip_range(parser, "clip range", "PPO's maximal relative change of policy likelihood", {'c',"cr","clip_range",,"cliprange"},0.2);
 
     try
     {
@@ -91,7 +98,7 @@ int main(int argc, char **argv)
     HexapodEnv inner_e {1};
     EnvNormalize env{inner_e,training};
     PPO2 algorithm {"./exp/ppo_cpp/resources/ppo2_graph.meta.txt",env,
-                    0.99,2048,0,1e-3,0.5f,.5,.95,32,10,0.2,-1,tb_path
+                    .99,2048,entropy.Get(),learning_rate.Get(),.5,.5,.95,32,10,clip_range.Get(),-1,tb_path
     };
 
     if(training) {
@@ -99,7 +106,7 @@ int main(int argc, char **argv)
         std::string mkdir_sys_call {"mkdir -p "+tb_path};
         system(mkdir_sys_call.c_str());
 
-        algorithm.learn(static_cast<int>(2e4));
+        algorithm.learn(static_cast<int>(steps.Get()));
 
         std::string checkpoint_path{"./exp/ppo_cpp/checkpoints/" + run_id + ".pkl"};
 
