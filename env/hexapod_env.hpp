@@ -211,6 +211,14 @@ public:
         return old_rew;
     }
 
+    void serialize(nlohmann::json& json) override {
+
+    }
+
+    void deserialize(nlohmann::json& json) override {
+
+    }
+
 
 private:
 

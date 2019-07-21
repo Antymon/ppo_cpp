@@ -11,7 +11,7 @@
 
 typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Mat;
 
-class RunningStatistics{
+class RunningStatistics : public virtual ISerializable{
 public:
     explicit RunningStatistics(int space_size = 1, float epsilon=1e-6)
     : mean{Mat::Zero(1,space_size)}
@@ -57,12 +57,12 @@ public:
 //        return get_m2(batch,batch_mean)/ static_cast<double>(batch_count-1);
 //    }
 
-    void serialize(nlohmann::json& json){
+    void serialize(nlohmann::json& json) override {
         json["var"] = std::move(std::vector<float>(var.data(), var.data() + var.rows() * var.cols()));
         json["mean"] = std::move(std::vector<float>(mean.data(), mean.data() + mean.rows() * mean.cols()));
     }
 
-    void deserialize(nlohmann::json& json){
+    void deserialize(nlohmann::json& json) override {
 
         auto var_v {json["var"].get<std::vector<float>>()};
         auto mean_v {json["mean"].get<std::vector<float>>()};

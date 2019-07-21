@@ -17,6 +17,7 @@
 #include "base_class.hpp"
 #include "../env/env.hpp"
 #include <iostream>
+#include <fstream>
 #include "session_creator.hpp"
 #include "policies.hpp"
 #include "utils.hpp"
@@ -224,6 +225,7 @@ public:
          float cliprange_vf = -1.,
          std::string tensorboard_log = ""
     ) : ActorCriticRLModel(env)
+    , model_filename{model_filename}
     , gamma{gamma}
     , n_steps{n_steps}
     , ent_coef{ent_coef}
@@ -254,14 +256,18 @@ public:
         approxkl,
         clipfrac
     },
-    graph_def{}
-    {
+    graph_def{} {
+        reset();
+    }
+
+    void reset(){
         n_batch = n_envs * n_steps;
 
         std::cout << "ppo2 " << std::endl;
 
         SessionCreator sc{};
-        _session = std::move(sc.load_graph(std::move(model_filename),graph_def));
+
+        _session.reset(std::move(sc.load_graph(std::move(model_filename),graph_def)));
 
         if (_session == nullptr || !_session) {
             std::cout<<"session cannot be nullptr"<<std::endl;
@@ -294,10 +300,40 @@ public:
             std::cout << "Error saving checkpoint to " << save_path << ": " << status.ToString() << std::endl;
         else {
             std::cout << "Success save weights !! " << "\n";
-            env.save(std::move(save_path));
+
+            nlohmann::json json{};
+
+            env.serialize(json);
+
+            json["gamma"] = gamma;
+            json["n_steps"] = n_steps;
+            json["vf_coef"] = vf_coef;
+            json["ent_coef"] = ent_coef;
+            json["max_grad_norm"] = max_grad_norm;
+            json["learning_rate"] = learning_rate;
+            json["lam"] = lam;
+            json["nminibatches"] = nminibatches;
+            json["noptepochs"] = noptepochs;
+            json["cliprange"] = cliprange;
+            json["cliprange_vf"] = cliprange_vf;
+            json["observation_space"] = observation_space;
+            json["action_space"] = action_space;
+            json["n_envs"] = n_envs;
+            json["model_filename"] = model_filename;
+            //json["policy_kwargs"] = policy_kwargs; //embedded in graph
+
+            std::ofstream myfile (save_path + ".json");
+            if (myfile.is_open())
+            {
+                myfile << json.dump();
+                myfile.close();
+            }
+            else std::cout << "Unable to open file for saving";
+
         }
     }
 
+    //warning: does not recover
     void load(std::string save_path){
         tensorflow::Tensor checkpointPathTensor(tensorflow::DT_STRING, tensorflow::TensorShape());
         checkpointPathTensor.scalar<std::string>()() = save_path;
@@ -308,7 +344,36 @@ public:
             std::cout << "Error loading checkpoint from " << save_path << ": " << status.ToString() << std::endl;
         else {
             std::cout << "Success load weights !! " << "\n";
-            env.load(std::move(save_path));
+
+            std::ifstream in (save_path+".json");
+            if (in.is_open())
+            {
+                std::stringstream sstr;
+                sstr << in.rdbuf();
+                nlohmann::json json = nlohmann::json::parse(sstr.str());
+                env.deserialize(json);
+
+                gamma = json["gamma"].get<float>();
+                n_steps = json["n_steps"].get<int>();
+                vf_coef = json["vf_coef"].get<float>();
+                ent_coef = json["ent_coef"].get<float>();
+                max_grad_norm = json["max_grad_norm"].get<float>();
+                learning_rate = json["learning_rate"].get<float>();
+                lam = json["lam"].get<float>();
+                nminibatches = json["nminibatches"].get<int>();
+                noptepochs = json["noptepochs"].get<int>();
+                cliprange = json["cliprange"].get<float>();
+                cliprange_vf = json["cliprange_vf"].get<float>();
+                observation_space = json["observation_space"].get<std::string>();
+                action_space = json["action_space"].get<std::string>();
+                n_envs = json["n_envs"].get<int>();
+                model_filename = json["model_filename"].get<std::string>();
+
+                reset();
+
+                in.close();
+            }
+            else std::cout << "Unable to open file for loading";
         }
     }
 
@@ -574,6 +639,8 @@ private:
     static const std::string approxkl;
     static const std::string clipfrac;
     static const std::string _train;
+
+    std::string model_filename;
 
     float gamma;
     int n_steps;

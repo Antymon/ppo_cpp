@@ -63,6 +63,13 @@ public:
         auto rewards = Mat::Zero(get_num_envs(), 1);
         return std::move(rewards);
     }
+    void serialize(nlohmann::json& json) override {
+
+    }
+
+    void deserialize(nlohmann::json& json) override {
+
+    }
 
 private:
     long total_step;

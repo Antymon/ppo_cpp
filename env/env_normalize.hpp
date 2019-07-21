@@ -131,39 +131,12 @@ public:
         return env.get_original_rew();
     }
 
-    void save(const std::string& path) override{
-        nlohmann::json json_file{};
-        serialize(json_file);
-
-        std::ofstream myfile (path + ".json");
-        if (myfile.is_open())
-        {
-            myfile << json_file.dump();
-            myfile.close();
-        }
-        else std::cout << "Unable to open file for saving";
-    }
-
-    void load(const std::string& path) override {
-        std::ifstream in (path+".json");
-        if (in.is_open())
-        {
-            std::stringstream sstr;
-            sstr << in.rdbuf();
-            nlohmann::json json_info = nlohmann::json::parse(sstr.str());
-            deserialize(json_info);
-            in.close();
-        }
-        else std::cout << "Unable to open file for loading";
-    }
-
-private:
-    void serialize(nlohmann::json& json){
+    void serialize(nlohmann::json& json) override {
         obs_rms.serialize(json["obs_rms"]);
         ret_rms.serialize(json["ret_rms"]);
     }
 
-    void deserialize(nlohmann::json& json){
+    void deserialize(nlohmann::json& json) override {
 
         //std::cout << "json" <<json << std::endl;
         obs_rms.deserialize(json["obs_rms"]);
