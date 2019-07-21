@@ -536,7 +536,7 @@ private:
                      const Mat& values,
                      const Mat& neglogpacs,
                      int update,
-                     const TensorboardWriter& writer
+                     TensorboardWriter& writer
     ) {
 
         assert(obs.cols() == env.get_observation_space_size());
@@ -595,9 +595,6 @@ private:
             td_map.emplace_back(clip_range_vf_ph,clip_range_vf_tensor);
         }
 
-        //unitl tensor board fully implemented
-        //int update_fac = n_batch /nnminibatches / noptepochs + 1;
-
         std::vector<tensorflow::Tensor> tensor_outputs;
 
         tensorflow::Status s = _session->Run(td_map,output_placeholders, {_train}, &tensor_outputs);
@@ -608,8 +605,11 @@ private:
             assert(false);
         }
 
-        //summary proto string that needs to be decoded and fed into tb
-        //std::cout << tensor_outputs[0].scalar<std::string>()() << std::endl;
+
+        //need some metadata stripping like in python implementation to make this feasible size-wise
+//        auto encoded_summary {tensor_outputs[0].scalar<std::string>()()};
+//        int update_fac = n_batch /nminibatches/noptepochs + 1;
+//        writer.write_summary(update_fac*update,std::move(encoded_summary));
 
         Mat losses{1,5};
 

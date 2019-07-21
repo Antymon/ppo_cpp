@@ -23,6 +23,15 @@ public:
 //            write_scalar(i * 20, i, "test_scalar", 150.f / i);
     }
 
+    void write_summary(tensorflow::int64 step,const std::string& encoded_summary){
+        tensorflow::Event event;
+        event.set_wall_time(time(nullptr));
+        event.set_step(step);
+        event.mutable_summary()->ParseFromString(encoded_summary);
+
+        writer.WriteEvent(event);
+    }
+
     void write_scalar(double wall_time, tensorflow::int64 step, const std::string& tag, float simple_value) {
         tensorflow::Event event;
         event.set_wall_time(wall_time);
