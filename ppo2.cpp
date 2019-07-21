@@ -66,7 +66,7 @@ int main(int argc, char **argv)
     args::ValueFlag<float> entropy(parser, "entropy", "Entropy to encourage exploration", {'e',"ent","entropy"},0);
     args::ValueFlag<float> clip_range(parser, "clip range", "PPO's maximal relative change of policy likelihood", {'c',"cr","clip_range","cliprange"},0.2);
 
-    args::ValueFlag<int> num_saves(parser, "num saves", "Number of saves", {"saves","n_saves","num_saves"});
+    args::ValueFlag<int> num_saves(parser, "num saves", "Number of saves. If not defined max(1 per 1M steps, 1)", {"saves","n_saves","num_saves"});
 
     try
     {
@@ -123,7 +123,7 @@ int main(int argc, char **argv)
             total_saves = num_saves;
         } else {
             //max(1 per million, 1)
-            total_saves = int_steps>1e6?int_steps/1e6:1;
+            total_saves = int_steps>1e6? static_cast<int>(int_steps/1e6):1;
         }
 
         algorithm.learn(int_steps,total_saves,checkpoint_path);
