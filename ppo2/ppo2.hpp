@@ -267,7 +267,7 @@ public:
 
         SessionCreator sc{};
 
-        _session = std::move(sc.load_graph(std::move(model_filename),graph_def));
+        _session = std::move(sc.load_graph(model_filename,graph_def));
 
         if (_session == nullptr || !_session) {
             std::cout<<"session cannot be nullptr"<<std::endl;
