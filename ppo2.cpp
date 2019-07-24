@@ -133,7 +133,7 @@ int main(int argc, char **argv)
         int total_saves;
 
         if(num_saves){
-            total_saves = num_saves;
+            total_saves = num_saves.Get();
         } else {
             //max(1 per million, 1)
             total_saves = int_steps>1e6? static_cast<int>(int_steps/1e6):1;
