@@ -8,6 +8,8 @@ else
     exit 1
 fi
 
+rm ./final*.simg
+
 grep -v "NOTFORFINAL" singularity.def > tmp.def
 IMAGENAME=final_$(basename $(dirname "$(pwd)"))_$(date +%Y-%m-%d_%H_%M_%S).simg
 singularity build --force --fakeroot $IMAGENAME tmp.def
