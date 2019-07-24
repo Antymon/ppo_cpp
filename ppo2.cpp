@@ -58,7 +58,11 @@ int main(int argc, char **argv)
     args::ArgumentParser parser("This is a gait viewer program.", "This goes after the options.");
     args::HelpFlag help(parser, "help", "Display this help menu", {'h', "help"});
 
-    args::ValueFlag<std::string> load_path(parser, "path", "Serialized model to visualize", {'p',"path"});
+
+    args::ValueFlag<std::string> save_path(parser, "save path", "directory to save all serializations and logs", {'d',"dir"},"./exp/ppo_cpp");
+
+
+    args::ValueFlag<std::string> load_path(parser, "graph path", "Serialized model to visualize", {'p',"path"});
 
     args::ValueFlag<float> steps(parser, "steps", "Total number of training steps", {'s',"steps"},2e7);
 
@@ -92,7 +96,7 @@ int main(int argc, char **argv)
 
     auto seconds = time (nullptr);
     std::string run_id {"ppo_"+std::to_string(seconds)};
-    std::string tb_path {"./exp/ppo_cpp/tensorboard/"+run_id+"/"};
+    std::string tb_path {save_path.Get()+"/tensorboard/"+run_id+"/"};
 
     bool training = !load_path;
 //    std::cout << "load_path: " << load_path.Get() << std::endl;
@@ -113,7 +117,12 @@ int main(int argc, char **argv)
         std::string mkdir_sys_call {"mkdir -p "+tb_path};
         system(mkdir_sys_call.c_str());
 
-        std::string checkpoint_path{"./exp/ppo_cpp/checkpoints/" + run_id + ".pkl"};
+        std::string checkpoint_dir{save_path.Get()+"/checkpoints"};
+        mkdir_sys_call = "mkdir -p "+ checkpoint_dir;
+        system(mkdir_sys_call.c_str());
+
+        std::string checkpoint_path{checkpoint_dir+"/" + run_id + ".pkl"};
+
 
         int int_steps {static_cast<int>(steps.Get())};
 
