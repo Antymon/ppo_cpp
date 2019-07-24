@@ -1,0 +1,46 @@
+Bootstrap: library
+From: airl_lab/default/airl_env:tensorflow
+
+
+%labels
+    Author szymon.brych@gmail.com
+    Version v0.0.1
+
+%files
+    ./resources/setup.sh /git/sferes2
+    	
+%post
+   export LD_LIBRARY_PATH="/workspace/lib:$LD_LIBRARY_PATH"
+
+   #install_utilities
+
+   apt-get update && apt-get install -y \
+   nano \
+   gdb \
+   valgrind \
+   htop
+
+   #====================================================================================================
+   exit 0 #NOTFORFINAL - the lines below this "exit" will be executed only when building the final image
+   #====================================================================================================
+   cd /git/sferes2/exp/
+   git clone https://gitlab.doc.ic.ac.uk/sb5817/ppo_cpp.git
+   cd ../
+   ./setup.sh
+
+%runscript
+    CURPATH=$(pwd)
+    if [ ! -d ./results ]; then
+        mkdir results
+    fi
+    cd /git/sferes2/
+    # running the experiment (the -d option allows to define the directory where the results should be stored
+    PATHNAME=$(date +%Y-%m-%d_%H_%M_%S)_$$
+    mkdir $CURPATH/results/$PATHNAME
+    
+    build/exp/ppo_cpp/ppo_cpp -d $CURPATH/results/$PATHNAME --steps $1 --lr $2 --ent $3 --cr $4 --num_saves $5
+    
+
+%help
+    This is the development and running environment of the cpp port of PPO.
+    Usage: singularity run CONTAINER_NAME steps lr ent cr num_saves
