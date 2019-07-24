@@ -62,7 +62,7 @@ int main(int argc, char **argv)
     args::ValueFlag<std::string> save_path(parser, "save path", "directory to save all serializations and logs", {'d',"dir"},"./exp/ppo_cpp");
 
 
-    args::ValueFlag<std::string> load_path(parser, "graph path", "Serialized model to visualize", {'p',"path"});
+    args::ValueFlag<std::string> load_path(parser, "checkpoint prefix", "Serialized model to visualize", {'p',"path"});
 
     args::ValueFlag<float> steps(parser, "steps", "Total number of training steps", {'s',"steps"},2e7);
 
