@@ -108,6 +108,10 @@ int main(int argc, char **argv)
 
     const std::string graph_path{"./exp/ppo_cpp/resources/ppo2_graph.meta.txt"};
 
+    std::cout << "lr: " << learning_rate.Get() << std::endl;
+    std::cout << "ent: " << entropy.Get() << std::endl;
+    std::cout << "cr: " << clip_range.Get() << std::endl;
+
     PPO2 algorithm {graph_path,env,
                     .99,2048,entropy.Get(),learning_rate.Get(),.5,.5,.95,32,10,clip_range.Get(),-1,tb_path
     };
@@ -134,6 +138,9 @@ int main(int argc, char **argv)
             //max(1 per million, 1)
             total_saves = int_steps>1e6? static_cast<int>(int_steps/1e6):1;
         }
+
+        std::cout << "steps: " << int_steps << std::endl;
+        std::cout << "num_saves: " << total_saves << std::endl;
 
         algorithm.learn(int_steps,total_saves,checkpoint_path);
 
