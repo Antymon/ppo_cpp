@@ -38,7 +38,7 @@ From: airl_lab/default/airl_env:tensorflow
     PATHNAME=$(date +%Y-%m-%d_%H_%M_%S)_$$
     mkdir $CURPATH/results/$PATHNAME
     
-    build/exp/ppo_cpp/ppo_cpp -d $CURPATH/results/$PATHNAME --steps $1 --lr $2 --ent $3 --cr $4 --num_saves $5
+    build/exp/ppo_cpp/ppo_cpp -d $CURPATH/results/$PATHNAME --graph_path $1 --steps $2 --lr $3 --ent $4 --cr $5 --num_saves $6 >> $CURPATH/results/output_log.txt
     
 
 %help
