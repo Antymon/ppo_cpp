@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 
     args::ValueFlag<std::string> save_path(parser, "save path", "directory to save all serializations and logs", {'d',"dir"},"./exp/ppo_cpp");
 
-    args::ValueFlag<std::string> graph_path(parser, "graph path", "path of computational graph to load", {'g',"graph","graph_path"},"resources/ppo2_graph.meta.txt");
+    args::ValueFlag<std::string> graph_path(parser, "graph path", "path of computational graph to load", {'g',"graph","graph_path"},"./exp/ppo_cpp/resources/ppo2_graph.meta.txt");
 
     args::ValueFlag<std::string> load_path(parser, "checkpoint prefix", "Serialized model to visualize", {'p',"path"});
 
@@ -107,7 +107,7 @@ int main(int argc, char **argv)
     HexapodEnv inner_e {1};
     EnvNormalize env{inner_e,training};
 
-    const std::string final_graph_path{"./exp/ppo_cpp/"+graph_path.Get()};
+    const std::string final_graph_path{graph_path.Get()};
 
     std::cout << "lr: " << learning_rate.Get() << std::endl;
     std::cout << "ent: " << entropy.Get() << std::endl;

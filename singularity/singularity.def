@@ -33,11 +33,11 @@ From: airl_lab/default/airl_env:tensorflow
 
     CURPATH=$(pwd)
 
-    mkdir -p results/$JOB_ID
+    RESULTS_PATH=$CURPATH/results/$JOB_ID
+
+    mkdir -p $RESULTS_PATH
 
     cd /git/sferes2/
-
-    RESULTS_PATH=$CURPATH/results/$JOB_ID
 
     TIMESTAMP=$(date +%Y-%m-%d_%H_%M_%S)_$$
 
