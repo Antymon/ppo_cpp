@@ -29,23 +29,20 @@ From: airl_lab/default/airl_env:tensorflow
    ./setup.sh
 
 %runscript
+    JOB_ID=$7
+
     CURPATH=$(pwd)
-    if [ ! -d ./results ]; then
-        mkdir results
+    if [ ! -d ./results/$JOB_ID ]; then
+        mkdir results/$JOB_ID
     fi
     cd /git/sferes2/
 
-    JOB_ID=$7
     RESULTS_PATH=$CURPATH/results/$JOB_ID
-    mkdir $RESULTS_PATH
-
-    #in order to avoid rebuilding simg when graphs are added
-    git clone https://gitlab.doc.ic.ac.uk/sb5817/ppo_cpp.git
 
     TIMESTAMP=$(date +%Y-%m-%d_%H_%M_%S)_$$
 
     # running the experiment (the -d option allows to define the directory where the results should be stored
-    build/exp/ppo_cpp/ppo_cpp -d $RESULTS_PATH --graph_path ppo_cpp/$1 --steps $2 --lr $3 --ent $4 --cr $5 --num_saves $6 >> $RESULTS_PATH/${TIMESTAMP}_output_log.txt
+    build/exp/ppo_cpp/ppo_cpp -d $RESULTS_PATH --graph_path $CURPATH/ppo_cpp/$1 --steps $2 --lr $3 --ent $4 --cr $5 --num_saves $6 >> $RESULTS_PATH/${TIMESTAMP}_output_log.txt
     
 
 %help
