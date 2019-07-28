@@ -32,9 +32,9 @@ From: airl_lab/default/airl_env:tensorflow
     JOB_ID=$7
 
     CURPATH=$(pwd)
-    if [ ! -d ./results/$JOB_ID ]; then
-        mkdir results/$JOB_ID
-    fi
+
+    mkdir -p results/$JOB_ID
+
     cd /git/sferes2/
 
     RESULTS_PATH=$CURPATH/results/$JOB_ID
