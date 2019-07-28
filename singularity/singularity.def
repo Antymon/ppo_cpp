@@ -42,7 +42,7 @@ From: airl_lab/default/airl_env:tensorflow
     TIMESTAMP=$(date +%Y-%m-%d_%H_%M_%S)_$$
 
     # running the experiment (the -d option allows to define the directory where the results should be stored
-    build/exp/ppo_cpp/ppo_cpp -d $RESULTS_PATH --graph_path $CURPATH/ppo_cpp/$1 --steps $2 --lr $3 --ent $4 --cr $5 --num_saves $6 >> $RESULTS_PATH/${TIMESTAMP}_output_log.txt
+    build/exp/ppo_cpp/ppo_cpp -d $RESULTS_PATH --graph_path $CURPATH/$1 --steps $2 --lr $3 --ent $4 --cr $5 --num_saves $6 >> $RESULTS_PATH/${TIMESTAMP}_output_log.txt
     
 
 %help
