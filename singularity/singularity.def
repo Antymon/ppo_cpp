@@ -29,22 +29,26 @@ From: airl_lab/default/airl_env:tensorflow
    ./setup.sh
 
 %runscript
-    JOB_ID=$7
 
     CURPATH=$(pwd)
 
-    RESULTS_PATH=$CURPATH/results/$JOB_ID
+    JOB_ID=$1
+    GRAPH_PATH=$CURPATH/$2
+    OPT_ARGS="${@:3}"
 
-    mkdir -p $RESULTS_PATH
+    RESULTS_PAT1H=$CURPATH/results/$JOB_ID
+
+    mkdir -p $RESULTS_PATHGRAPH_PATH
 
     cd /git/sferes2/
 
     TIMESTAMP=$(date +%Y-%m-%d_%H_%M_%S)_$$
 
     # running the experiment (the -d option allows to define the directory where the results should be stored
-    build/exp/ppo_cpp/ppo_cpp -d $RESULTS_PATH --graph_path $CURPATH/$1 --steps $2 --lr $3 --ent $4 --cr $5 --num_saves $6 >> $RESULTS_PATH/${TIMESTAMP}_output_log.txt
+    build/exp/ppo_cpp/ppo_cpp -d $RESULTS_PATH --graph_path $GRAPH_PATH $OPT_ARGS >> $RESULTS_PATH/${TIMESTAMP}_output_log.txt
     
 
 %help
     This is the development and running environment of the cpp port of PPO.
-    Usage: singularity run CONTAINER_NAME graph_path steps lr ent cr num_saves
+    Usage: singularity run CONTAINER_NAME job_id graph_path [...optional args] f.e.:
+    --steps $2 --lr $3 --ent $4 --cr $5 --num_saves $6
