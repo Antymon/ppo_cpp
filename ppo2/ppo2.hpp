@@ -163,7 +163,7 @@ public:
         return mb;
     }
 
-    void set_returns(MiniBatch& mb){
+    void set_returns(MiniBatch& mb) const{
 
         auto tensor_obs = tensorflow::Tensor();
         Utils::convert_mat(obs,tensor_obs);
