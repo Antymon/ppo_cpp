@@ -36,9 +36,9 @@ From: airl_lab/default/airl_env:tensorflow
     GRAPH_PATH=$CURPATH/$2
     OPT_ARGS="${@:3}"
 
-    RESULTS_PAT1H=$CURPATH/results/$JOB_ID
+    RESULTS_PATH=$CURPATH/results/$JOB_ID
 
-    mkdir -p $RESULTS_PATHGRAPH_PATH
+    mkdir -p $RESULTS_PATH
 
     cd /git/sferes2/
 
