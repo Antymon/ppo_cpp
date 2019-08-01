@@ -34,7 +34,19 @@ From: airl_lab/default/airl_env:tensorflow
 
     JOB_ID=$1
     GRAPH_PATH=$CURPATH/$2
-    OPT_ARGS="${@:3}"
+
+    # shift parameters by 2
+    shift
+    shift
+
+    OPT_ARGS=""
+    while test ${#} -gt 0
+    do
+      OPT_ARGS="$OPT_ARGS $1"
+      shift
+    done
+
+    echo $OPT_ARGS
 
     RESULTS_PATH=$CURPATH/results/$JOB_ID
 
