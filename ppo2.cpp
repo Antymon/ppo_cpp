@@ -72,6 +72,7 @@ int main(int argc, char **argv)
     args::ValueFlag<float> clip_range(parser, "clip range", "PPO's maximal relative change of policy likelihood", {'c',"cr","clip_range","cliprange"},0.2);
 
     args::ValueFlag<int> num_saves(parser, "num saves", "Number of saves. If not defined max(1 per 1M steps, 1)", {"saves","n_saves","num_saves"});
+    args::ValueFlag<int> num_epochs(parser, "num epochs", "Number of epochs to train with batch of data.", {"epochs","n_epochs","num_epochs"},10);
 
     try
     {
@@ -114,7 +115,7 @@ int main(int argc, char **argv)
     std::cout << "cr: " << clip_range.Get() << std::endl;
 
     PPO2 algorithm {final_graph_path,env,
-                    .99,2048,entropy.Get(),learning_rate.Get(),.5,.5,.95,32,10,clip_range.Get(),-1,tb_path
+                    .99,2048,entropy.Get(),learning_rate.Get(),.5,.5,.95,32,num_epochs.Get(),clip_range.Get(),-1,tb_path
     };
 
     if(training) {
