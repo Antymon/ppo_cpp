@@ -40,10 +40,9 @@ From: airl_lab/default/airl_env:tensorflow
     shift
 
     OPT_ARGS=""
-    while test ${#} -gt 0
+    for i in "$@"
     do
-      OPT_ARGS="$OPT_ARGS $1"
-      shift
+      OPT_ARGS="$OPT_ARGS ${i}"
     done
 
     echo $OPT_ARGS
