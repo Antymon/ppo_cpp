@@ -32,10 +32,12 @@ From: airl_lab/default/airl_env:tensorflow
 
     CURPATH=$(pwd)
 
-    JOB_ID=$1
-    GRAPH_PATH=$CURPATH/$2
+    EXECUTION_ID=$1
+    JOB_ID=$2
+    GRAPH_PATH=$CURPATH/$3
 
-    # shift parameters by 2
+    # shift parameters by 3
+    shift
     shift
     shift
 
@@ -51,12 +53,19 @@ From: airl_lab/default/airl_env:tensorflow
 
     mkdir -p $RESULTS_PATH
 
+    # (the -d option allows to define the directory where the results should be stored
+    ARGS="-d $RESULTS_PATH --graph_path $GRAPH_PATH $OPT_ARGS"
+
     cd /git/sferes2/
 
     TIMESTAMP=$(date +%Y-%m-%d_%H_%M_%S)_$$
 
-    # running the experiment (the -d option allows to define the directory where the results should be stored
-    build/exp/ppo_cpp/ppo_cpp -d $RESULTS_PATH --graph_path $GRAPH_PATH $OPT_ARGS >> $RESULTS_PATH/${TIMESTAMP}_output_log.txt
+    OUTPUT_LOG_FILENAME=${TIMESTAMP}_${EXECUTION_ID}_output_log.txt
+
+    OUTPUT_LOG_PATH=$RESULTS_PATH/$OUTPUT_LOG_FILENAME
+
+    # running the experiment
+    build/exp/ppo_cpp/ppo_cpp $ARGS >> $OUTPUT_LOG_PATH
     
 
 %help
