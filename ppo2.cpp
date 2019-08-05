@@ -12,6 +12,8 @@
 #include <signal.h>
 #include "json.hpp"
 #include <fstream>
+#include <limits>
+#include <chrono>
 
 
 void handle_signal(int sig) {
@@ -97,6 +99,13 @@ int main(int argc, char **argv)
         std::cerr << parser;
         return 1;
     }
+
+    auto now = std::chrono::high_resolution_clock::now();
+    auto nanos = std::chrono::duration_cast<std::chrono::nanoseconds>(now.time_since_epoch()).count();
+    int seed = static_cast<int>(nanos%std::numeric_limits<int>::max());
+    srand(seed);
+    std::cout << "seed: " << seed << std::endl;
+
 
     auto seconds = time (nullptr);
     std::string run_id {id?id.Get():("ppo_"+std::to_string(seconds))};
