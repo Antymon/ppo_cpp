@@ -60,12 +60,14 @@ From: airl_lab/default/airl_env:tensorflow
 
     TIMESTAMP=$(date +%Y-%m-%d_%H_%M_%S)_$$
 
-    OUTPUT_LOG_FILENAME=${TIMESTAMP}_${EXECUTION_ID}_output_log.txt
+    GLOBAL_ID=${TIMESTAMP}_${EXECUTION_ID}
+
+    OUTPUT_LOG_FILENAME=${GLOBAL_ID}_output_log.txt
 
     OUTPUT_LOG_PATH=$RESULTS_PATH/$OUTPUT_LOG_FILENAME
 
     # running the experiment
-    build/exp/ppo_cpp/ppo_cpp $ARGS >> $OUTPUT_LOG_PATH
+    build/exp/ppo_cpp/ppo_cpp $ARGS --id $GLOBAL_ID >> $OUTPUT_LOG_PATH
     
 
 %help

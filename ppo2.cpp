@@ -65,6 +65,8 @@ int main(int argc, char **argv)
 
     args::ValueFlag<std::string> load_path(parser, "checkpoint prefix", "Serialized model to visualize", {'p',"path"});
 
+    args::ValueFlag<std::string> id(parser, "unique id", "outer/global id, necessarily unique or overrides will happen", {"id"});
+
     args::ValueFlag<float> steps(parser, "steps", "Total number of training steps", {'s',"steps"},2e7);
 
     args::ValueFlag<float> learning_rate(parser, "learning rate", "Adam optimizer's learning rate", {'l',"lr","learning_rate","learningrate"},1e-3);
@@ -97,7 +99,7 @@ int main(int argc, char **argv)
     }
 
     auto seconds = time (nullptr);
-    std::string run_id {"ppo_"+std::to_string(seconds)};
+    std::string run_id {id?id.Get():("ppo_"+std::to_string(seconds))};
     std::string tb_path {save_path.Get()+"/tensorboard/"+run_id+"/"};
 
     bool training = !load_path;
@@ -123,7 +125,7 @@ int main(int argc, char **argv)
         std::string mkdir_sys_call {"mkdir -p "+tb_path};
         system(mkdir_sys_call.c_str());
 
-        std::string checkpoint_dir{save_path.Get()+"/checkpoints"};
+        std::string checkpoint_dir{save_path.Get()+"/checkpoints/"+run_id+"/"};
         mkdir_sys_call = "mkdir -p "+ checkpoint_dir;
         system(mkdir_sys_call.c_str());
 
