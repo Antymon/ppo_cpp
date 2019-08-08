@@ -78,6 +78,8 @@ int main(int argc, char **argv)
     args::ValueFlag<int> num_saves(parser, "num saves", "Number of saves. If not defined max(1 per 1M steps, 1)", {"saves","n_saves","num_saves"});
     args::ValueFlag<int> num_epochs(parser, "num epochs", "Number of epochs to train with batch of data.", {"epochs","n_epochs","num_epochs"},10);
 
+    args::ValueFlag<int> num_batch_steps(parser, "batch steps per env", "Number of steps taken for each batch for each environment", {"batch_steps","n_steps","num_steps"},2048);
+
     try
     {
         parser.ParseCLI(argc, argv);
@@ -126,7 +128,7 @@ int main(int argc, char **argv)
     std::cout << "cr: " << clip_range.Get() << std::endl;
 
     PPO2 algorithm {final_graph_path,env,
-                    .99,2048,entropy.Get(),learning_rate.Get(),.5,.5,.95,32,num_epochs.Get(),clip_range.Get(),-1,tb_path
+                    .99,num_batch_steps.Get(),entropy.Get(),learning_rate.Get(),.5,.5,.95,32,num_epochs.Get(),clip_range.Get(),-1,tb_path
     };
 
     if(training) {
