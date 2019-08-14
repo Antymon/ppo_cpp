@@ -180,7 +180,7 @@ public:
         if(done){
             float reward_error = std::abs((pos_after_step - initial_position)(0,0) - reward_accumulator);
 
-            reset();
+            obs = reset();
 
             if(reward_error>1e-2){
                 std::cout << "Error: Episode reward does not agree with sum of rewards by value of: " << reward_error << std::endl;
