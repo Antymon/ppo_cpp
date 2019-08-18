@@ -9,9 +9,9 @@
 
 typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Mat;
 
-class HexapodClosedLoopEnv : public virtual HexapodEnv {
+class  HexapodClosedLoopEnv : public virtual HexapodEnv {
 public:
-    HexapodClosedLoopEnv(double reset_noise_scale = 0.1, bool observe_velocities = false, int num_envs = 1,
+    explicit HexapodClosedLoopEnv(double reset_noise_scale = 0.1, bool observe_velocities = false, int num_envs = 1,
                          float step_duration = 0.015,
                          float simulation_duration = 5, float min_action_value = -1, float max_action_value = 1) :
             _reset_noise_scale{reset_noise_scale},
@@ -22,11 +22,11 @@ public:
 
     }
 
-    virtual int get_observation_space_size() override {
+    int get_observation_space_size() override {
         return observation_space_size;
     }
 
-    virtual Mat reset() override {
+    Mat reset() override {
         Mat obs{HexapodEnv::reset()};
 
         Eigen::VectorXd qpos{local_robot->skeleton()->getPositions()};
@@ -42,7 +42,7 @@ public:
     }
 
 protected:
-    virtual Mat get_obs() override {
+    Mat get_obs() override {
 
         Mat obs{Mat(get_num_envs(), get_observation_space_size())};
 
