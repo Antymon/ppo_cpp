@@ -11,6 +11,7 @@
 #include <execinfo.h>
 #include <signal.h>
 #include "json.hpp"
+#include "env/hexapod_closed_loop_env.hpp"
 #include <fstream>
 #include <limits>
 #include <chrono>
@@ -57,7 +58,7 @@ int main(int argc, char **argv)
     signal(SIGSEGV, handle_signal);
     signal(SIGABRT, handle_signal);
 
-    args::ArgumentParser parser("This is a gait viewer program.", "This goes after the options.");
+    args::ArgumentParser parser("This is a gait learner/viewer program using PPO algorithm", "--END--");
     args::HelpFlag help(parser, "help", "Display this help menu", {'h', "help"});
 
 
@@ -65,9 +66,9 @@ int main(int argc, char **argv)
 
     args::ValueFlag<std::string> graph_path(parser, "graph path", "path of computational graph to load", {'g',"graph","graph_path"},"./exp/ppo_cpp/resources/ppo2_graph.meta.txt");
 
-    args::ValueFlag<std::string> load_path(parser, "checkpoint prefix", "Serialized model to visualize", {'p',"path"});
+    args::ValueFlag<std::string> load_path(parser, "checkpoint prefix", "serialized model to visualize", {'p',"path"});
 
-    args::ValueFlag<std::string> id(parser, "unique id", "outer/global id, necessarily unique or overrides will happen", {"id"});
+    args::ValueFlag<std::string> id(parser, "unique id", "outer/global id, necessarily unique or results overrides will happen", {"id"});
 
     args::ValueFlag<float> steps(parser, "steps", "Total number of training steps", {'s',"steps"},2e7);
 
@@ -79,6 +80,8 @@ int main(int argc, char **argv)
     args::ValueFlag<int> num_epochs(parser, "num epochs", "Number of epochs to train with batch of data.", {"epochs","n_epochs","num_epochs"},10);
 
     args::ValueFlag<int> num_batch_steps(parser, "batch steps per env", "Number of steps taken for each batch for each environment", {"batch_steps","n_steps","num_steps"},2048);
+
+    args::Flag closed_loop(parser,"closed loop environment", "If set, closed-loop hexapod environment will be used, open-loop by default",{"closed_loop","closed-loop","cl"});
 
     try
     {
@@ -118,7 +121,9 @@ int main(int argc, char **argv)
 //    std::cout << "training: " << training << std::endl;
 
     load_and_init_robot2();
-    HexapodEnv inner_e {1};
+
+    HexapodEnv inner_e = closed_loop?HexapodClosedLoopEnv():HexapodEnv(1);
+
     EnvNormalize env{inner_e,training};
 
     const std::string final_graph_path{graph_path.Get()};
