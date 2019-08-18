@@ -1,0 +1,1 @@
+ffmpeg -video_size 1280x720 -framerate 25 -f x11grab -i :0.0+310,220 output.mp4
