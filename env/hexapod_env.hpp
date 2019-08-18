@@ -108,7 +108,7 @@ public:
         reward_accumulator = 0;
         initial_position = local_robot->skeleton()->getPositions().head(6).tail(3).cast<float>();
 
-        Mat obs{Mat::Zero(1,get_observation_space_size())};
+        Mat obs{get_obs()};
 
         old_obs = obs;
 
@@ -122,8 +122,6 @@ public:
         //std::cout << actions << std::endl;
 
         Eigen::Vector3f pos_before_step {local_robot->skeleton()->getPositions().head(6).tail(3).cast<float>()};
-
-        float t = get_time();
 
 /*            std::cout << index << std::endl;
             for (int i = 0; i<18; i++) {
@@ -163,13 +161,12 @@ public:
 
         reward_accumulator+=rewards(0,0);
 
-        bool done{t>=simulation_duration};
+        bool done{get_time()>=simulation_duration};
 
         Mat dones {Mat(1,1)};
         dones(0,0) = done?1.f:0.f;
 
-        Mat obs {Mat(1,1)};
-        obs(0,0) = fmod(t,1);
+        Mat obs {get_obs()};
 
 //        std::cout << rewards << std::endl;
 //        std::cout << s << std::endl;
@@ -219,6 +216,15 @@ public:
 
     }
 
+protected:
+    virtual Mat get_obs() {
+        Mat obs {Mat(1,1)};
+        obs(0,0) = fmod(get_time(),1);
+        return std::move(obs);
+    }
+
+protected:
+    std::shared_ptr<robot_dart::Robot> local_robot;
 
 private:
 
@@ -228,7 +234,6 @@ private:
     float step_duration;
     float simulation_duration;
     robot_dart::RobotDARTSimu simulation;
-    std::shared_ptr<robot_dart::Robot> local_robot;
     float min_action_value;
     float max_action_value;
     float reward_accumulator;
