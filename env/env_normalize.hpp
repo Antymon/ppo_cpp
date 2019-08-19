@@ -33,7 +33,7 @@ public:
             ret{Mat::Zero(env.get_num_envs(),1)},
             gamma{gamma},
             epsilon{epsilon},
-            obs_rms{RunningStatistics(env.get_num_envs())},
+            obs_rms{RunningStatistics(env.get_observation_space_size())},
             ret_rms{},
             clamp_obs{env.get_num_envs(),env.get_observation_space_size(),clip_obs},
             clamp_rewards{ret,clip_reward},
