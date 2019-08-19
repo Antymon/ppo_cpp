@@ -122,9 +122,15 @@ int main(int argc, char **argv)
 
     load_and_init_robot2();
 
-    HexapodEnv inner_e = closed_loop?HexapodClosedLoopEnv():HexapodEnv(1);
+    std::unique_ptr<HexapodEnv> inner_e;
 
-    EnvNormalize env{inner_e,training};
+    if(closed_loop){
+        inner_e = std::make_unique<HexapodClosedLoopEnv>();
+    } else {
+        inner_e = std::make_unique<HexapodEnv>(1);
+    }
+
+    EnvNormalize env{*inner_e,training};
 
     const std::string final_graph_path{graph_path.Get()};
 

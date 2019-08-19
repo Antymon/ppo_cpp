@@ -8,6 +8,7 @@
 
 #include <Eigen/Dense>
 #include "../json.hpp"
+#include "serializable.hpp"
 
 typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Mat;
 

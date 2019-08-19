@@ -15,11 +15,12 @@ public:
                          float step_duration = 0.015,
                          float simulation_duration = 5, float min_action_value = -1, float max_action_value = 1) :
             Env(num_envs),
-            HexapodEnv(num_envs, step_duration, simulation_duration, min_action_value, max_action_value),
+            HexapodEnv(num_envs, step_duration, simulation_duration, min_action_value, max_action_value, false),
             _reset_noise_scale{reset_noise_scale},
             observe_velocities{observe_velocities},
             observation_space_size{observe_velocities ? 36 : 18}{
 
+        reset();
     }
 
     int get_observation_space_size() override {
@@ -43,14 +44,13 @@ public:
 
 protected:
     Mat get_obs() override {
-
         Mat obs{Mat(get_num_envs(), get_observation_space_size())};
 
         //for each environment
-        obs.block(0, 0, 1, 18) = local_robot->skeleton()->getPositions().tail(18).cast<float>();
+        obs.block(0, 0, 1, 18) = local_robot->skeleton()->getPositions().tail(18).cast<float>().transpose();
 
         if (observe_velocities) {
-            obs.block(0, 18, 1, 18) = local_robot->skeleton()->getVelocities().tail(18).cast<float>();
+            obs.block(0, 18, 1, 18) = local_robot->skeleton()->getVelocities().tail(18).cast<float>().transpose();
         }
 
         return std::move(obs);

@@ -38,7 +38,7 @@ void load_and_init_robot2() {
 class HexapodEnv : public virtual Env
 {
 public:
-    HexapodEnv(int num_envs, float step_duration = 0.015, float simulation_duration = 5, float min_action_value = -1, float max_action_value = 1):
+    HexapodEnv(int num_envs, float step_duration = 0.015, float simulation_duration = 5, float min_action_value = -1, float max_action_value = 1, bool init_reset = true):
         Env(num_envs),
         step_duration{step_duration},
         simulation_duration{simulation_duration},
@@ -55,13 +55,14 @@ public:
         simulation.set_graphics(std::make_shared<robot_dart::graphics::Graphics>(simulation.world()));
         std::static_pointer_cast<robot_dart::graphics::Graphics>(simulation.graphics())->look_at({0.5, 3., 0.75}, {0.5, 0., 0.2});
 #endif
-
         simulation.world()->getConstraintSolver()->setCollisionDetector(
                 dart::collision::BulletCollisionDetector::create());
 
         simulation.add_floor();
 
-        reset();
+        if(init_reset) {
+            reset();
+        }
     }
 
     std::string get_action_space() override {
@@ -200,11 +201,11 @@ public:
         return simulation.world()->getTime();
     }
 
-    Mat get_original_obs(){
+    Mat get_original_obs() override {
         return old_obs;
     }
 
-    Mat get_original_rew(){
+    Mat get_original_rew() override {
         return old_rew;
     }
 
