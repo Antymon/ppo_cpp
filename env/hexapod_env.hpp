@@ -91,6 +91,8 @@ public:
 
         simulation.clear_robots();
         local_robot.reset();
+        simulation.world()->reset();
+        simulation.world()->setTime(0);
 
         local_robot = global2::global_robot->clone();
         local_robot->skeleton()->setPosition(5, 0.15);
@@ -104,10 +106,11 @@ public:
                 ->set_h_params(std::vector<double>(1, step_duration));
 
         simulation.add_robot(local_robot);
-        simulation.world()->setTime(0);
 
         reward_accumulator = 0;
         initial_position = local_robot->skeleton()->getPositions().head(6).tail(3).cast<float>();
+
+//        std::cout << "init pos " << initial_position << std::endl;
 
         Mat obs{get_obs()};
 
