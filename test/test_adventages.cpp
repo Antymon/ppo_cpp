@@ -28,7 +28,7 @@
 //}
 
 
-TEST_CASE( "Advantages are computed", "[Advantages]" )
+TEST_CASE( "Advantages are computed", "[Project]" )
 {
         const int n_steps{3};
         const int n_envs{2};
@@ -80,10 +80,23 @@ TEST_CASE( "Advantages are computed", "[Advantages]" )
     REQUIRE(((mb_returns-mb_returns_check).sum())<1e-5);
 }
 //
-//TEST_CASE( "Eigen test", "[Eigen]" ){
+//TEST_CASE( "Eigen test", "[Understanding]" ){
 //    Eigen::VectorXd qpos{Eigen::VectorXd::Zero(24)};
 //
 //    qpos.tail(18) += 0.1 * Eigen::VectorXd::Ones(18);
 //
 //    std::cout << qpos << std::endl;
+//}
+
+typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Mat;
+
+
+//TEST_CASE( "Eigen test", "[Understanding]" ){
+//    Eigen::VectorXd qpos{Eigen::VectorXd::Zero(24)};
+//
+//    Mat obs {Mat(1,18)};
+//
+//    obs.block(0, 0, 1, 18) = qpos.tail(18).cast<float>().transpose();
+//
+//    std::cout << obs << std::endl;
 //}
