@@ -9,7 +9,7 @@
 #include "../common/matrix_clamp.hpp"
 #include "logger.hpp"
 #include "catch.hpp"
-
+#include "../common/median.hpp"
 
 typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Mat;
 typedef Eigen::RowVectorXf RowVector;
@@ -108,3 +108,40 @@ TEST_CASE("Check running stats","[Project]")
     REQUIRE((var-rs.var).cwiseAbs().sum() < 1e-3);
     //assert((sample_var-Eigen::RowVector3f(15,20.25,23)).cwiseAbs().sum() < 1e-3);
 }
+
+//TEST_CASE("Median","[Project]")
+//{
+//    Mat m1 {2,1};
+//
+//    m1 << 2,3;
+//
+//    const std::vector<float>& result = Median::median(m1,1e-4);
+//
+//    std::cout << result[0] << std::endl;
+//
+//    REQUIRE(-1e-4 < result[0]-2.5);
+//    REQUIRE(result[0]-2.5 < 1e-4);
+//}
+
+//TEST_CASE( "Moving vecotr elements", "[Understanding]" )
+//{
+//    std::vector<std::vector<int>> parent(2);
+//    parent[0] = {1,2};
+//    parent[1] = {3,4};
+//
+//    const auto& moved = std::move(parent[1]);
+//
+//    std::cout << moved[0] << ',' << moved[1] << std::endl;
+//
+//    std::cout << parent[1][0] << ',' << parent[1][1] << std::endl;
+//}
+
+//TEST_CASE( "Vector allocators", "[Understanding]" )
+//{
+//    auto v {std::vector<float> (5,.5f)};
+//
+//    for (int i = 0; i < v.size(); ++i){
+//        std::cout << v[i] << " ";
+//    }
+//    std::cout << std::endl;
+//}

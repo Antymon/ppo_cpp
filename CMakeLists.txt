@@ -18,7 +18,7 @@ add_executable(ppo_cpp ppo2.cpp env/hexapod_env.hpp env/env_normalize.hpp common
 add_executable(test2 test/main2.cpp test/main_tests.cpp)
 add_executable(test3 test/main3.cpp test/main_tests.cpp)
 add_executable(test4 test/main4.cpp test/main_tests.cpp)
-add_executable(stat_test test/stat_test.cpp common/running_statistics.hpp test/main_tests.cpp)
+add_executable(stat_test test/stat_test.cpp common/running_statistics.hpp test/main_tests.cpp common/median.hpp)
 
 target_link_libraries(ppo_cpp "/usr/local/lib/libprotobuf.so")
 target_link_libraries(ppo_cpp "/usr/local/lib/libprotoc.so")

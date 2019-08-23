@@ -1,0 +1,1 @@
+for i in */*png; do PNG=$(echo "$i" | sed -e 's/\/.*/.png/g'); cp "$i" $PNG; done
