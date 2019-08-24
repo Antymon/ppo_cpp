@@ -242,6 +242,8 @@ private:
     float max_action_value;
     float reward_accumulator;
     Eigen::Vector3f initial_position;
+
+protected:
     Mat old_obs;
     Mat old_rew;
 };

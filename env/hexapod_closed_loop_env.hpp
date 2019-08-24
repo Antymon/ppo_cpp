@@ -28,7 +28,7 @@ public:
     }
 
     Mat reset() override {
-        Mat obs{HexapodEnv::reset()};
+        HexapodEnv::reset();
 
         Eigen::VectorXd qpos{local_robot->skeleton()->getPositions()};
         Eigen::VectorXd qvel{local_robot->skeleton()->getVelocities()};
@@ -38,6 +38,10 @@ public:
 
         local_robot->skeleton()->setPositions(qpos);
         local_robot->skeleton()->setVelocities(qvel);
+
+        Mat obs{get_obs()};
+
+        old_obs = obs;
 
         return std::move(obs);
     }
