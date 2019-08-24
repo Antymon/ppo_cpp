@@ -257,7 +257,14 @@ public:
         clipfrac
     },
     graph_def{} {
-        reset();
+
+        //TODO this allows PPO be uninitialized
+        //do loading through constructor
+        if(model_filename.empty()) {
+            std::cout << "PPO unitialized " << std::endl;
+        } else {
+            reset();
+        }
     }
 
     void reset(){
@@ -296,8 +303,10 @@ public:
                 {},
                 {graph_def.saver_def().save_tensor_name()},
                 nullptr);
-        if (!status.ok())
+        if (!status.ok()) {
             std::cout << "Error saving checkpoint to " << save_path << ": " << status.ToString() << std::endl;
+            assert(false);
+        }
         else {
             std::cout << "Success save weights !! " << "\n";
 
@@ -328,52 +337,64 @@ public:
                 myfile << json.dump();
                 myfile.close();
             }
-            else std::cout << "Unable to open file for saving";
+            else {
+                std::cout << "Unable to open file for saving";
+                assert(false);
+            }
 
         }
     }
 
     //warning: does not recover
     void load(std::string save_path){
+
+        std::ifstream in (save_path+".json");
+        if (in.is_open())
+        {
+            std::stringstream sstr;
+            sstr << in.rdbuf();
+            nlohmann::json json = nlohmann::json::parse(sstr.str());
+            env.deserialize(json);
+
+            gamma = json["gamma"].get<float>();
+            n_steps = json["n_steps"].get<int>();
+            vf_coef = json["vf_coef"].get<float>();
+            ent_coef = json["ent_coef"].get<float>();
+            max_grad_norm = json["max_grad_norm"].get<float>();
+            learning_rate = json["learning_rate"].get<float>();
+            lam = json["lam"].get<float>();
+            nminibatches = json["nminibatches"].get<int>();
+            noptepochs = json["noptepochs"].get<int>();
+            cliprange = json["cliprange"].get<float>();
+            cliprange_vf = json["cliprange_vf"].get<float>();
+            observation_space = json["observation_space"].get<std::string>();
+            action_space = json["action_space"].get<std::string>();
+            n_envs = json["n_envs"].get<int>();
+            model_filename = json["model_filename"].get<std::string>();
+
+            reset();
+
+            in.close();
+        }
+        else{
+            std::cout << "Unable to open file for loading"<< std::endl;
+            assert(false);
+        }
+
+
         tensorflow::Tensor checkpointPathTensor(tensorflow::DT_STRING, tensorflow::TensorShape());
         checkpointPathTensor.scalar<std::string>()() = save_path;
         std::vector<std::pair<std::string,tensorflow::Tensor>> feed_dict = {{graph_def.saver_def().filename_tensor_name(), checkpointPathTensor}};
         auto status = _session->Run(feed_dict, {}, {graph_def.saver_def().restore_op_name()}, nullptr);
 
-        if (!status.ok())
+        if (!status.ok()) {
             std::cout << "Error loading checkpoint from " << save_path << ": " << status.ToString() << std::endl;
+            assert(false);
+        }
         else {
-            std::cout << "Success load weights !! " << "\n";
+            std::cout << "Success load weights !! "<< std::endl;
 
-            std::ifstream in (save_path+".json");
-            if (in.is_open())
-            {
-                std::stringstream sstr;
-                sstr << in.rdbuf();
-                nlohmann::json json = nlohmann::json::parse(sstr.str());
-                env.deserialize(json);
 
-                gamma = json["gamma"].get<float>();
-                n_steps = json["n_steps"].get<int>();
-                vf_coef = json["vf_coef"].get<float>();
-                ent_coef = json["ent_coef"].get<float>();
-                max_grad_norm = json["max_grad_norm"].get<float>();
-                learning_rate = json["learning_rate"].get<float>();
-                lam = json["lam"].get<float>();
-                nminibatches = json["nminibatches"].get<int>();
-                noptepochs = json["noptepochs"].get<int>();
-                cliprange = json["cliprange"].get<float>();
-                cliprange_vf = json["cliprange_vf"].get<float>();
-                observation_space = json["observation_space"].get<std::string>();
-                action_space = json["action_space"].get<std::string>();
-                n_envs = json["n_envs"].get<int>();
-                model_filename = json["model_filename"].get<std::string>();
-
-                reset();
-
-                in.close();
-            }
-            else std::cout << "Unable to open file for loading";
         }
     }
 
@@ -392,6 +413,11 @@ public:
     }
 
     void learn(int total_timesteps, int num_saves=0, const std::string& save_path = "", const std::string& tb_log_name = "PPO2") {
+
+        if(!_session){
+            std::cout << "Session unitialized, learning aborted.";
+            assert(false);
+        }
 
         bool new_tb_log = _init_num_timesteps();
 

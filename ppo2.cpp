@@ -33,17 +33,25 @@ void handle_signal(int sig) {
     exit(1);
 }
 
-void playback(Env& env, PPO2& algorithm){
+void playback(Env& env, PPO2& algorithm, bool verbose){
     Mat obs{env.reset()};
     float episode_reward = 0;
     while (true){
-        std::cout << "obs: " << obs << std::endl;
+
+        if(verbose) {
+            std::cout << "obs: " << env.get_original_obs() << std::endl;
+        }
         Mat a = algorithm.eval(obs);
         std::vector<Mat> outputs = env.step(a);
+
         obs = std::move(outputs[0]);
+        float rew = env.get_original_rew()(0,0);
         env.render();
-        std::cout << "step reward: " << outputs[1] << std::endl;
-        episode_reward+= outputs[1](0,0);
+        if(verbose) {
+            std::cout << "step reward: " << rew << std::endl;
+        }
+
+        episode_reward+= rew;
         if(outputs[2](0,0)>.5){
             std::cout << "episode reward: " << episode_reward << std::endl;
             episode_reward = 0;
@@ -64,7 +72,7 @@ int main(int argc, char **argv)
 
     args::ValueFlag<std::string> save_path(parser, "save path", "directory to save all serializations and logs", {'d',"dir"},"./exp/ppo_cpp");
 
-    args::ValueFlag<std::string> graph_path(parser, "graph path", "path of computational graph to load", {'g',"graph","graph_path"},"./exp/ppo_cpp/resources/ppo2_graph.meta.txt");
+    args::ValueFlag<std::string> graph_path(parser, "graph path", "path of computational graph to load", {'g',"graph","graph_path"},""); //,"./exp/ppo_cpp/resources/ppo2_graph.meta.txt");
 
     args::ValueFlag<std::string> load_path(parser, "checkpoint prefix", "serialized model to visualize", {'p',"path"});
 
@@ -82,6 +90,8 @@ int main(int argc, char **argv)
     args::ValueFlag<int> num_batch_steps(parser, "batch steps per env", "Number of steps taken for each batch for each environment", {"batch_steps","n_steps","num_steps"},2048);
 
     args::Flag closed_loop(parser,"closed loop environment", "If set, closed-loop hexapod environment will be used, open-loop by default",{"closed_loop","closed-loop","cl"});
+
+    args::Flag verbose(parser,"verbose", "output additional logs to the console",{'v',"verbose"});
 
     try
     {
@@ -173,7 +183,7 @@ int main(int argc, char **argv)
     } else {
         algorithm.load(load_path.Get());
 
-        playback(env,algorithm);
+        playback(env,algorithm,verbose.Get());
     }
 
 
