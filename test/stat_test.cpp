@@ -145,3 +145,29 @@ TEST_CASE("Check running stats","[Project]")
 //    }
 //    std::cout << std::endl;
 //}
+
+
+//TEST_CASE( "Random Eigen", "[Understanding]" )
+//{
+//
+//    std::cout << 0.1f * Eigen::VectorXd::Random(18) << " ";
+//
+//    std::cout << std::endl;
+//}
+
+//TEST_CASE( "Column vector to std vector", "[Understanding]" )
+//{
+//    auto v {std::vector<float> (5,.5f)};
+//
+//    const Eigen::VectorXf& qpos {Eigen::VectorXf::Random(18)};
+//
+//    std::cout << qpos;
+//
+//    v.resize(qpos.size());
+//    Eigen::VectorXf::Map(&v[0], qpos.size()) = qpos;
+//
+//    for (int i = 0; i < v.size(); ++i){
+//        std::cout << v[i] << " ";
+//    }
+//    std::cout << std::endl;
+//}

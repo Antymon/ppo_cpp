@@ -79,7 +79,7 @@ TEST_CASE( "Advantages are computed", "[Project]" )
 
     REQUIRE(((mb_returns-mb_returns_check).sum())<1e-5);
 }
-//
+
 //TEST_CASE( "Eigen test", "[Understanding]" ){
 //    Eigen::VectorXd qpos{Eigen::VectorXd::Zero(24)};
 //
@@ -100,3 +100,11 @@ typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Ma
 //
 //    std::cout << obs << std::endl;
 //}
+
+TEST_CASE( "Eigen test", "[Understanding]" ){
+    Eigen::VectorXd qpos{Eigen::VectorXd::Zero(24)};
+
+    qpos.tail(18) += 0.1 * Eigen::VectorXd::Ones(18);
+
+    std::cout << qpos << std::endl;
+}
