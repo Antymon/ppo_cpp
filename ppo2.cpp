@@ -89,6 +89,7 @@ int main(int argc, char **argv)
 
     args::ValueFlag<int> num_batch_steps(parser, "batch steps per env", "Number of steps taken for each batch for each environment", {"batch_steps","n_steps","num_steps"},2048);
 
+    args::ValueFlag<double>reset_noise_scale(parser,"reset noise amplitude", "Maximal amplitude of iid noise added upon reset.",{"reset_noise_scale","reset_noise","rns","rn"},0.1);
     args::Flag closed_loop(parser,"closed loop environment", "If set, closed-loop hexapod environment will be used, open-loop by default",{"closed_loop","closed-loop","cl"});
 
     args::Flag verbose(parser,"verbose", "output additional logs to the console",{'v',"verbose"});
@@ -135,7 +136,7 @@ int main(int argc, char **argv)
     std::unique_ptr<HexapodEnv> inner_e;
 
     if(closed_loop){
-        inner_e = std::make_unique<HexapodClosedLoopEnv>();
+        inner_e = std::make_unique<HexapodClosedLoopEnv>(reset_noise_scale.Get());
     } else {
         inner_e = std::make_unique<HexapodEnv>(1);
     }
