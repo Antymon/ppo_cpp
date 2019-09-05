@@ -75,5 +75,4 @@ From: airl_lab/default/airl_env:tensorflow
     singularity run --app help *.simg
 
 %apprun help
-    exec echo "Usage: *.simg RUN_ID CONFIGURATION_ID GRAPH_PATH [OPTIONS]"
-    exec /git/sferes2/build/exp/ppo_cpp/ppo_cpp --help
+    exec echo "Usage: *.simg RUN_ID CONFIGURATION_ID GRAPH_PATH [OPTIONS]" && /git/sferes2/build/exp/ppo_cpp/ppo_cpp --help
