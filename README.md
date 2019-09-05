@@ -11,7 +11,7 @@ The base setup used to develop and run elements of this project
 
 -   Singularity @singularity containerization environment,
 
--   set of project repositories listed under Section [chapter~R~epo].
+-   set of project repositories listed under [Project repositories listing](#repos).
 
 Training gaits
 --------------
@@ -129,7 +129,7 @@ recommended to do this when not in headless mode due to the deep
 integration of Singularity @singularity with the host machine that can
 result in undesirable side effects.
 
-Project repositories listing
+<a name="repos"></a>Project repositories listing
 ----------------------------
 
 All repositories are currently hosted under Imperial College London’s
