@@ -71,5 +71,8 @@ From: airl_lab/default/airl_env:tensorflow
     
 
 %help
-    echo "This is help"
-    /git/sferes2/build/exp/ppo_cpp/ppo_cpp --help
+    Run following to see help:
+    singularity run --app help *.simg
+
+%apprun help
+    exec /git/sferes2/build/exp/ppo_cpp/ppo_cpp --help
