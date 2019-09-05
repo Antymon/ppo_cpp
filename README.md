@@ -47,8 +47,10 @@ frames. On a modern CPU, this will take around 1 day of computation,
 with an example learning curve available in the repository as
 `./resources/ppo_cl/*.png` to see what to expect over time. The results
 with the log file will be available under `./results` in the same
-directory as the SIMG file.\
-\
+directory as the SIMG file. To display help of the main executable through the SIMG file:
+
+        singularity run --app help *.simg
+
 Inside of `./results` directory there will be `./tensorboard` directory
 created with episode rewards logs. Tensorboard utility that is installed
 with Python Tensorflow @abadi2016tensorflow can spawn a web server,
