@@ -9,9 +9,7 @@ The base setup used to develop and run elements of this project
 
 -   Ubuntu 18.04 LTS operating system,
 
--   Singularity @singularity containerization environment,
-
--   set of project repositories listed under [Project repositories listing](#repos).
+-   [Singularity](https://sylabs.io/guides/3.3/user-guide/quick_start.html#quick-installation-steps) @singularity containerization environment,
 
 Training gaits
 --------------
@@ -129,7 +127,7 @@ recommended to do this when not in headless mode due to the deep
 integration of Singularity @singularity with the host machine that can
 result in undesirable side effects.
 
-<a name="repos"></a>Project repositories listing
+<a name="repos"></a>Full project repositories listing
 ----------------------------
 
 All repositories are currently hosted under Imperial College London’s
