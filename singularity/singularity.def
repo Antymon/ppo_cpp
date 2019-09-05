@@ -71,6 +71,5 @@ From: airl_lab/default/airl_env:tensorflow
     
 
 %help
-    This is the development and running environment of the cpp port of PPO.
-    Usage: singularity run CONTAINER_NAME job_id graph_path [...optional args] f.e.:
-    --steps $2 --lr $3 --ent $4 --cr $5 --num_saves $6
+    echo "This is help"
+    /git/sferes2/build/exp/ppo_cpp/ppo_cpp --help
