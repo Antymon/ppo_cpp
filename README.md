@@ -4,10 +4,6 @@ User Guide
 Overview
 --------
 
-Everything made throughout this project was based on components that
-came from the community, therefore it is the author’s wish is to keep
-the outcomes of this work publicly available to anyone interested.\
-\
 The base setup used to develop and run elements of this project
 (therefore the recommended setup) includes:
 
@@ -16,59 +12,6 @@ The base setup used to develop and run elements of this project
 -   Singularity @singularity containerization environment,
 
 -   set of project repositories listed under Section [chapter~R~epo].
-
-Containerization @docker [@singularity] was actively used throughout
-this project for the sake of:
-
--   isolating experimentation from the regular workspace,
-
--   improving portability and ability to recover particular setups,
-
--   dependencies listing.
-
-Initially 2 Docker @docker containers were used for MAP Elites and PPO
-experiments respectively. Later on, containers were manually migrated to
-an alternative containerization system called Singularity @singularity,
-in order to conform to requirements imposed by used High-Performance
-Computing (HPC) cluster administered by Imperial College London.
-Singularity setups were committed altogether with specific experiments.\
-\
-This guide is cornered around the use of 2 main repositories for PPO and
-MAP Elites experiments respectively. All of the executables produced
-have commented CLIs and accept `–help` option. Additionally, both
-repositories have `./tools` directory with a number of useful bash
-scripts sorted according to their purpose. Those can help with results
-analysis, data processing, documenting and visualization.\
-\
-Perhaps the third most important repository of the project is the fork
-of Stable Baselines @stable-baselines. It features a modified PPO
-algorithm, HPC cluster jobs generator and PPO computational graph (*meta
-graph*) generator, which is a toolchain dependency for the C++ PPO
-implementation.\
-\
-The jobs generator was extremely helpful with managing thousands of
-algorithm runs carried out throughout this project thanks to the HPC
-cluster. It doesn’t have CLI but is controlled through global variables
-defining hyperparameters or their sampling ranges and other useful
-control variables. Generally, this is not a good coding practice,
-although as the only single-file script is concerned that evolved
-considerably, this approach is thought of as a time-conscious choice.\
-\
-The jobs generator creates indicated number of MAP Elites and PPO jobs
-with corresponding meta graphs based on 2 job templates that are
-specified in a format required by the HPC cluster.\
-\
-The last important component is the graph generator, which was described
-where relevant in the sections below. It is used by the jobs generator
-but also features CLI, which can be queried with a `–help` option. Use
-of this component is necessary whenever changes to computational graph
-are needed, such as changing the policy network architecture of a
-controller.\
-\
-The following sections have a form of standalone snippets therefore
-please do not repeat the steps which you have done before. They are
-meant to be a quick and independent recipes for the most common tasks of
-training and visualization of gait controllers.
 
 Training gaits
 --------------
