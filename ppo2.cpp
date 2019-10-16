@@ -33,10 +33,10 @@ void handle_signal(int sig) {
     exit(1);
 }
 
-void playback(Env& env, PPO2& algorithm, bool verbose){
+void playback(Env& env, PPO2& algorithm, bool verbose, const int steps){
     Mat obs{env.reset()};
     float episode_reward = 0;
-    while (true){
+    for(int i = 0; i < steps; ++i){
 
         if(verbose) {
             std::cout << "obs: " << env.get_original_obs() << std::endl;
@@ -52,7 +52,7 @@ void playback(Env& env, PPO2& algorithm, bool verbose){
         }
 
         episode_reward+= rew;
-        if(outputs[2](0,0)>.5){
+        if(outputs[2](0,0)>.5 || i==steps-1){
             std::cout << "episode reward: " << episode_reward << std::endl;
             episode_reward = 0;
         }
@@ -93,6 +93,8 @@ int main(int argc, char **argv)
     args::Flag closed_loop(parser,"closed loop environment", "If set, closed-loop hexapod environment will be used, open-loop by default",{"closed_loop","closed-loop","cl"});
 
     args::Flag verbose(parser,"verbose", "output additional logs to the console",{'v',"verbose"});
+
+    args::ValueFlag<double> duration(parser, "duration", "The total duration of played animation [seconds]", {"duration","du"},5.);
 
     try
     {
@@ -184,7 +186,9 @@ int main(int argc, char **argv)
     } else {
         algorithm.load(load_path.Get());
 
-        playback(env,algorithm,verbose.Get());
+        const int steps = duration.Get()/0.015;
+
+        playback(env,algorithm,verbose.Get(),steps);
     }
 
 
