@@ -1,9 +1,3 @@
-//
-// Created by szymon on 10/07/19.
-//
-//quasi OpenAI gym env interface
-//
-
 #ifndef PPO_CPP_VEC_ENV_HPP
 #define PPO_CPP_VEC_ENV_HPP
 
@@ -44,11 +38,11 @@ public:
     }
 
     int get_action_space_size() override{
-        return 2;
+        return 18;
     }
 
     int get_observation_space_size() override{
-        return 4;
+        return 18;
     }
 
     Mat reset() override {
@@ -67,6 +61,19 @@ public:
         } else{
             dones = Mat::Zero(get_num_envs(), 1);
         }
+
+        //wake up all threads as actions are ready to process
+        for (int i = 0; i<get_num_envs(); ++i){
+            condition_vars[i].notify_one();
+        }
+
+        //block return unitl all threads did a step
+        for (int i = 0; i<get_num_envs(); ++i){
+            std::unique_lock<std::mutex> l(mutexes[i]);
+            condition_vars[i].wait(l);
+            l.unlock();
+        }
+
         return {obs,rewards,dones};
     }
 
@@ -93,9 +100,23 @@ private:
     std::vector<std::thread> threads;
     std::vector<std::condition_variable> condition_vars;
     std::vector<std::mutex> mutexes;
+    bool terminate = false;
 
     void start_env_thread(int id){
+        while (!terminate){
+            //wait until new action is available
+            std::unique_lock<std::mutex> l(mutexes[id]);
+            condition_vars[id].wait(l);
 
+            //process action by doing a single step
+
+            std::cout << "obs[id] = step(a[id]) " << id << std::endl;
+
+            l.unlock();
+
+            //notify main thread action has been processed
+            condition_vars[id].notify_one();
+        }
     }
 
 };
