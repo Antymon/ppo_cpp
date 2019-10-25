@@ -13,6 +13,7 @@
 #include "ppo2/ppo2.hpp"
 
 #include "env/env.hpp"
+#include "env/vec_env.hpp"
 #include "env/env_mock.hpp"
 #include "env/hexapod_env.hpp"
 #include "env/env_normalize.hpp"
