@@ -2,20 +2,21 @@
 // Created by szymon on 10/07/19.
 //
 
-#include "ppo2/ppo2.hpp"
-#include "env/env.hpp"
-#include "env/env_mock.hpp"
-#include "env/hexapod_env.hpp"
-#include "env/env_normalize.hpp"
-#include "args.hxx"
 #include <execinfo.h>
-#include <signal.h>
-#include "json.hpp"
-#include "env/hexapod_closed_loop_env.hpp"
+#include <csignal>
 #include <fstream>
 #include <limits>
 #include <chrono>
 
+#include "args.hxx"
+
+#include "ppo2/ppo2.hpp"
+
+#include "env/env.hpp"
+#include "env/env_mock.hpp"
+#include "env/hexapod_env.hpp"
+#include "env/env_normalize.hpp"
+#include "env/hexapod_closed_loop_env.hpp"
 
 void handle_signal(int sig) {
 
@@ -59,7 +60,14 @@ void playback(Env& env, PPO2& algorithm, bool verbose, const int steps){
     }
 }
 
-
+void mkdir(const std::string& path){
+    std::string mkdir_sys_call {"mkdir -p "+path};
+    int mkdir_result {system(mkdir_sys_call.c_str())};
+    if(mkdir_result == -1){
+        std::cout << "Path creation failed, terminating: " << path << std::endl;
+        assert(false);
+    }
+}
 
 int main(int argc, char **argv)
 {
@@ -157,12 +165,12 @@ int main(int argc, char **argv)
 
     if(training) {
         //shell-dependant timestamped directory creation
-        std::string mkdir_sys_call {"mkdir -p "+tb_path};
-        system(mkdir_sys_call.c_str());
+
+        mkdir(tb_path);
 
         std::string checkpoint_dir{save_path.Get()+"/checkpoints/"+run_id+"/"};
-        mkdir_sys_call = "mkdir -p "+ checkpoint_dir;
-        system(mkdir_sys_call.c_str());
+
+        mkdir(checkpoint_dir);
 
         std::string checkpoint_path{checkpoint_dir+"/" + run_id + ".pkl"};
 
@@ -186,9 +194,9 @@ int main(int argc, char **argv)
     } else {
         algorithm.load(load_path.Get());
 
-        const int steps = duration.Get()/0.015;
+        const int playback_steps = static_cast<int>(duration.Get()/0.015);
 
-        playback(env,algorithm,verbose.Get(),steps);
+        playback(env,algorithm,verbose.Get(), playback_steps);
     }
 
 
