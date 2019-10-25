@@ -4,6 +4,7 @@
 #include <condition_variable>
 #include <mutex>
 #include <thread>
+#include <chrono>
 
 #include <string>
 #include <vector>
@@ -62,17 +63,34 @@ public:
             dones = Mat::Zero(get_num_envs(), 1);
         }
 
+        std::unique_lock<std::mutex> l(counter_mutex);
+        counter=0;
+        l.unlock();
+
         //wake up all threads as actions are ready to process
+        writeln("main wakes all");
+
         for (int i = 0; i<get_num_envs(); ++i){
             condition_vars[i].notify_one();
         }
 
-        //block return unitl all threads did a step
-        for (int i = 0; i<get_num_envs(); ++i){
-            std::unique_lock<std::mutex> l(mutexes[i]);
-            condition_vars[i].wait(l);
-            l.unlock();
+        writeln("main woke all and waiting for counter mutex");
+
+        std::unique_lock<std::mutex> l2(counter_mutex);
+        if(counter < get_num_envs()) {
+            all_done.wait(l2);
         }
+        l2.unlock();
+
+
+//        //block return unitl all threads did a step
+//        for (int i = 0; i<get_num_envs(); ++i){
+//            writeln("main requests lock "+std::to_string(i));
+//            std::unique_lock<std::mutex> l(mutexes[i]);
+//            writeln("main got lock "+std::to_string(i)+", waiting");
+//            condition_vars[i].wait(l);
+//            l.unlock();
+//        }
 
         return {obs,rewards,dones};
     }
@@ -94,6 +112,13 @@ public:
 
     }
 
+    static void writeln(const std::string& msg, double delay = 0){
+        if(delay > 0) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(delay * 1000)));
+        }
+        std::cout << msg << std::endl;
+    }
+
 private:
     std::vector<std::shared_ptr<Env>>& envs;
     long total_step;
@@ -101,21 +126,45 @@ private:
     std::vector<std::condition_variable> condition_vars;
     std::vector<std::mutex> mutexes;
     bool terminate = false;
+    std::mutex counter_mutex;
+    int counter;
+    std::condition_variable all_done;
 
     void start_env_thread(int id){
         while (!terminate){
             //wait until new action is available
-            std::unique_lock<std::mutex> l(mutexes[id]);
-            condition_vars[id].wait(l);
+            {
+                writeln(id + " request lock");
+                std::unique_lock<std::mutex> l(mutexes[id]);
+                writeln(id + " got lock, waiting");
+                condition_vars[id].wait(l);
+                //process action by doing a single step
 
-            //process action by doing a single step
+                std::cout << "obs[id] = step(a[id]) " << id << std::endl;
 
-            std::cout << "obs[id] = step(a[id]) " << id << std::endl;
+                l.unlock();
 
-            l.unlock();
+                writeln(id+" woken & finished.");
+            }
 
-            //notify main thread action has been processed
-            condition_vars[id].notify_one();
+            bool notify_main = false;
+
+            {
+                std::unique_lock<std::mutex> l2(counter_mutex);
+                if (counter < get_num_envs()) {
+                    writeln("Invariant counter<get_num_envs() violated!");
+                    l2.unlock();
+                    assert(false);
+                } else {
+                    counter++;
+                    notify_main = counter == get_num_envs();
+                    l2.unlock();
+                }
+            }
+
+            if(notify_main){
+                all_done.notify_one();
+            }
         }
     }
 
