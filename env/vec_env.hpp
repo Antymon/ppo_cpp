@@ -16,9 +16,10 @@ typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Ma
 class VecEnv : public virtual Env{
 public:
 
+    //to allow vector of bool to be modified on separate slots in parallel without sync
     struct BoolWrapper {
         BoolWrapper():value{false}{}
-        BoolWrapper(bool value):value{value}{}
+        explicit BoolWrapper(bool value):value{value}{}
         bool value;
     };
 
@@ -26,12 +27,12 @@ public:
         : Env(envs.size())
         , envs{envs}
         , threads{std::vector<std::thread>(envs.size())}
-        , condition_vars{std::vector<std::condition_variable>(envs.size())}
-        , mutexes{std::vector<std::mutex>(envs.size())}
+        , slots_condition_vars{std::vector<std::condition_variable>(envs.size())}
+        , slots_mutexes{std::vector<std::mutex>(envs.size())}
         , counter_mutex{}
         , counter{0}
         , all_done{}
-        , ready{std::vector<BoolWrapper>(get_num_envs())}
+        , slots_ready{std::vector<BoolWrapper>(get_num_envs())}
         , actions {Mat::Zero(get_num_envs(),get_observation_space_size())}
         , observations {Mat::Zero(get_num_envs(),get_observation_space_size())}
         , rewards { Mat::Zero(get_num_envs(), 1)}
@@ -77,14 +78,14 @@ public:
             writeln("main requests slots locks");
             std::vector<std::unique_lock<std::mutex>> locks(get_num_envs());
             for (int i = 0; i < get_num_envs(); ++i) {
-                locks[i] = std::unique_lock<std::mutex>(mutexes[i]);
+                locks[i] = std::unique_lock<std::mutex>(slots_mutexes[i]);
             }
             writeln("main got slots locks");
 
             this->actions=actions;
 
             for (int i = 0; i < get_num_envs(); ++i) {
-                ready[i].value = true;
+                slots_ready[i].value = true;
             }
             std::unique_lock<std::mutex> l(counter_mutex);
             counter=0;
@@ -96,11 +97,11 @@ public:
             writeln("main released slots locks");
         }
 
-        //wake up all threads as actions are ready to process
+        //wake up all threads as actions are slots_ready to process
         writeln("main wakes all");
 
         for (int i = 0; i<get_num_envs(); ++i){
-            condition_vars[i].notify_one();
+            slots_condition_vars[i].notify_one();
         }
 
         writeln("main woke all and waiting for counter mutex");
@@ -141,13 +142,13 @@ public:
 private:
     std::vector<std::shared_ptr<Env>>& envs;
     std::vector<std::thread> threads;
-    std::vector<std::condition_variable> condition_vars;
-    std::vector<std::mutex> mutexes;
+    std::vector<std::condition_variable> slots_condition_vars;
+    std::vector<std::mutex> slots_mutexes;
     bool terminate = false;
     std::mutex counter_mutex;
     int counter;
     std::condition_variable all_done;
-    std::vector<BoolWrapper> ready;
+    std::vector<BoolWrapper> slots_ready;
     Mat actions;
     Mat observations;
     Mat rewards;
@@ -156,7 +157,7 @@ private:
     virtual ~VecEnv(){
         terminate = true;
         for (int i = 0; i<envs.size(); ++i) {
-            condition_vars[i].notify_one();
+            slots_condition_vars[i].notify_one();
             threads[i].join();
         }
     }
@@ -165,10 +166,10 @@ private:
         while (!terminate){
             //wait until new action is available
             {
-                writeln(id + " request lock");
-                std::unique_lock<std::mutex> l(mutexes[id]);
-                writeln(id + " got lock, waiting");
-                condition_vars[id].wait(l, [this,id]{ return ready[id].value || terminate; });
+                writeln(std::to_string(id) + " request lock");
+                std::unique_lock<std::mutex> l(slots_mutexes[id]);
+                writeln(std::to_string(id) + " got lock, waiting");
+                slots_condition_vars[id].wait(l, [this,id]{ return slots_ready[id].value || terminate; });
                 //process action by doing a single step
 
                 if(terminate){
@@ -176,9 +177,9 @@ private:
                 }
 
                 //consume
-                ready[id].value = false;
+                slots_ready[id].value = false;
 
-                writeln("obs[id] = step(a[id]) " + id);
+                writeln("obs[id] = step(a[id]) " + std::to_string(id));
 
                 auto res = envs[id]->step(actions.row(id));
                 observations.row(id)=res[0];
@@ -187,7 +188,7 @@ private:
 
                 l.unlock();
 
-                writeln(id+" woken & finished.");
+                writeln(std::to_string(id)+" woken & finished.");
             }
 
             bool notify_main;
