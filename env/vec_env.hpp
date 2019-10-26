@@ -15,13 +15,27 @@ typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Ma
 
 class VecEnv : public virtual Env{
 public:
+
+    struct BoolWrapper {
+        BoolWrapper():value{false}{}
+        BoolWrapper(bool value):value{value}{}
+        bool value;
+    };
+
     VecEnv(std::vector<std::shared_ptr<Env>>& envs)
         : Env(envs.size())
         , envs{envs}
-        , total_step{0}
         , threads{std::vector<std::thread>(envs.size())}
         , condition_vars{std::vector<std::condition_variable>(envs.size())}
         , mutexes{std::vector<std::mutex>(envs.size())}
+        , counter_mutex{}
+        , counter{0}
+        , all_done{}
+        , ready{std::vector<BoolWrapper>(get_num_envs())}
+        , actions {Mat::Zero(get_num_envs(),get_observation_space_size())}
+        , observations {Mat::Zero(get_num_envs(),get_observation_space_size())}
+        , rewards { Mat::Zero(get_num_envs(), 1)}
+        , dones { Mat::Zero(get_num_envs(), 1)}
     {
         assert(envs.size() > 0);
 
@@ -31,41 +45,56 @@ public:
     }
 
     std::string get_action_space() override {
-        return Env::SPACE_CONTINOUS;
+        return envs[0]->get_action_space();
     }
 
     std::string get_observation_space() override {
-        return Env::SPACE_CONTINOUS;
+        return envs[0]->get_observation_space();
     }
 
     int get_action_space_size() override{
-        return 18;
+        return envs[0]->get_action_space_size();
     }
 
     int get_observation_space_size() override{
-        return 18;
+        return envs[0]->get_action_space_size();
     }
 
+    //sequential due to infrequent use
     Mat reset() override {
-        return Mat::Zero(get_num_envs(),get_observation_space_size());
+        Mat result = Mat::Zero(get_num_envs(),get_observation_space_size());
+
+        for (int i = 0; i<envs.size(); ++i) {
+            result.row(i) = envs[i]->reset();
+        }
+
+        return std::move(result);
     }
 
     std::vector<Mat> step(const Mat &actions) override {
-        ++total_step;
 
-        auto obs = Mat::Zero(get_num_envs(),get_observation_space_size());
-        auto rewards = Mat::Zero(get_num_envs(), 1);
-        Mat dones;
+        {
+            writeln("main requests slots locks");
+            std::vector<std::unique_lock<std::mutex>> locks(get_num_envs());
+            for (int i = 0; i < get_num_envs(); ++i) {
+                locks[i] = std::unique_lock<std::mutex>(mutexes[i]);
+            }
+            writeln("main got slots locks");
 
-        if(total_step%300==0){
-            dones = Mat::Ones(get_num_envs(), 1);
-        } else{
-            dones = Mat::Zero(get_num_envs(), 1);
+            this->actions=actions;
+
+            for (int i = 0; i < get_num_envs(); ++i) {
+                ready[i].value = true;
+            }
+            std::unique_lock<std::mutex> l(counter_mutex);
+            counter=0;
+            l.unlock();
+
+            for (int i = 0; i < get_num_envs(); ++i) {
+                locks[i].unlock();
+            }
+            writeln("main released slots locks");
         }
-
-        std::unique_lock<std::mutex> l(counter_mutex);
-        counter=0;
-        l.unlock();
 
         //wake up all threads as actions are ready to process
         writeln("main wakes all");
@@ -77,22 +106,12 @@ public:
         writeln("main woke all and waiting for counter mutex");
 
         std::unique_lock<std::mutex> l2(counter_mutex);
-        if(counter < get_num_envs()) {
+        while(counter < get_num_envs()) {
             all_done.wait(l2);
         }
         l2.unlock();
 
-
-//        //block return unitl all threads did a step
-//        for (int i = 0; i<get_num_envs(); ++i){
-//            writeln("main requests lock "+std::to_string(i));
-//            std::unique_lock<std::mutex> l(mutexes[i]);
-//            writeln("main got lock "+std::to_string(i)+", waiting");
-//            condition_vars[i].wait(l);
-//            l.unlock();
-//        }
-
-        return {obs,rewards,dones};
+        return {observations,rewards,dones};
     }
 
     Mat get_original_obs(){
@@ -121,7 +140,6 @@ public:
 
 private:
     std::vector<std::shared_ptr<Env>>& envs;
-    long total_step;
     std::vector<std::thread> threads;
     std::vector<std::condition_variable> condition_vars;
     std::vector<std::mutex> mutexes;
@@ -129,6 +147,19 @@ private:
     std::mutex counter_mutex;
     int counter;
     std::condition_variable all_done;
+    std::vector<BoolWrapper> ready;
+    Mat actions;
+    Mat observations;
+    Mat rewards;
+    Mat dones;
+
+    virtual ~VecEnv(){
+        terminate = true;
+        for (int i = 0; i<envs.size(); ++i) {
+            condition_vars[i].notify_one();
+            threads[i].join();
+        }
+    }
 
     void start_env_thread(int id){
         while (!terminate){
@@ -137,28 +168,40 @@ private:
                 writeln(id + " request lock");
                 std::unique_lock<std::mutex> l(mutexes[id]);
                 writeln(id + " got lock, waiting");
-                condition_vars[id].wait(l);
+                condition_vars[id].wait(l, [this,id]{ return ready[id].value || terminate; });
                 //process action by doing a single step
 
-                std::cout << "obs[id] = step(a[id]) " << id << std::endl;
+                if(terminate){
+                    return;
+                }
+
+                //consume
+                ready[id].value = false;
+
+                writeln("obs[id] = step(a[id]) " + id);
+
+                auto res = envs[id]->step(actions.row(id));
+                observations.row(id)=res[0];
+                rewards.row(id)=res[1];
+                dones.row(id)=res[2];
 
                 l.unlock();
 
                 writeln(id+" woken & finished.");
             }
 
-            bool notify_main = false;
+            bool notify_main;
 
             {
                 std::unique_lock<std::mutex> l2(counter_mutex);
                 if (counter < get_num_envs()) {
-                    writeln("Invariant counter<get_num_envs() violated!");
-                    l2.unlock();
-                    assert(false);
-                } else {
                     counter++;
                     notify_main = counter == get_num_envs();
                     l2.unlock();
+                } else {
+                    writeln("Invariant counter<get_num_envs() violated!");
+                    l2.unlock();
+                    assert(false);
                 }
             }
 
