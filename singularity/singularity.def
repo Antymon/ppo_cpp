@@ -7,10 +7,17 @@ From: airl_lab/default/airl_env:tensorflow
     Version v0.0.1
 
 %files
-    ./resources/setup.sh /git/sferes2
+    ./resources/setup.sh /git
     	
 %post
    export LD_LIBRARY_PATH="/workspace/lib:$LD_LIBRARY_PATH"
+
+   cd /git && \
+   rm -rdf sferes2 && \
+   git clone https://gitlab.doc.ic.ac.uk/sb5817/sferes2.git && \
+   mv setup.sh sferes2/ && \
+   cd sferes2 && \
+   git checkout parallel
 
    #install_utilities
 
