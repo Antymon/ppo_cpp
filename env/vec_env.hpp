@@ -23,10 +23,10 @@ public:
         bool value;
     };
 
-    VecEnv(std::vector<std::shared_ptr<Env>>& envs)
+    VecEnv(const std::vector<std::shared_ptr<Env>>& envs)
         : Env(envs.size())
         , envs{envs}
-        , threads{std::vector<std::thread>(envs.size())}
+        , threads{}
         , slots_condition_vars{std::vector<std::condition_variable>(envs.size())}
         , slots_mutexes{std::vector<std::mutex>(envs.size())}
         , counter_mutex{}
@@ -41,7 +41,15 @@ public:
         assert(envs.size() > 0);
 
         for (int i = 0; i<envs.size(); ++i) {
-            threads[i] = std::thread(&VecEnv::start_env_thread, this, i);
+            threads.push_back(std::thread(&VecEnv::start_env_thread, this, i));
+        }
+    }
+
+    virtual ~VecEnv(){
+        terminate = true;
+        for (int i = 0; i<envs.size(); ++i) {
+            slots_condition_vars[i].notify_one();
+            threads[i].join();
         }
     }
 
@@ -139,8 +147,19 @@ public:
         std::cout << msg << std::endl;
     }
 
+    void render() override {
+        writeln("VecEnv::render() not implemented");
+        assert(false);
+    }
+
+    float get_time() override {
+        writeln("VecEnv::get_time() not implemented");
+        assert(false);
+        return -1;
+    }
+
 private:
-    std::vector<std::shared_ptr<Env>>& envs;
+    const std::vector<std::shared_ptr<Env>>& envs;
     std::vector<std::thread> threads;
     std::vector<std::condition_variable> slots_condition_vars;
     std::vector<std::mutex> slots_mutexes;
@@ -153,14 +172,6 @@ private:
     Mat observations;
     Mat rewards;
     Mat dones;
-
-    virtual ~VecEnv(){
-        terminate = true;
-        for (int i = 0; i<envs.size(); ++i) {
-            slots_condition_vars[i].notify_one();
-            threads[i].join();
-        }
-    }
 
     void start_env_thread(int id){
         while (!terminate){

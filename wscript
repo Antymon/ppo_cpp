@@ -43,3 +43,10 @@ def build(bld):
             #use = 'sferes2',
             defines = ['GRAPHIC'],
             target = 'ppo_cpp')
+
+    bld.program(features = 'cxx',
+                source = 'test/vecenv_test.cpp',
+                includes = './test .',
+                uselib = 'ROBOTDART ABSL TBB BOOST EIGEN PTHREAD MPI DART DART_GRAPHIC PROTOBUF TF',
+                defines = ['CATCH_CONFIG_MAIN'],
+                target = '../../../vecenv_test')

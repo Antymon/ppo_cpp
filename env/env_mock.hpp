@@ -4,17 +4,21 @@
 //quasi OpenAI gym env interface
 //
 
-#ifndef PPO_CPP_CART_POLE_ENV_HPP
-#define PPO_CPP_CART_POLE_ENV_HPP
+#ifndef PPO_CPP_MOCK_ENV_HPP
+#define PPO_CPP_MOCK_ENV_HPP
 
 #include <string>
 #include <vector>
 #include <Eigen/Dense>
 
+#include "env.hpp"
+
 typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Mat;
 
-class EnvMock : public virtual Env{
+class EnvMock : public virtual Env
+{
 public:
+
     EnvMock(int num_envs):Env(num_envs), total_step{0}{
 
     }
@@ -71,9 +75,17 @@ public:
 
     }
 
+    void render() override {
+
+    }
+
+    float get_time() override {
+        return 0;
+    }
+
 private:
     long total_step;
 
 };
 
-#endif //PPO_CPP_CART_POLE_ENV_HPP
+#endif //PPO_CPP_MOCK_ENV_HPP
