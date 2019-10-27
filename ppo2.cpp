@@ -105,6 +105,8 @@ int main(int argc, char **argv)
 
     args::ValueFlag<double> duration(parser, "duration", "The total duration of played animation [seconds]", {"duration","du"},5.);
 
+    args::ValueFlag<int> threads(parser, "num threads", "Number of threads used in training", {"threads","n_threads","num_threads","nt"},1);
+
     try
     {
         parser.ParseCLI(argc, argv);
@@ -144,15 +146,24 @@ int main(int argc, char **argv)
 
     load_and_init_robot2();
 
-    std::unique_ptr<HexapodEnv> inner_e;
+    std::shared_ptr<Env> wrapped_env;
+    std::vector<std::shared_ptr<Env>> envs;
 
-    if(closed_loop){
-        inner_e = std::make_unique<HexapodClosedLoopEnv>(reset_noise_scale.Get());
-    } else {
-        inner_e = std::make_unique<HexapodEnv>(1);
+    for (int i =0; i<threads.Get(); ++i){
+        if(closed_loop){
+            envs.push_back(std::make_shared<HexapodClosedLoopEnv>(reset_noise_scale.Get()));
+        } else {
+            envs.push_back(std::make_shared<HexapodEnv>());
+        }
     }
 
-    EnvNormalize env{*inner_e,training};
+    if(threads.Get()>1){
+        wrapped_env = std::make_shared<VecEnv>(envs);
+    } else {
+        wrapped_env = envs[0];
+    }
+
+    EnvNormalize env{*wrapped_env, training};
 
     const std::string final_graph_path{graph_path.Get()};
 
