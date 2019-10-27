@@ -15,10 +15,6 @@ typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Ma
 
 class Env : public virtual ISerializable{
 public:
-    Env(int num_envs):
-        _num_envs{num_envs}
-        {
-    }
 
     virtual std::string get_action_space() = 0;
 
@@ -29,7 +25,7 @@ public:
     virtual int get_observation_space_size() = 0;
 
     virtual int get_num_envs() {
-        return _num_envs;
+        return 1;
     }
 
     virtual Mat reset() = 0;
@@ -56,8 +52,6 @@ public:
     const static std::string SPACE_CONTINOUS;
     const static std::string SPACE_DISCRETE;
 
-private:
-    int _num_envs;
 };
 
 const std::string Env::SPACE_CONTINOUS = "continous";

@@ -26,7 +26,7 @@ public:
             float clip_obs = 10,
             float gamma = 0.99,
             float epsilon = 1e-8)
-            : Env(env.get_num_envs()),
+            : Env(),
             env{env},
             norm_obs{norm_obs},
             norm_reward{norm_reward},

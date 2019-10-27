@@ -31,11 +31,11 @@ public:
     }
 
     explicit VecEnv(const std::vector<std::shared_ptr<Env>>& envs)
-        : Env(envs.size())
+        : Env()
         , envs{envs}
         , threads{}
-        , slots_condition_vars{std::vector<std::condition_variable>(envs.size())}
-        , slots_mutexes{std::vector<std::mutex>(envs.size())}
+        , slots_condition_vars{std::vector<std::condition_variable>(get_num_envs())}
+        , slots_mutexes{std::vector<std::mutex>(get_num_envs())}
         , counter_mutex{}
         , counter{0}
         , all_done{}
@@ -150,6 +150,11 @@ public:
     Mat get_original_rew() override {
         return original_rewards;
     }
+
+    int get_num_envs() override {
+        return static_cast<int>(envs.size());
+    }
+
     void serialize(nlohmann::json& json) override {
 
     }

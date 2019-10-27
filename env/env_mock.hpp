@@ -20,7 +20,7 @@ class EnvMock : public virtual Env
 public:
 
     EnvMock(double scaling_coeff = 0.)
-        : Env(1)
+        : Env()
         , total_step{0}
         , scaling_coeff{scaling_coeff} {
     }
