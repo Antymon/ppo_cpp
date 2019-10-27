@@ -83,12 +83,12 @@ public:
     std::vector<Mat> step(const Mat &actions) override {
 
         {
-            writeln("main requests slots locks",2);
+            //writeln("main requests slots locks");
             std::vector<std::unique_lock<std::mutex>> locks(get_num_envs());
             for (int i = 0; i < get_num_envs(); ++i) {
                 locks[i] = std::unique_lock<std::mutex>(slots_mutexes[i]);
             }
-            writeln("main got slots locks");
+            //writeln("main got slots locks");
 
             this->actions=actions;
 
@@ -102,17 +102,17 @@ public:
             for (int i = 0; i < get_num_envs(); ++i) {
                 locks[i].unlock();
             }
-            writeln("main released slots locks");
+            //writeln("main released slots locks");
         }
 
         //wake up all threads as actions are slots_ready to process
-        writeln("main is going to wake all");
+        //writeln("main is going to wake all");
 
         for (int i = 0; i<get_num_envs(); ++i){
             slots_condition_vars[i].notify_one();
         }
 
-        writeln("main woke all and waiting for counter mutex");
+        //writeln("main woke all and waiting for counter mutex");
 
         std::unique_lock<std::mutex> l2(counter_mutex);
         while(counter < get_num_envs()) {
@@ -120,23 +120,23 @@ public:
         }
         l2.unlock();
 
-        writeln("main done");
-        writeln("obs");
-        std::cout << observations << std::endl;
-        writeln("rewards");
-        std::cout << rewards << std::endl;
+        //writeln("main done");
+        //writeln("obs");
+        //std::cout << observations << std::endl;
+        //writeln("rewards");
+        //std::cout << rewards << std::endl;
         return {observations,rewards,dones};
     }
 
     Mat get_original_obs(){
-        writeln("VecEnv::render() not implemented");
+        //writeln("VecEnv::render() not implemented");
         assert(false);
         auto obs = Mat::Zero(get_num_envs(),get_observation_space_size());
         return std::move(obs);
     }
 
     Mat get_original_rew(){
-        writeln("VecEnv::render() not implemented");
+        //writeln("VecEnv::render() not implemented");
         assert(false);
         auto rewards = Mat::Zero(get_num_envs(), 1);
         return std::move(rewards);
@@ -149,20 +149,20 @@ public:
 
     }
 
-    static void writeln(const std::string& msg, double delay = 0){
-        if(delay > 0) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(delay * 1000)));
-        }
-        std::cout << msg+"\n";
-    }
+//    static void writeln(const std::string& msg, double delay = 0){
+//        if(delay > 0) {
+//            std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(delay * 1000)));
+//        }
+//        std::cout << msg+"\n";
+//    }
 
     void render() override {
-        writeln("VecEnv::render() not implemented");
+        //writeln("VecEnv::render() not implemented");
         assert(false);
     }
 
     float get_time() override {
-        writeln("VecEnv::get_time() not implemented");
+        //writeln("VecEnv::get_time() not implemented");
         assert(false);
         return -1;
     }
@@ -186,21 +186,21 @@ private:
         while (!terminate){
             //wait until new action is available
             {
-                writeln(std::to_string(id) + " requests lock");
+                //writeln(std::to_string(id) + " requests lock");
                 std::unique_lock<std::mutex> l(slots_mutexes[id]);
-                writeln(std::to_string(id) + " got lock, perhaps waiting");
+                //writeln(std::to_string(id) + " got lock, perhaps waiting");
                 slots_condition_vars[id].wait(l, [this,id]{ return slots_ready[id].value || terminate; });
                 //process action by doing a single step
 
                 if(terminate){
-                    writeln(std::to_string(id) + " terminating");
+                    //writeln(std::to_string(id) + " terminating");
                     return;
                 }
 
                 //consume
                 slots_ready[id].value = false;
 
-                writeln(std::to_string(id)+" doing work");
+                //writeln(std::to_string(id)+" doing work",.25);
 
                 auto res = envs[id]->step(actions.row(id));
                 observations.row(id)=res[0];
@@ -209,7 +209,7 @@ private:
 
                 l.unlock();
 
-                writeln(std::to_string(id)+" finished.");
+                //writeln(std::to_string(id)+" finished.");
             }
 
             bool notify_main;
@@ -221,7 +221,7 @@ private:
                     notify_main = counter == get_num_envs();
                     l2.unlock();
                 } else {
-                    writeln("Invariant counter<get_num_envs() violated!");
+                    //writeln("Invariant counter<get_num_envs() violated!");
                     l2.unlock();
                     assert(false);
                 }

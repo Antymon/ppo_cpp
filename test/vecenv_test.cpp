@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <chrono>
 
 #include "catch.hpp"
 
@@ -20,6 +21,9 @@ void simulate_steps(const int steps, const int num_threads){
     }
 
     VecEnv ve {envs};
+
+    //imitating setup penalty
+    std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(200)));
 
     for (int i =0; i<steps; ++i){
         Mat actions {Mat::Zero(ve.get_num_envs(),ve.get_observation_space_size())};
@@ -44,9 +48,13 @@ void simulate_steps(const int steps, const int num_threads){
     }
 }
 
-
+//this test is non-deterministic
+//if it fails, there is a problem somewhere
+//if it succeeds it doesn't give a guarantee of correctness
 TEST_CASE( "VecEnv step results", "[Threading]" )
 {
-    simulate_steps(1,16);
+    simulate_steps(5,1);
+    simulate_steps(5,2);
+    simulate_steps(5,16);
 }
 
