@@ -83,7 +83,7 @@ public:
     std::vector<Mat> step(const Mat &actions) override {
 
         {
-            writeln("main requests slots locks");
+            writeln("main requests slots locks",2);
             std::vector<std::unique_lock<std::mutex>> locks(get_num_envs());
             for (int i = 0; i < get_num_envs(); ++i) {
                 locks[i] = std::unique_lock<std::mutex>(slots_mutexes[i]);
