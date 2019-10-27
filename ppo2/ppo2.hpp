@@ -183,7 +183,7 @@ public:
         for (int step = n_steps - 1; step >= 0; --step) {
             if (step == n_steps - 1) {
 
-                nextnonterminal = Mat::Ones(1, num_envs) - dones;
+                nextnonterminal = Mat::Ones(1, num_envs) - dones.transpose();
                 nextvalues = last_values.transpose();
             } else {
                 nextnonterminal = Mat::Ones(1, num_envs) - mb.dones->row(step + 1);
