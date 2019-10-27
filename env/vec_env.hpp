@@ -23,7 +23,14 @@ public:
         bool value;
     };
 
-    VecEnv(const std::vector<std::shared_ptr<Env>>& envs)
+    static void writeln(const std::string& msg, double delay = 0){
+        if(delay > 0) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(delay * 1000)));
+        }
+        std::cout << msg+"\n";
+    }
+
+    explicit VecEnv(const std::vector<std::shared_ptr<Env>>& envs)
         : Env(envs.size())
         , envs{envs}
         , threads{}
@@ -33,21 +40,27 @@ public:
         , counter{0}
         , all_done{}
         , slots_ready{std::vector<BoolWrapper>(get_num_envs())}
-        , actions {Mat::Zero(get_num_envs(),get_observation_space_size())}
+        , cached_actions {Mat::Zero(get_num_envs(),get_observation_space_size())}
         , observations {Mat::Zero(get_num_envs(),get_observation_space_size())}
         , rewards { Mat::Zero(get_num_envs(), 1)}
         , dones { Mat::Zero(get_num_envs(), 1)}
+        , original_rewards { Mat::Zero(get_num_envs(), 1)}
     {
-        assert(envs.size() > 0);
+        assert(!envs.empty());
 
-        for (int i = 0; i<envs.size(); ++i) {
-            threads.push_back(std::thread(&VecEnv::start_env_thread, this, i));
+        for (unsigned long i = 0; i<envs.size(); ++i) {
+            threads.emplace_back(&VecEnv::start_env_thread, this, i);
         }
     }
 
+    //to easily avoid problems with vector of threads remove copy ops
+    //move ctor and assign are not generated in such case
+    VecEnv(const VecEnv&) = delete;
+    VecEnv & operator=(const VecEnv&) = delete;
+
     virtual ~VecEnv(){
         terminate = true;
-        for (int i = 0; i<envs.size(); ++i) {
+        for (unsigned long i = 0; i<envs.size(); ++i) {
             slots_condition_vars[i].notify_one();
             threads[i].join();
         }
@@ -73,7 +86,7 @@ public:
     Mat reset() override {
         Mat result = Mat::Zero(get_num_envs(),get_observation_space_size());
 
-        for (int i = 0; i<envs.size(); ++i) {
+        for (unsigned long i = 0; i<envs.size(); ++i) {
             result.row(i) = envs[i]->reset();
         }
 
@@ -90,7 +103,7 @@ public:
             }
             //writeln("main got slots locks");
 
-            this->actions=actions;
+            this->cached_actions=actions;
 
             for (int i = 0; i < get_num_envs(); ++i) {
                 slots_ready[i].value = true;
@@ -128,18 +141,14 @@ public:
         return {observations,rewards,dones};
     }
 
-    Mat get_original_obs(){
-        //writeln("VecEnv::render() not implemented");
+    Mat get_original_obs() override {
+        writeln("VecEnv::render() not implemented");
         assert(false);
-        auto obs = Mat::Zero(get_num_envs(),get_observation_space_size());
-        return std::move(obs);
+        return Mat::Zero(get_num_envs(),get_observation_space_size());
     }
 
-    Mat get_original_rew(){
-        //writeln("VecEnv::render() not implemented");
-        assert(false);
-        auto rewards = Mat::Zero(get_num_envs(), 1);
-        return std::move(rewards);
+    Mat get_original_rew() override {
+        return original_rewards;
     }
     void serialize(nlohmann::json& json) override {
 
@@ -148,13 +157,6 @@ public:
     void deserialize(nlohmann::json& json) override {
 
     }
-
-//    static void writeln(const std::string& msg, double delay = 0){
-//        if(delay > 0) {
-//            std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(delay * 1000)));
-//        }
-//        std::cout << msg+"\n";
-//    }
 
     void render() override {
         //writeln("VecEnv::render() not implemented");
@@ -177,10 +179,11 @@ private:
     int counter;
     std::condition_variable all_done;
     std::vector<BoolWrapper> slots_ready;
-    Mat actions;
+    Mat cached_actions;
     Mat observations;
     Mat rewards;
     Mat dones;
+    Mat original_rewards;
 
     void start_env_thread(int id){
         while (!terminate){
@@ -202,10 +205,12 @@ private:
 
                 //writeln(std::to_string(id)+" doing work",.25);
 
-                auto res = envs[id]->step(actions.row(id));
+                auto res = envs[id]->step(cached_actions.row(id));
                 observations.row(id)=res[0];
                 rewards.row(id)=res[1];
                 dones.row(id)=res[2];
+
+                original_rewards.row(id)=envs[id]->get_original_rew();
 
                 l.unlock();
 
