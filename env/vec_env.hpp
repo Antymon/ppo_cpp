@@ -106,7 +106,7 @@ public:
         }
 
         //wake up all threads as actions are slots_ready to process
-        writeln("main wakes all");
+        writeln("main is going to wake all");
 
         for (int i = 0; i<get_num_envs(); ++i){
             slots_condition_vars[i].notify_one();
@@ -120,15 +120,24 @@ public:
         }
         l2.unlock();
 
+        writeln("main done");
+        writeln("obs");
+        std::cout << observations << std::endl;
+        writeln("rewards");
+        std::cout << rewards << std::endl;
         return {observations,rewards,dones};
     }
 
     Mat get_original_obs(){
+        writeln("VecEnv::render() not implemented");
+        assert(false);
         auto obs = Mat::Zero(get_num_envs(),get_observation_space_size());
         return std::move(obs);
     }
 
     Mat get_original_rew(){
+        writeln("VecEnv::render() not implemented");
+        assert(false);
         auto rewards = Mat::Zero(get_num_envs(), 1);
         return std::move(rewards);
     }
@@ -144,7 +153,7 @@ public:
         if(delay > 0) {
             std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(delay * 1000)));
         }
-        std::cout << msg << std::endl;
+        std::cout << msg+"\n";
     }
 
     void render() override {
@@ -177,20 +186,21 @@ private:
         while (!terminate){
             //wait until new action is available
             {
-                writeln(std::to_string(id) + " request lock");
+                writeln(std::to_string(id) + " requests lock");
                 std::unique_lock<std::mutex> l(slots_mutexes[id]);
-                writeln(std::to_string(id) + " got lock, waiting");
+                writeln(std::to_string(id) + " got lock, perhaps waiting");
                 slots_condition_vars[id].wait(l, [this,id]{ return slots_ready[id].value || terminate; });
                 //process action by doing a single step
 
                 if(terminate){
+                    writeln(std::to_string(id) + " terminating");
                     return;
                 }
 
                 //consume
                 slots_ready[id].value = false;
 
-                writeln("obs[id] = step(a[id]) " + std::to_string(id));
+                writeln(std::to_string(id)+" doing work");
 
                 auto res = envs[id]->step(actions.row(id));
                 observations.row(id)=res[0];
@@ -199,7 +209,7 @@ private:
 
                 l.unlock();
 
-                writeln(std::to_string(id)+" woken & finished.");
+                writeln(std::to_string(id)+" finished.");
             }
 
             bool notify_main;

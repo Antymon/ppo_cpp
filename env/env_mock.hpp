@@ -19,8 +19,10 @@ class EnvMock : public virtual Env
 {
 public:
 
-    EnvMock(int num_envs):Env(num_envs), total_step{0}{
-
+    EnvMock(double scaling_coeff = 0.)
+        : Env(1)
+        , total_step{0}
+        , scaling_coeff{scaling_coeff} {
     }
 
     std::string get_action_space() override {
@@ -32,22 +34,22 @@ public:
     }
 
     int get_action_space_size() override{
-        return 2;
+        return 18;
     }
 
     int get_observation_space_size() override{
-        return 4;
+        return 18;
     }
 
     Mat reset() override {
-        return Mat::Zero(get_num_envs(),get_observation_space_size());
+        return scaling_coeff*Mat::Ones(get_num_envs(),get_observation_space_size());
     }
 
     std::vector<Mat> step(const Mat &actions) override {
         ++total_step;
 
-        auto obs = Mat::Zero(get_num_envs(),get_observation_space_size());
-        auto rewards = Mat::Zero(get_num_envs(), 1);
+        auto obs = scaling_coeff*Mat::Ones(get_num_envs(),get_observation_space_size());
+        auto rewards = scaling_coeff*Mat::Ones(get_num_envs(), 1);
         Mat dones;
 
         if(total_step%300==0){
@@ -59,12 +61,12 @@ public:
     }
 
     Mat get_original_obs(){
-        auto obs = Mat::Zero(get_num_envs(),get_observation_space_size());
+        auto obs = scaling_coeff*Mat::Ones(get_num_envs(),get_observation_space_size());
         return std::move(obs);
     }
 
     Mat get_original_rew(){
-        auto rewards = Mat::Zero(get_num_envs(), 1);
+        auto rewards = scaling_coeff*Mat::Ones(get_num_envs(), 1);
         return std::move(rewards);
     }
     void serialize(nlohmann::json& json) override {
@@ -85,6 +87,8 @@ public:
 
 private:
     long total_step;
+    double scaling_coeff;
+
 
 };
 

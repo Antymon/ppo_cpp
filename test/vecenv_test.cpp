@@ -11,14 +11,20 @@
 #include <memory>
 
 typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Mat;
-typedef Eigen::RowVectorXf RowVector;
 
 TEST_CASE( "VecEnv lifetime", "[Threading]" )
 {
-    auto em = std::make_shared<EnvMock>(1);
+    const int num_threads = 1;
+
     std::vector<std::shared_ptr<Env>> envs;
-    envs.push_back(em);
+    for (int i =0; i<num_threads; ++i){
+        envs.push_back(std::make_shared<EnvMock>(i+1));
+    }
 
     VecEnv ve {envs};
+
+    Mat actions {Mat::Zero(ve.get_num_envs(),ve.get_observation_space_size())};
+
+    ve.step(actions);
 }
 
