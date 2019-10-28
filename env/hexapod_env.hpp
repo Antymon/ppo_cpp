@@ -38,7 +38,7 @@ void load_and_init_robot2() {
 class HexapodEnv : public virtual Env
 {
 public:
-    explicit HexapodEnv(float step_duration = 0.015, float simulation_duration = 5, float min_action_value = -1, float max_action_value = 1, bool init_reset = true):
+    explicit HexapodEnv(bool init_reset, float step_duration = 0.015, float simulation_duration = 5, float min_action_value = -1, float max_action_value = 1):
         Env(),
         step_duration{step_duration},
         simulation_duration{simulation_duration},

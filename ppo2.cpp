@@ -149,15 +149,17 @@ int main(int argc, char **argv)
     std::shared_ptr<Env> wrapped_env;
     std::vector<std::shared_ptr<Env>> envs;
 
+    bool multi_env = threads.Get()>1;
+
     for (int i =0; i<threads.Get(); ++i){
         if(closed_loop){
-            envs.push_back(std::make_shared<HexapodClosedLoopEnv>(reset_noise_scale.Get()));
+            envs.push_back(std::make_shared<HexapodClosedLoopEnv>(reset_noise_scale.Get(),!multi_env));
         } else {
-            envs.push_back(std::make_shared<HexapodEnv>());
+            envs.push_back(std::make_shared<HexapodEnv>(!multi_env));
         }
     }
 
-    if(threads.Get()>1){
+    if(multi_env){
         wrapped_env = std::make_shared<VecEnv>(envs);
     } else {
         wrapped_env = envs[0];

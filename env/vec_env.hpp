@@ -51,6 +51,15 @@ public:
         for (unsigned long i = 0; i<envs.size(); ++i) {
             threads.emplace_back(&VecEnv::start_env_thread, this, i);
         }
+
+        //writeln("main initialized all and waiting for counter mutex");
+
+        std::unique_lock<std::mutex> l2(counter_mutex);
+        while(counter < get_num_envs()) {
+            all_done.wait(l2);
+        }
+        counter = 0;
+        l2.unlock();
     }
 
     //to easily avoid problems with vector of threads remove copy ops
@@ -82,12 +91,15 @@ public:
         return envs[0]->get_action_space_size();
     }
 
-    //sequential due to infrequent use
+    //THIS IS NOT CALLING INTO RESETS OF SUBENV
     Mat reset() override {
+
+        writeln("VecEnv::reset() called");
+
         Mat result = Mat::Zero(get_num_envs(),get_observation_space_size());
 
         for (unsigned long i = 0; i<envs.size(); ++i) {
-            result.row(i) = envs[i]->reset();
+            result.row(i) = envs[i]->get_original_obs();
         }
 
         return std::move(result);
@@ -142,7 +154,7 @@ public:
     }
 
     Mat get_original_obs() override {
-        writeln("VecEnv::render() not implemented");
+        writeln("VecEnv::get_original_obs() not implemented");
         assert(false);
         return Mat::Zero(get_num_envs(),get_observation_space_size());
     }
@@ -164,12 +176,12 @@ public:
     }
 
     void render() override {
-        //writeln("VecEnv::render() not implemented");
+        writeln("VecEnv::render() not implemented");
         assert(false);
     }
 
     float get_time() override {
-        //writeln("VecEnv::get_time() not implemented");
+        writeln("VecEnv::get_time() not implemented");
         assert(false);
         return -1;
     }
@@ -191,6 +203,28 @@ private:
     Mat original_rewards;
 
     void start_env_thread(int id){
+
+        bool notify_main2;
+
+        {
+            envs[id]->reset();
+
+            std::unique_lock<std::mutex> l2(counter_mutex);
+            if (counter < get_num_envs()) {
+                counter++;
+                notify_main2 = counter == get_num_envs();
+                l2.unlock();
+            } else {
+                writeln("Invariant counter<get_num_envs() violated! @init");
+                l2.unlock();
+                assert(false);
+            }
+        }
+
+        if(notify_main2){
+            all_done.notify_one();
+        }
+
         while (!terminate){
             //wait until new action is available
             {
