@@ -38,11 +38,11 @@ void load_and_init_robot2() {
 class HexapodEnv : public virtual Env
 {
 public:
-    HexapodEnv(float step_duration = 0.015, float simulation_duration = 5, float min_action_value = -1, float max_action_value = 1, bool init_reset = true):
+    explicit HexapodEnv(float step_duration = 0.015, float simulation_duration = 5, float min_action_value = -1, float max_action_value = 1, bool init_reset = true):
         Env(),
         step_duration{step_duration},
         simulation_duration{simulation_duration},
-        simulation{step_duration},
+
         min_action_value{min_action_value},
         max_action_value{max_action_value},
         reward_accumulator{0},
@@ -50,16 +50,6 @@ public:
         old_rew{Mat::Zero(get_num_envs(),1)}
         //actions_clamp{1,action_space_size,min_action_value,max_action_value}
     {
-
-#ifdef GRAPHIC
-        simulation.set_graphics(std::make_shared<robot_dart::graphics::Graphics>(simulation.world()));
-        std::static_pointer_cast<robot_dart::graphics::Graphics>(simulation.graphics())->look_at({0.5, 3., 0.75}, {0.5, 0., 0.2});
-#endif
-        simulation.world()->getConstraintSolver()->setCollisionDetector(
-                dart::collision::BulletCollisionDetector::create());
-
-        simulation.add_floor();
-
         if(init_reset) {
             reset();
         }
@@ -87,12 +77,23 @@ public:
 
         if (local_robot) {
             local_robot->clear_controllers();
+
+            simulation.clear_robots();
+            local_robot.reset();
+            simulation.world()->reset();
+            simulation.world()->setTime(0);
         }
 
-        simulation.clear_robots();
-        local_robot.reset();
-        simulation.world()->reset();
-        simulation.world()->setTime(0);
+        simulation=robot_dart::RobotDARTSimu(step_duration);
+
+#ifdef GRAPHIC
+        simulation.set_graphics(std::make_shared<robot_dart::graphics::Graphics>(simulation.world()));
+        std::static_pointer_cast<robot_dart::graphics::Graphics>(simulation.graphics())->look_at({0.5, 3., 0.75}, {0.5, 0., 0.2});
+#endif
+        simulation.world()->getConstraintSolver()->setCollisionDetector(
+                dart::collision::BulletCollisionDetector::create());
+
+        simulation.add_floor();
 
         local_robot = global2::global_robot->clone();
         local_robot->skeleton()->setPosition(5, 0.15);
@@ -237,7 +238,6 @@ private:
 
     float step_duration;
     float simulation_duration;
-    robot_dart::RobotDARTSimu simulation;
     float min_action_value;
     float max_action_value;
     float reward_accumulator;
@@ -246,6 +246,9 @@ private:
 protected:
     Mat old_obs;
     Mat old_rew;
+
+private:
+    robot_dart::RobotDARTSimu simulation;
 };
 
 #endif //PPO_CPP_HEXAPOD_ENV_HPP
