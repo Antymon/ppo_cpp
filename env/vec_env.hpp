@@ -231,7 +231,7 @@ private:
                     notify_main = counter == get_num_envs();
                     l2.unlock();
                 } else {
-                    //writeln("Invariant counter<get_num_envs() violated!");
+                    writeln("Invariant counter<get_num_envs() violated!");
                     l2.unlock();
                     assert(false);
                 }

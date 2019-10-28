@@ -211,7 +211,7 @@ int main(int argc, char **argv)
         playback(env,algorithm,verbose.Get(), playback_steps);
     }
 
-
+    global2::global_robot.reset();
 
     return 0;
 }
