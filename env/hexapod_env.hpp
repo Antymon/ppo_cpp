@@ -73,27 +73,34 @@ public:
 
     Mat reset() override {
 
-        //std::cout << "reset(): time: " << simulation.world()->getTime() << " \n";
+        //std::cout << "reset(): time: " << simulation->world()->getTime() << " \n";
 
         if (local_robot) {
             local_robot->clear_controllers();
 
-            simulation.clear_robots();
+            simulation->clear_robots();
+            simulation->clear_descriptors();
+
+            auto world = simulation->world();
+
+            world->removeAllSkeletons();
+            world->removeAllSimpleFrames();
+            world->reset();
+
+            simulation.reset();
             local_robot.reset();
-            simulation.world()->reset();
-            simulation.world()->setTime(0);
         }
 
-        simulation=robot_dart::RobotDARTSimu(step_duration);
+        simulation=std::make_unique<robot_dart::RobotDARTSimu>(step_duration);
 
 #ifdef GRAPHIC
-        simulation.set_graphics(std::make_shared<robot_dart::graphics::Graphics>(simulation.world()));
-        std::static_pointer_cast<robot_dart::graphics::Graphics>(simulation.graphics())->look_at({0.5, 3., 0.75}, {0.5, 0., 0.2});
+        simulation->set_graphics(std::make_shared<robot_dart::graphics::Graphics>(simulation->world()));
+        std::static_pointer_cast<robot_dart::graphics::Graphics>(simulation->graphics())->look_at({0.5, 3., 0.75}, {0.5, 0., 0.2});
 #endif
-        simulation.world()->getConstraintSolver()->setCollisionDetector(
+        simulation->world()->getConstraintSolver()->setCollisionDetector(
                 dart::collision::BulletCollisionDetector::create());
 
-        simulation.add_floor();
+        simulation->add_floor();
 
         local_robot = global2::global_robot->clone();
         local_robot->skeleton()->setPosition(5, 0.15);
@@ -106,7 +113,7 @@ public:
         std::static_pointer_cast<robot_dart::control::HexaControl>(local_robot->controllers()[0])
                 ->set_h_params(std::vector<double>(1, step_duration));
 
-        simulation.add_robot(local_robot);
+        simulation->add_robot(local_robot);
 
         reward_accumulator = 0;
         initial_position = local_robot->skeleton()->getPositions().head(6).tail(3).cast<float>();
@@ -151,7 +158,7 @@ public:
 
         local_robot->skeleton()->setCommands(commands);
 
-        simulation.world()->step(false);
+        simulation->world()->step(false);
 
         Eigen::Vector3f pos_after_step {local_robot->skeleton()->getPositions().head(6).tail(3).cast<float>()};
 
@@ -198,11 +205,11 @@ public:
     }
 
     void render() override {
-        simulation.graphics()->refresh();
+        simulation->graphics()->refresh();
     }
 
     float get_time() override {
-        return simulation.world()->getTime();
+        return simulation->world()->getTime();
     }
 
     Mat get_original_obs() override {
@@ -248,7 +255,7 @@ protected:
     Mat old_rew;
 
 private:
-    robot_dart::RobotDARTSimu simulation;
+    std::unique_ptr<robot_dart::RobotDARTSimu> simulation;
 };
 
 #endif //PPO_CPP_HEXAPOD_ENV_HPP

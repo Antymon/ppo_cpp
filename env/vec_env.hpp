@@ -252,7 +252,6 @@ private:
                 original_rewards.row(id)=envs[id]->get_original_rew();
 
                 l.unlock();
-
                 //writeln(std::to_string(id)+" finished.");
             }
 
