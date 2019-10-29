@@ -47,9 +47,20 @@ public:
         max_action_value{max_action_value},
         reward_accumulator{0},
         old_obs{},
-        old_rew{Mat::Zero(get_num_envs(),1)}
+        old_rew{Mat::Zero(get_num_envs(),1)},
         //actions_clamp{1,action_space_size,min_action_value,max_action_value}
+        simulation{std::make_unique<robot_dart::RobotDARTSimu>(step_duration)}
+
     {
+#ifdef GRAPHIC
+        simulation->set_graphics(std::make_shared<robot_dart::graphics::Graphics>(simulation->world()));
+        std::static_pointer_cast<robot_dart::graphics::Graphics>(simulation->graphics())->look_at({0.5, 3., 0.75}, {0.5, 0., 0.2});
+#endif
+        simulation->world()->getConstraintSolver()->setCollisionDetector(
+                dart::collision::BulletCollisionDetector::create());
+
+        simulation->add_floor();
+
         if(init_reset) {
             reset();
         }
@@ -83,24 +94,16 @@ public:
 
             auto world = simulation->world();
 
-            world->removeAllSkeletons();
-            world->removeAllSimpleFrames();
             world->reset();
+            world->setTime(0);
 
-            simulation.reset();
             local_robot.reset();
+        } else {
+            std::cout << "norob" << std::endl;
         }
 
-        simulation=std::make_unique<robot_dart::RobotDARTSimu>(step_duration);
 
-#ifdef GRAPHIC
-        simulation->set_graphics(std::make_shared<robot_dart::graphics::Graphics>(simulation->world()));
-        std::static_pointer_cast<robot_dart::graphics::Graphics>(simulation->graphics())->look_at({0.5, 3., 0.75}, {0.5, 0., 0.2});
-#endif
-        simulation->world()->getConstraintSolver()->setCollisionDetector(
-                dart::collision::BulletCollisionDetector::create());
 
-        simulation->add_floor();
 
         local_robot = global2::global_robot->clone();
         local_robot->skeleton()->setPosition(5, 0.15);
