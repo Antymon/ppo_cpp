@@ -14,7 +14,7 @@ include_directories("/usr/local/include") #dart
 include_directories("/home/szymon/robot_dart/src") #robot_dart
 
 add_executable(test test/test_adventages.cpp test/network_loader.hpp test/main_tests.cpp)
-add_executable(ppo_cpp ppo2.cpp env/hexapod_env.hpp env/env_normalize.hpp common/matrix_clamp.hpp args.hxx json.hpp common/serializable.hpp env/hexapod_closed_loop_env.hpp)
+add_executable(ppo_cpp ppo2.cpp env/hexapod_env.hpp env/env_normalize.hpp common/matrix_clamp.hpp args.hxx json.hpp common/serializable.hpp env/hexapod_closed_loop_env.hpp ppo2/runner.hpp)
 add_executable(test2 test/main2.cpp test/main_tests.cpp)
 add_executable(test3 test/main3.cpp test/main_tests.cpp)
 add_executable(test4 test/main4.cpp test/main_tests.cpp)

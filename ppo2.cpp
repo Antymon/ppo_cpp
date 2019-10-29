@@ -105,7 +105,7 @@ int main(int argc, char **argv)
 
     args::ValueFlag<double> duration(parser, "duration", "The total duration of played animation [seconds]", {"duration","du"},5.);
 
-    args::ValueFlag<int> threads(parser, "num threads", "Number of threads used in training", {"threads","n_threads","num_threads","nt"},1);
+    args::ValueFlag<int> threads(parser, "num threads", "Number of threads used in training", {'j',"jobs","threads","n_threads","num_threads","nt"},1);
 
     try
     {
