@@ -15,10 +15,10 @@
 
 typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Mat;
 
-class EnvNormalize : public virtual Env {
+class EnvNormalize : public Env {
 public:
-    explicit EnvNormalize(
-            Env &env,
+    EnvNormalize(
+            std::unique_ptr<Env> env,
             bool training,
             bool norm_obs = true,
             bool norm_reward = true,
@@ -26,43 +26,43 @@ public:
             float clip_obs = 10,
             float gamma = 0.99,
             float epsilon = 1e-8)
-            : Env(env.get_num_envs()),
-            env{env},
+            : Env(env->get_num_envs()),
+            env{std::move(env)},
             norm_obs{norm_obs},
             norm_reward{norm_reward},
-            ret{Mat::Zero(env.get_num_envs(),1)},
+            ret{Mat::Zero(this->env->get_num_envs(),1)},
             gamma{gamma},
             epsilon{epsilon},
-            obs_rms{RunningStatistics(env.get_observation_space_size())},
+            obs_rms{RunningStatistics(this->env->get_observation_space_size())},
             ret_rms{},
-            clamp_obs{env.get_num_envs(),env.get_observation_space_size(),clip_obs},
+            clamp_obs{this->env->get_num_envs(),this->env->get_observation_space_size(),clip_obs},
             clamp_rewards{ret,clip_reward},
             ret_like_ones{Mat::Ones(ret.rows(),ret.cols())},
             training{training}
     {}
 
     std::string get_action_space() override {
-        return env.get_action_space();
+        return env->get_action_space();
     }
 
     std::string get_observation_space() override {
-        return env.get_observation_space();
+        return env->get_observation_space();
     }
 
     int get_action_space_size() override {
-        return env.get_action_space_size();
+        return env->get_action_space_size();
     }
 
     int get_observation_space_size() override {
-        return env.get_observation_space_size();
+        return env->get_observation_space_size();
     }
 
     int get_num_envs() override {
-        return env.get_num_envs();
+        return env->get_num_envs();
     }
 
     std::vector<Mat> step(const Mat &actions) override {
-        const std::vector<Mat>& results = env.step(actions);
+        const std::vector<Mat>& results = env->step(actions);
 
         Mat rews {results[1]};
 
@@ -109,26 +109,26 @@ public:
     }
 
     Mat reset() override {
-        const Mat& obs = env.reset();
+        const Mat& obs = env->reset();
 
         ret = Mat::Zero(get_num_envs(),1);
         return _normalize_observation(obs);
     }
 
     void render() override {
-        env.render();
+        env->render();
     }
 
     float get_time() override {
-        return env.get_time();
+        return env->get_time();
     }
 
     Mat get_original_obs() override{
-        return env.get_original_obs();
+        return env->get_original_obs();
     }
 
     Mat get_original_rew() override{
-        return env.get_original_rew();
+        return env->get_original_rew();
     }
 
     void serialize(nlohmann::json& json) override {
@@ -144,7 +144,7 @@ public:
     }
 
 private:
-    Env& env;
+    std::unique_ptr<Env> env;
     bool norm_obs;
     bool norm_reward;
     Mat ret;

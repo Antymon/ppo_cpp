@@ -19,6 +19,7 @@ public:
         _num_envs{num_envs}
         {
     }
+    virtual ~Env(){}
 
     virtual std::string get_action_space() = 0;
 

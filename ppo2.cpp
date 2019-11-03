@@ -132,7 +132,6 @@ int main(int argc, char **argv)
     srand(seed);
     std::cout << "seed: " << seed << std::endl;
 
-
     auto seconds = time (nullptr);
     std::string run_id {id?id.Get():("ppo_"+std::to_string(seconds))};
     std::string tb_path {save_path.Get()+"/tensorboard/"+run_id+"/"};
@@ -143,7 +142,7 @@ int main(int argc, char **argv)
 
     load_and_init_robot2();
 
-    std::unique_ptr<HexapodEnv> inner_e;
+    std::unique_ptr<Env> inner_e;
 
     if(closed_loop){
         inner_e = std::make_unique<HexapodClosedLoopEnv>(reset_noise_scale.Get());
@@ -151,7 +150,7 @@ int main(int argc, char **argv)
         inner_e = std::make_unique<HexapodEnv>(1);
     }
 
-    EnvNormalize env{*inner_e,training};
+    EnvNormalize env{std::move(inner_e),training};
 
     const std::string final_graph_path{graph_path.Get()};
 

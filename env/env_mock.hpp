@@ -13,7 +13,7 @@
 
 typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Mat;
 
-class EnvMock : public virtual Env{
+class EnvMock : public Env{
 public:
     EnvMock(int num_envs):Env(num_envs), total_step{0}{
 

@@ -35,7 +35,7 @@ void load_and_init_robot2() {
     std::cout << "End init Robot" << std::endl; //Print End init Robot
 }
 
-class HexapodEnv : public virtual Env
+class HexapodEnv : public Env
 {
 public:
     HexapodEnv(int num_envs, float step_duration = 0.015, float simulation_duration = 5, float min_action_value = -1, float max_action_value = 1, bool init_reset = true):
