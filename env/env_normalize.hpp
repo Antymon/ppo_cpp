@@ -134,6 +134,7 @@ public:
     void serialize(nlohmann::json& json) override {
         obs_rms.serialize(json["obs_rms"]);
         ret_rms.serialize(json["ret_rms"]);
+        env->serialize(json);
     }
 
     void deserialize(nlohmann::json& json) override {
@@ -141,6 +142,7 @@ public:
         //std::cout << "json" <<json << std::endl;
         obs_rms.deserialize(json["obs_rms"]);
         ret_rms.deserialize(json["ret_rms"]);
+        env->deserialize(json);
     }
 
 private:
