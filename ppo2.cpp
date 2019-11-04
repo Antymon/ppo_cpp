@@ -101,6 +101,7 @@ int main(int argc, char **argv)
     args::Flag closed_loop(parser,"closed loop environment", "If set, closed-loop hexapod environment will be used, open-loop by default",{"closed_loop","closed-loop","cl"});
 
     args::Flag verbose(parser,"verbose", "output additional logs to the console",{'v',"verbose"});
+    args::Flag resume(parser,"resume", "flag signalling resuming",{'r',"resume"});
 
     args::ValueFlag<double> duration(parser, "duration", "The total duration of played animation [seconds]", {"duration","du"},5.);
 
@@ -136,7 +137,7 @@ int main(int argc, char **argv)
     std::string run_id {id?id.Get():("ppo_"+std::to_string(seconds))};
     std::string tb_path {save_path.Get()+"/tensorboard/"+run_id+"/"};
 
-    bool training = !load_path;
+    bool training = !load_path || resume;
 //    std::cout << "load_path: " << load_path.Get() << std::endl;
 //    std::cout << "training: " << training << std::endl;
 
@@ -144,6 +145,7 @@ int main(int argc, char **argv)
 
     std::unique_ptr<Env> inner_e;
 
+    //TODO: environment selection should be recoverable from serialization as well
     if(closed_loop){
         inner_e = std::make_unique<HexapodClosedLoopEnv>(reset_noise_scale.Get());
     } else {
@@ -161,6 +163,11 @@ int main(int argc, char **argv)
     PPO2 algorithm {final_graph_path,env,
                     .99,num_batch_steps.Get(),entropy.Get(),learning_rate.Get(),.5,.5,.95,32,num_epochs.Get(),clip_range.Get(),-1,tb_path
     };
+
+
+    if(load_path){
+        algorithm.load(load_path.Get());
+    }
 
     if(training) {
         //shell-dependant timestamped directory creation
@@ -191,14 +198,13 @@ int main(int argc, char **argv)
         algorithm.learn(int_steps,total_saves,checkpoint_path);
 
     } else {
-        algorithm.load(load_path.Get());
 
         const int playback_steps = static_cast<int>(duration.Get()/0.015);
 
         playback(env,algorithm,verbose.Get(), playback_steps);
     }
 
-
+    global2::global_robot.reset();
 
     return 0;
 }
