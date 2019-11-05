@@ -1,16 +1,58 @@
-User Guide
+PPO_CPP
 ==========
 
-Overview
+What is it?
 --------
+PPO_CPP is a proof-of-concept C++ version of a Proximal Policy Optimization algorithm @Schulman2017 with some additions.
+It was partially ported from Stable Baselines @Hill2018 (Deep Reinforcement Learning suite)
+with elements of OpenAI Gym framework @Brockman2016, in a form of a Tensorflow graph executor. It additionally
+features an example environment based on DART simulation engine with a hexapod robot tasked to walk as far as
+possible along X axis.
 
-The base setup used to develop and run elements of this project
-(therefore the recommended setup) includes:
+Why?
+--------
+Performance. The interesting thing is that PPO_CPP executes 2~3 times faster than corresponding Python implementation when running on the
+same environment. Originally, however, PPO_CPP was setup for the sake of DRL/Neuroevolution comparison in an unpublished yet project.
+
+Is it optimized?
+--------
+Not at all. Particularly in the multithreaded case there might be some easy wins to further boost performance.
+
+How was it tested so far?
+--------
+Single-threaded version was run in many instances for grand total of 50 000 to 100 000 CPU hours on an HPC cluster yielding believable results.
+
+How can I use it for my work?
+--------
+You should be able to easily check the examples below, however if you want to use it in different settings you will probably need 3 things:
+-   Make your environment inherit from Env abstract class under `env\env.hpp`
+-   Modify or replace main `ppo2.cpp` which creates instance of an environment and passes it to PPO
+-   Create own computational graph and potentially make some small modifications to the core algorithm if using more involved
+    policies (currently implementation supports only MLP policies). Graph generation is mentioned below.
+
+Single or multi-threaded?
+--------
+At the moment multi-threaded version lives on the parallel branch, because of the example environment which proved to be annoyingly leaky in this setup.
+
+State of the project
+--------
+This is just a proof-of-concept which could benefit from number of improvements. Let me know if this project is useful for you!
+
+Recommended dev setup and dependencies
+--------
+Except for `ppo2.cpp` and potentially the example environment core PPO code should be easily portable.
+Two main dependencies are Eigen and Tensorflow. If example environment considered then also DART.
+Containers also use Sferes2 framework and Python WAF build system which
+are outcome of history of the project and could be ditched. Most solid way to examine container dependencies
+is to read project's `singularity/singularity.def` file and its parent.
+To run the examples a Linux system supporting Singularity container system is needed, preferably:
 
 -   Ubuntu 18.04 LTS operating system,
 
 -   [Singularity](https://sylabs.io/guides/3.3/user-guide/quick_start.html#quick-installation-steps) @singularity containerization environment,
 
+Examples
+==========
 Training gaits
 --------------
 
@@ -43,7 +85,8 @@ argument list to the SIMG file, type in bash:
 
 This will trigger a single training run of a closed-loop PPO for 75M
 frames. On a modern CPU, this will take around 1 day of computation,
-10GB memory, and less than 2 logical cores. You can check the PNG image
+10GB memory (leak in the example environment),
+and less than 2 logical cores. You can check the PNG image
 with an example learning curve available in the repository as
 `./resources/ppo_cl/*.png` to see what to expect over time. The results
 with the log file will be available under `./results` in the same
@@ -63,13 +106,11 @@ Upon starting the server, weblink will be displayed in the output to
 render the visualization in a browser.\
 \
 You can of course change passed parameters, however, if you wish to
-change the graph structure you will need to regenerate the graph file:
+change the graph structure you will need to regenerate the graph file (MLP):
 
     git clone https://gitlab.doc.ic.ac.uk/sb5817/stable-baselines.git
 
     cd stable-baselines/
-
-    pip3 install -e .
 
     python3 ./stable_baselines/ppo2/graph_generator.py 
         [4,5] 
@@ -86,6 +127,11 @@ this file when calling into the PPO SIMG file. In order to see what
 parameters are accepted, from *within* the repository call:
 
     python3 ./stable_baselines/ppo2/graph_generator.py --help
+
+If you require policy other than MLP, modifications to both graph_generator and
+core PPO_CPP may be needed, however as long as the Policy is originally supported
+by Stable Baselines those changes shouldn't be too challenging. The reason for
+forking
 
 Visualizing gaits
 -----------------
@@ -129,24 +175,8 @@ recommended to do this when not in headless mode due to the deep
 integration of Singularity @singularity with the host machine that can
 result in undesirable side effects.
 
-<a name="repos"></a>Full project repositories listing
+<a name="repos"></a>Related repositories listing
 ----------------------------
-
-All repositories are currently hosted under Imperial College London’s
-Gitlab service, although they will be migrated to [author’s github
-profile](https://github.com/Antymon) upon expiry of author’s student
-account. Currently, repositories include:
-
--   [neural\_mape](https://gitlab.doc.ic.ac.uk/sb5817/neural-mape) -
-    Representing hexapod controller as a small fully-connected neural
-    network evolved with MAP Elites @mouret2015illuminating algorithm.
-
--   [signal\_approximation](https://gitlab.doc.ic.ac.uk/sb5817/msc) -
-    Hexapod reference controller’s (as per @cully2015robots)
-    approximation with a fully-connected neural network.
-
--   [docker-pydart2\_hexapod\_baselines](https://gitlab.doc.ic.ac.uk/sb5817/docker-dart-gym) - Docker @docker setup of a Python-based hexapod simulation
-    environment.
 
 -   [pydart2](https://gitlab.doc.ic.ac.uk/sb5817/pydart2) - Fork of
     Pydart2 @pydart: Python layer over C++-based DART @lee2018dart
@@ -156,23 +186,6 @@ account. Currently, repositories include:
     suite). Includes modified PPO2 algorithm and utilities to export
     Tensorflow @abadi2016tensorflow meta graph.
 
--   [ppo\_cpp](https://gitlab.doc.ic.ac.uk/sb5817/ppo_cpp) - C++ port of
-    the training part of Stable Baselines @stable-baselines PPO2
-    algorithm and utilities. Requires Tensorflow @abadi2016tensorflow
-    meta graph as input.
-
--   [docker-neural\_mape](https://gitlab.doc.ic.ac.uk/sb5817/szymonbrych-airl_env) - Docker @docker setup of MAP Elites experiment. Not maintained due
-    to migration towards Singularity @singularity.
-
 -   [gym-dart\_env](https://gitlab.doc.ic.ac.uk/sb5817/dart_env) -
     Hexapod setup as a Python-based environment within OpenAI Gym
     @brockman2016openai framework.
-
--   [nn2](https://gitlab.doc.ic.ac.uk/sb5817/nn2.git) - Fork of NN2 @nn2
-    plugin introducing evolvable MLP network.
-
--   [sferes2](https://gitlab.doc.ic.ac.uk/sb5817/sferes2) - Fork of
-    Sferes2 @mouret2010sferes evolutionary framework making fixes to not
-    maintained features such as resuming training.
-
-
