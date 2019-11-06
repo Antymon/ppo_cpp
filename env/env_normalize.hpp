@@ -15,7 +15,7 @@
 
 typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Mat;
 
-class EnvNormalize : public virtual Env {
+class EnvNormalize : public Env {
 public:
     explicit EnvNormalize(
             Env &env,

@@ -15,6 +15,7 @@ typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Ma
 
 class Env : public virtual ISerializable{
 public:
+    virtual ~Env(){}
 
     virtual std::string get_action_space() = 0;
 

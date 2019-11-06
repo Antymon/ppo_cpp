@@ -15,8 +15,7 @@
 
 typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Mat;
 
-class EnvMock : public virtual Env
-{
+class EnvMock : public Env{
 public:
 
     EnvMock(double scaling_coeff = 0.)

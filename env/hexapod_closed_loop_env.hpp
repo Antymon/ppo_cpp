@@ -9,7 +9,7 @@
 
 typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Mat;
 
-class  HexapodClosedLoopEnv : public virtual HexapodEnv {
+class  HexapodClosedLoopEnv : public HexapodEnv {
 public:
     explicit HexapodClosedLoopEnv(double reset_noise_scale, bool init_reset, bool observe_velocities = false,
                          float step_duration = 0.015,
