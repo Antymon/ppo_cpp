@@ -7,7 +7,8 @@ From: airl_lab/default/airl_env:tensorflow
     Version v0.0.1
 
 %files
-    ./resources/setup.sh /git
+    ./resources/setup.sh /git/sferes2
+    ./resources/help.sh /workspace
     	
 %post
    export LD_LIBRARY_PATH="/workspace/lib:$LD_LIBRARY_PATH"
@@ -84,4 +85,4 @@ From: airl_lab/default/airl_env:tensorflow
     singularity run --app help *.simg
 
 %apprun help
-    exec ./help.sh
+    exec /workspace/help.sh
