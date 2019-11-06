@@ -1,0 +1,232 @@
+#!/bin/sh -f
+
+
+
+
+###############################################################
+#                                                             #
+#    Bourne shell script for submitting a serial job to the   #
+#    PBS queue using the qsub command.                        #
+#                                                             #
+###############################################################
+
+#     Remarks: A line beginning with # is a comment.
+#       A line beginning with #PBS is a PBS directive.
+#              PBS directives must come first; any directives
+#                 after the first executable statement are ignored.
+#
+   
+##########################
+#                        #
+#   The PBS directives   #
+#                        #
+##########################
+
+#          Set the name of the job (up to 15 characters, 
+#          no blank spaces, start with alphanumeric character)
+
+#PBS -N ppo_145383_03
+
+#          By default, the standard output and error streams are sent
+#          to files in the current working directory with names:
+#              job_name.osequence_number  <-  output stream
+#              job_name.esequence_number  <-  error stream
+#          where job_name is the name of the job and sequence_number
+#          is the job number assigned when the job is submitted.
+#          Use the directives below to change the files to which the
+#          standard output and error streams are sent.
+
+#    #PBS -o stdout_file
+#    #PBS -e stderr_file
+
+#          The directive below directs that the standard output and
+#          error streams are to be merged, intermixed, as standard
+#          output.
+
+#    #PBS -j oe
+
+#          Specify the maximum cpu and wall clock time. The wall
+#          clock time should take possible queue waiting time into
+#          account.  Format:   hhhh:mm:ss   hours:minutes:seconds
+#          Be sure to specify a reasonable value here.
+#          If the job does not finish by the time reached,
+#          the job is terminated.
+
+#     #PBS -l     cput=6:00:00
+#PBS -l walltime=71:59:00
+
+
+#          PBS can send informative email messages to you about the
+#          status of your job.  Specify a string which consists of
+#          either the single character "n" (no mail), or one or more
+#          of the characters "a" (send mail when job is aborted),
+#          "b" (send mail when job begins), and "e" (send mail when
+#          job terminates).  The default is "a" if not specified.
+#          You should also specify the email address to which the
+#          message should be send via the -M option.
+
+
+#PBS -m abe
+
+
+
+# number of nodes
+#PBS -l select=1:ncpus=8:mem=28gb
+
+
+######################################################################
+#                                                                    #
+#   To minimize communications traffic, it is best for your job      #
+#   to work with files on the local disk of the compute node.        #
+#   Hence, one needs to transfer files from your permanent home      #
+#   directory tree to the directory ${WORKDIR} automatically         #
+#   created by PBS on the local disk before program execution,       #
+#   and to transfer any important output files from the local        #
+#   disk back to the permanent home directory tree after program     #
+#   execution is completed.                                          #
+#                                                                    #
+#   There are essentially two ways to achieve this: (1) to use the   #
+#   PBS stagein and stageout utilities, or (2) to manually copy the  #
+#   files by commands in this script.  The stagein and stageout      #
+#   features of OpenPBS are somewhat awkward, especially since       #
+#   wildcards and macros in the file lists cannot be used.  This     #
+#   method also has some timing issues.  Hence, we ask you to use    #
+#   the second method, and to use secure copy (scp) to do the file   #
+#   transfers to avoid NSF bottlenecks.                              #
+#                                                                    #
+######################################################################
+
+#####################################################
+#                                                   #
+#    Specify the permanent directory(ies) on the    #
+#    server host.  Note that when the job begins    #
+#    execution, the current working directory at    #
+#    the time the qsub command was issued becomes   #
+#    the current working directory of the job.      #
+#                                                   #
+#####################################################
+
+
+###############################################################
+#                                                             #
+#    Transfer files from server to local disk.                #
+#                                                             #
+###############################################################
+
+stagein()
+{
+ echo ' '
+ echo Transferring files from server to compute node
+
+ cp $HOME/ppo.simg ./
+ cp -r $HOME/graphs ./
+ echo Files in node work directory are as follows:
+ ls -l
+
+ #cp job file to first directory within results dir
+ mkdir -p ./results/ppo_cpp_[4_5]_lr_0.0001_cr_0.1819_ent_0.0000_2/
+ cp $HOME/jobs//ppo_cpp_[4_5]_lr_0.0001_cr_0.1819_ent_0.0000_2.job ./results/ppo_cpp_[4_5]_lr_0.0001_cr_0.1819_ent_0.0000_2/
+ 
+ cp -r $HOME/ppo_results_145383/results/ppo_cpp_[4_5]_lr_0.0001_cr_0.1819_ent_0.0000_2/ .
+}
+
+############################################################
+#                                                          #
+#    Execute the run.  Do not run in the background.       #
+#                                                          #
+############################################################
+
+runprogram()
+{
+    module load singularity
+	
+	a=();
+	for d in ./ppo_cpp_\[4_5\]_lr_0.0001_cr_0.1819_ent_0.0000_2/checkpoints/*; do a+=( "$(ls -1v $d | tail -n2 | head -n1)" ); done;
+	index=
+	
+
+    for (( i=1; i<4; i++ ))
+    do
+		resume_json=${a[((${index}*4+i))]}
+		resume_prefix=${resume_json:0:$((length-5))}
+	
+        ./ppo.simg $i ppo_cpp_[4_5]_lr_0.0001_cr_0.1819_ent_0.0000_2 graphs/ppo_cpp_[4_5]_lr_0.0001_cr_0.1819_ent_0.0000.meta.txt --steps 225000000 --num_saves 225 --lr 0.00012234718225969765 --ent 0 --cr 0.1818521336312506 --num_epochs 10 --batch_steps 32768 --cl --reset_noise 0 -r -p ${resume_prefix}&
+        sleep 5s
+    done
+
+	resume_json=${a[((${index}*4))]}
+	resume_prefix=${resume_json:0:$((length-5))}
+
+    ./ppo.simg 0 ppo_cpp_[4_5]_lr_0.0001_cr_0.1819_ent_0.0000_2 graphs/ppo_cpp_[4_5]_lr_0.0001_cr_0.1819_ent_0.0000.meta.txt --steps 225000000 --num_saves 225 --lr 0.00012234718225969765 --ent 0 --cr 0.1818521336312506 --num_epochs 10 --batch_steps 32768 --cl --reset_noise 0 -r -p ${resume_prefix}
+#for all background jobs to finish
+  wait
+}
+
+###########################################################
+#                                                         #
+#   Copy necessary files back to permanent directory.     #
+#                                                         #
+###########################################################
+
+stageout()
+{
+ echo ' '
+ echo Transferring files from compute nodes to server
+ ls -l
+
+ if [ ! -d "$HOME/ppo_results_145383" ]; then
+    mkdir $HOME/ppo_results_145383
+ fi
+
+ cp -r ./results $HOME/ppo_results_145383
+ exit
+}
+
+#####################################################################
+#                                                                   #
+#  The "qdel" command is used to kill a running job.  It first      #
+#  sends a SIGTERM signal, then after a delay (specified by the     #
+#  "kill_delay" queue attribute (set to 60 seconds), unless         #
+#  overridden by the -W option of "qdel"), it sends a SIGKILL       #
+#  signal which eradicates the job.  During the time between the    #
+#  SIGTERM and SIGKILL signals, the "cleanup" function below is     #
+#  run. You should include in this function commands to copy files  #
+#  from the local disk back to your home directory.  Note: if you   #
+#  need to transfer very large files which make take longer than    #
+#  60 seconds, be sure to use the -W option of qdel.                #
+#                                                                   #
+#####################################################################
+
+early()
+{
+ echo ' '
+ echo ' ############ WARNING:  EARLY TERMINATION #############'
+ echo ' '
+ }
+
+trap 'early; stageout' 2 9 15
+
+
+##################################################
+#                                                #
+#   Staging in, running the job, and staging out #
+#   were specified above as functions.  Now      #
+#   call these functions to perform the actual   #
+#   file transfers and program execution.        #
+#                                                #
+##################################################
+
+stagein
+runprogram
+echo ' ############ End RUNPROGRAMM #############'
+stageout 
+
+###############################################################
+#                                                             #
+#   The epilogue script automatically deletes the directory   #
+#   created on the local disk (including all files contained  #
+#   therein.                                                  #
+#                                                             #
+###############################################################
+
+exit

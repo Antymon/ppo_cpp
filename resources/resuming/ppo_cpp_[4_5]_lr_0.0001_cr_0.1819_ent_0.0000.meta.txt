@@ -2291,7 +2291,7 @@ graph_def {
               size: 4
             }
           }
-          tensor_content: "\355Ve\276\243\377\275\275\032y\372\273\275\371\306>o\177\030\277O\004;\276\272\230\021?\004#\210>\023]\240\276\315>B\276\023\376\241\275\rS\343\275\3628J\2776I\327:o\305\367\276!k\310<\033\n\347>\231\313\324\276\231Z\216=\362\016&?V\013\210<\002\215\t\277\242\373\027\277N\017v=\037,\240=\316\205\302\274\234\205\037>\324\265\035>V\226\017>\236\242R\276\237G\301\274\213q}\276X\2454\276\310\333\241>\007\231.\276\251\266\003?\371\030#\275\034\021M\277\363\320\302\274P\0141=\210 \221\276\261\004\202\276eh\002\276+\300\255\275RY\314=\257\234\360\276\236\312`=\311hy=\316\246\227=\270M\276\276\r\242\205\276\370^F\277\355=\257>C\206\220>\362\037\275\276P8\211=\'@\026\276\255\231J=\300e\027\277\357\356\356>\220\010\233>\356F\252>\243\327\364\276\340\246\013\276yp\245\276\3560\247=pk\320\2761\254\337\274\2011\331>\315Ml\276\010\023s\276\227 \275>"
+          tensor_content: "g\255\325\275\203\177\254\276\352J\'\276\223?P\276U\250\367\274\017r\237\275k9V\277q\322e\275\272\257P\276M2\025>\335\2234>7}+\277g%\320\276c\361\312\275V\264\253<\331v\211\276\033\026\311\276W3\261>a\250\207\275H\202\230>\266\034\366>\3161n\275s\322l\275\334\003\216\274\370\315k\276\362\263D??g\312=\321S\255\276Ou&>\2156%\276\276\217\264<b\222\371\276\251k\311\276BX\r\277\2135\001?\216\345\220\274N~\335\276\020\027Y\275\323\204\253\276(!E>x9\262\276\006r\300=\276\275\206>\330\220\251\276\336\374&\275)C\350>6\036\032=\333\t\023?\256\204\024\276\326\212\274>mi!>#\232\211\276\275\0172?Js9>_\035\026?\033TX<l\224\274\276\241\000\r>%\"\240\275\2415\236>\336\231-\2769\007\351>\332[\025> 1\217\275\362\242\332\276/T\337\276k\337\376>e\275a>\272\245\220\274\242\326V=u\360\300>\356\021\013?"
         }
       }
     }
@@ -2743,7 +2743,7 @@ graph_def {
               size: 4
             }
           }
-          tensor_content: "/\312\257\276{\367<?\232\213\265\276\207\326\247>\343\327W>X\320\261\276\024\243*=#\301x>\025\206\240>i\333R=G\320\034\277<\312\212\275J\274a\277\315\030\347\276 \365\370<np\024>\342\260\007\276\355tu\276\243\207\252\275\004\037%\277\177\306\334\276\006\304\234=^\220*:]\245\333\276\250\275\233>Q\254\177<\237\022\005\276Q\0371\277\013\372\'\276@`=<\366\031\214<\374\364\372\276\235\220\265\273nq\342>\277\'\366\276|\272\026>\233\006}>\253\326g\276\267\371\024\277\272\335\007\276@\212\241>!d\234>\215j>?\215\273Y>C\304W>M\247\222\276\341\264e\276\324B\272>\256; \273\202\216\312>\005l\314>\027\324>\276A\357\316=\376-=>Sb\201>=\211\017\276\257\3263\2762\232\n?\016rW\276r\317\205<Uf\275\276Z\251\224>\273\177+=I\244\261\276\002m\256>\026\227\205>]\354\253\275\207\371\017\276d\207\277\276\027\270\237\275a\331\031\276\263V\216>"
+          tensor_content: "\347\236\257\2765\027\347>\210\303*>\212\232\024\2765\235\024\2770\257\324>\251\351\232>Mk\025\276\320\354\230<\200\325\004>8\366\023\276\261\223\275>\321\207\r?\262\013G>\253Z\225\273\367-\020\277ey\320\276\354\323\302\276j\372\330>\233T\255=<\361l\276,\303\366<\333Z\321>\320q\016?>\240\251>\316\207^\271\024\365\332>\212V\267><Np\276\323\312F>\335z\244\276\241j\240>\312\237\363\275_?\025\277\222\255\036?F\242\331\276)M\215\276\271P\357=\251\355F\276\"\367B\277\250\\\256\276\310\375\222>\rZ\316\274$\362|=Z\207f\274\263\230:?\214\212\221>Q\325\356=Q\225\335\276\215\2058>\017\212j\275\355\004\212\276\206\344\321\276\310jr\276\334\270h\276|\0211\275\270\234\326\274\006S&\275_\236\322>\223\326\211\2762\222\000?\361\313\005?\023\n\200>\2048=\276\335+@\276)\327}=\312\234\007\277\226m\213\274\007\223\223\275Z\367g>$X\312>\367\300\317<"
         }
       }
     }
@@ -3195,7 +3195,7 @@ graph_def {
               size: 5
             }
           }
-          tensor_content: "\247\270\240\275\335\243O?\303\205T>:U\221\277\263-z=p5C?\004f&\277bUn?\333k\256\276\263\303\353=}\210j\277n\320Z\276\315\223\001?\013\362X=\177\332l?s\272@\277\261\303\017\277\272\353X>\031\250\271\276\345ex\277"
+          tensor_content: "qpm>o\347\037\276\375|\014?\245\325O\277\304\010{\277N\312\202\276,T\035\277\350 \342>y\351\202?\353\346\017\277\313\342+?k\314e?M\206\252\276\2717\005?k\365\031\277f\372\226\277\324a\372>\177\345\272\276\3409\325\275\223\"\363\276"
         }
       }
     }
@@ -3647,7 +3647,7 @@ graph_def {
               size: 5
             }
           }
-          tensor_content: "\367W=\277\214;\\?J!\036\275\276{(?\312\010\007?\336;\260<f1\311=\335\373\214\277Ld\342>\270*C\277V\304\213\277V\\\237\276\025H\274>\271\356\\\276[3:\277}M[=\257\031W\277\3700\226>\356\343\213?e\221\323="
+          tensor_content: "E\204\027\2779[\300=\252\204<?\354\343\003\277\351\253i?\213C\021\2774\264\205\2778-.\277\3428\273=H\033\256>50 \277\'&r?\014\371O\277(\221\315=$\003V>\373\217\347\276) \212\275#L\223\275\304\312\206\277\233\232R\277"
         }
       }
     }
@@ -4099,7 +4099,7 @@ graph_def {
               size: 1
             }
           }
-          tensor_content: "\205^i\276e\200(>\344\334G\277\037\311\304>&/\317>"
+          tensor_content: "r\233S\277\237\255P>\007e\353=\235\243\202\276\2601\343\276"
         }
       }
     }
@@ -4525,7 +4525,7 @@ graph_def {
               size: 18
             }
           }
-          tensor_content: "\215>\013\272\221Xd\273\031)\020\273\255\010,;\032e\313;,\202u\272|\227 \272d\033\206::{p9\036d\033\273Fo\'\272x\2778\273\352\360\354:\357\367\206\272\373O\020\272V{\317\267\200\206v;1\316\302\272\001\225F;~\321C8\274ZT;\177E\277\273a\206\033;l\\\270\2722\033\222;T#~:\341\267S;\032\340B\272\270\324\314:U\261\275\272Q\255Y:@\304\014\272_f\000\271\002\001\2319{\221&9\332\247\216\272\t\013\025\273\200\324\250\273\373\014\014;\313\030\3518d\236c\2734\322\256\273\353\345\3409\352` \2730\372\3239\346\315\310\272\t\253w\270\274]N:\200C3:o\332\230:\305\323#;\010\374\352\272s\267\021:\352{\305\272\303\371\252\273`\232\022\272\251\356&\272\231\203u\273\337\315w\271\226\014\204\271 \304k\273+\372\2134[`,;\033\207\327\272W\277\010\272]\276R\273L\334\372\272%\3337\273\013\344\247\272\034\214\372:\350\263\037\273\020|\267:\316.\341\272.\371\3579P\364\217;I\302d;C{2\272\337T\212:\250N|\272}L\025;\345E5;4\216^;1\255\260:H\360\t\272[\246\215;^\230f\273\000\027\233:\272hF:\357\235M\272\351\210\330\272"
+          tensor_content: "\333\247\364:\361\301\256:\020v\246\272o7h\273\233\360)\271}17\273\207\277\215\273\271\251\370\271\265G<;\261d\264:\254M\222\272\277\317H;(3p\271\244ek\273\313\024>;).\t\272\203\014O\273\037n\232\272\316\331\2518\006/4\271;_\024;\272\244b:)\035\244:\003\251\272:\211S\235:\312S\355\272/\322\231;\006\270\014\273\377p8:\014\277\035:M\033\310\272\340|N\273\376\246A;\231\342\020\273\035\r\226;o\207];\331\263\2609\242?p;U\003\034\272\025\214*;\257\266\220;\236\206X\273\352\377B\272$)\235\272y\357\317\272\031D\213\2734W\017;R\334W\272\013Q\362:\1773\275:.\0016;\002\336\226\272(\311\t\264\361\341$\273\016\345\032:!\221\021\273\323\373\205\272)\206\365:\257\\\313:\375-I\273?pJ;v\022\364\2724\n\007\273\034\321\026;<\320n\273\277\2374\273\010e7\270\213\365\245\273\276\312\207:V\314\370:CT\236:\246w\347\272TA\262\272OC\027;\366S\305:\"=\244:\225\036\377\266\330\260\222;6\307\233:Y\367?;\263\314\317:\242\325\000\273\252>s\273\306\341X:{N\200:\215x\024\272\0277H;\304\305\210;8\242\272\272^\3729\273"
         }
       }
     }
@@ -5294,7 +5294,7 @@ graph_def {
               size: 18
             }
           }
-          tensor_content: "\325\363\202\273\230>\022\271\230U?\273(\326\336\272\213\212\326:l~\213;[M\262\272S(\331\272]\010W\273\r\271\366\272\256F\030;\3756\023;\036wi\271w\340\315\272y\261p;\253\020\246\272&M\017\273@\301q\271@\362\335:7\310o\273\261\345\257\272\257\201\3349\311-\214\272\340\376$\273\317\211\246\272\251\275X\272\324\275\243\273\375\022M;\221\357J;\236\000\001\273\316\241\302\272G1\375\272P\265\3709\377*Y;\205\354\r:%\332$;\357\372\023\272\205\377a\272\033y\215:\013\001\310\272$\033\231:\267?6\273{w@\273\031\020\361:\033O)\272D\345\230\273\206s\256\271\243\210\017;>\351\322:\215E5:\373\373\022;:\"~;\231\370\227;\034S\323\272\010\366=\273\207{\252:\215r\273\272w!\242:\002\235_\271\240:.\273E.\224:9\216\330\271=+.\273\0344\245;\215|P\273q\000\365:.Ss9a`Q;\016\374\017;\364\330\3429\311\00249\374\223\204\273\230lb\273o\024>\271\256h\013;\014\231\234:\200\257x;\024\370/\272\3208\250:\327x);\003H#\273\305\026\346\272N`M\272\342\227\332\273H\351\203:\t\270z:CZ-9\001:\302\2706\016\317\272\236j79"
+          tensor_content: "b\377\320:\373\312y9X\037k\272\341r\203;\271\340\232\273/^h\272Z\032\234\271m\333\023;S\004\337:\246lR;(\004\301:Q\253\r;\210+l;\000\265x:\330(&;\r\230\316\271\323\204_;\0347n\271HO.;c\177\002;\271yf;XL:;\366\361\3609g\2401\272\374\3379\270\001`\t\273\014`\235:\205\023\210\273y\\\314\272\244\3203;\242\301\272:\243\362\342:\333\225\214\273\"F,;\0101\340:\377\026\242\272\035\340\305\272\223j\2739\221t\236\272U\373\205\273\014\306\016\273\027\026\372\272\'vg:u\322Q\272|\247\233;P\260O:bz3:i\322\034;\233w\235:en\236:\255\177\306\272Z\033\255\271\"Ue\273\203\002\234\273\252\026\203\272\320\334\213\271U\216\2629a\213\207:A\252\312\271H\246\2429\273\347\r;\355|\030:@(3\273\314\341\242\272\350m\342;w\205\240:G\273\007;\310\251\346:\355\220\226\272b\255\000;\214v\201\273\263\371 ;\337\241\336\272\252\225\3769\342\272\037\2721\316%;\222\3779;\035\320\016\273\360\212\333\272\036\244\t:\346\274o\272\314/\343:\016\302\321:\362\000\216\2735\277\021;\017\022\016\273\217\225b\272\334{k;JA\2709o\326\245\273"
         }
       }
     }
@@ -32402,7 +32402,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 15
+              size: 43
             }
           }
         }
@@ -32421,24 +32421,52 @@ graph_def {
           dtype: DT_STRING
           tensor_shape {
             dim {
-              size: 15
+              size: 43
             }
           }
+          string_val: "beta1_power"
+          string_val: "beta2_power"
           string_val: "model/pi/b"
+          string_val: "model/pi/b/Adam"
+          string_val: "model/pi/b/Adam_1"
           string_val: "model/pi/logstd"
+          string_val: "model/pi/logstd/Adam"
+          string_val: "model/pi/logstd/Adam_1"
           string_val: "model/pi/w"
+          string_val: "model/pi/w/Adam"
+          string_val: "model/pi/w/Adam_1"
           string_val: "model/pi_fc0/b"
+          string_val: "model/pi_fc0/b/Adam"
+          string_val: "model/pi_fc0/b/Adam_1"
           string_val: "model/pi_fc0/w"
+          string_val: "model/pi_fc0/w/Adam"
+          string_val: "model/pi_fc0/w/Adam_1"
           string_val: "model/pi_fc1/b"
+          string_val: "model/pi_fc1/b/Adam"
+          string_val: "model/pi_fc1/b/Adam_1"
           string_val: "model/pi_fc1/w"
+          string_val: "model/pi_fc1/w/Adam"
+          string_val: "model/pi_fc1/w/Adam_1"
           string_val: "model/q/b"
           string_val: "model/q/w"
           string_val: "model/vf/b"
+          string_val: "model/vf/b/Adam"
+          string_val: "model/vf/b/Adam_1"
           string_val: "model/vf/w"
+          string_val: "model/vf/w/Adam"
+          string_val: "model/vf/w/Adam_1"
           string_val: "model/vf_fc0/b"
+          string_val: "model/vf_fc0/b/Adam"
+          string_val: "model/vf_fc0/b/Adam_1"
           string_val: "model/vf_fc0/w"
+          string_val: "model/vf_fc0/w/Adam"
+          string_val: "model/vf_fc0/w/Adam_1"
           string_val: "model/vf_fc1/b"
+          string_val: "model/vf_fc1/b/Adam"
+          string_val: "model/vf_fc1/b/Adam_1"
           string_val: "model/vf_fc1/w"
+          string_val: "model/vf_fc1/w/Adam"
+          string_val: "model/vf_fc1/w/Adam_1"
         }
       }
     }
@@ -32452,7 +32480,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 15
+              size: 43
             }
           }
         }
@@ -32471,9 +32499,37 @@ graph_def {
           dtype: DT_STRING
           tensor_shape {
             dim {
-              size: 15
+              size: 43
             }
           }
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
           string_val: ""
           string_val: ""
           string_val: ""
@@ -32499,25 +32555,81 @@ graph_def {
     input: "save/Const"
     input: "save/SaveV2/tensor_names"
     input: "save/SaveV2/shape_and_slices"
+    input: "beta1_power"
+    input: "beta2_power"
     input: "model/pi/b"
+    input: "model/pi/b/Adam"
+    input: "model/pi/b/Adam_1"
     input: "model/pi/logstd"
+    input: "model/pi/logstd/Adam"
+    input: "model/pi/logstd/Adam_1"
     input: "model/pi/w"
+    input: "model/pi/w/Adam"
+    input: "model/pi/w/Adam_1"
     input: "model/pi_fc0/b"
+    input: "model/pi_fc0/b/Adam"
+    input: "model/pi_fc0/b/Adam_1"
     input: "model/pi_fc0/w"
+    input: "model/pi_fc0/w/Adam"
+    input: "model/pi_fc0/w/Adam_1"
     input: "model/pi_fc1/b"
+    input: "model/pi_fc1/b/Adam"
+    input: "model/pi_fc1/b/Adam_1"
     input: "model/pi_fc1/w"
+    input: "model/pi_fc1/w/Adam"
+    input: "model/pi_fc1/w/Adam_1"
     input: "model/q/b"
     input: "model/q/w"
     input: "model/vf/b"
+    input: "model/vf/b/Adam"
+    input: "model/vf/b/Adam_1"
     input: "model/vf/w"
+    input: "model/vf/w/Adam"
+    input: "model/vf/w/Adam_1"
     input: "model/vf_fc0/b"
+    input: "model/vf_fc0/b/Adam"
+    input: "model/vf_fc0/b/Adam_1"
     input: "model/vf_fc0/w"
+    input: "model/vf_fc0/w/Adam"
+    input: "model/vf_fc0/w/Adam_1"
     input: "model/vf_fc1/b"
+    input: "model/vf_fc1/b/Adam"
+    input: "model/vf_fc1/b/Adam_1"
     input: "model/vf_fc1/w"
+    input: "model/vf_fc1/w/Adam"
+    input: "model/vf_fc1/w/Adam_1"
     attr {
       key: "dtypes"
       value {
         list {
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
           type: DT_FLOAT
           type: DT_FLOAT
           type: DT_FLOAT
@@ -32576,7 +32688,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 15
+              size: 43
             }
           }
         }
@@ -32595,24 +32707,52 @@ graph_def {
           dtype: DT_STRING
           tensor_shape {
             dim {
-              size: 15
+              size: 43
             }
           }
+          string_val: "beta1_power"
+          string_val: "beta2_power"
           string_val: "model/pi/b"
+          string_val: "model/pi/b/Adam"
+          string_val: "model/pi/b/Adam_1"
           string_val: "model/pi/logstd"
+          string_val: "model/pi/logstd/Adam"
+          string_val: "model/pi/logstd/Adam_1"
           string_val: "model/pi/w"
+          string_val: "model/pi/w/Adam"
+          string_val: "model/pi/w/Adam_1"
           string_val: "model/pi_fc0/b"
+          string_val: "model/pi_fc0/b/Adam"
+          string_val: "model/pi_fc0/b/Adam_1"
           string_val: "model/pi_fc0/w"
+          string_val: "model/pi_fc0/w/Adam"
+          string_val: "model/pi_fc0/w/Adam_1"
           string_val: "model/pi_fc1/b"
+          string_val: "model/pi_fc1/b/Adam"
+          string_val: "model/pi_fc1/b/Adam_1"
           string_val: "model/pi_fc1/w"
+          string_val: "model/pi_fc1/w/Adam"
+          string_val: "model/pi_fc1/w/Adam_1"
           string_val: "model/q/b"
           string_val: "model/q/w"
           string_val: "model/vf/b"
+          string_val: "model/vf/b/Adam"
+          string_val: "model/vf/b/Adam_1"
           string_val: "model/vf/w"
+          string_val: "model/vf/w/Adam"
+          string_val: "model/vf/w/Adam_1"
           string_val: "model/vf_fc0/b"
+          string_val: "model/vf_fc0/b/Adam"
+          string_val: "model/vf_fc0/b/Adam_1"
           string_val: "model/vf_fc0/w"
+          string_val: "model/vf_fc0/w/Adam"
+          string_val: "model/vf_fc0/w/Adam_1"
           string_val: "model/vf_fc1/b"
+          string_val: "model/vf_fc1/b/Adam"
+          string_val: "model/vf_fc1/b/Adam_1"
           string_val: "model/vf_fc1/w"
+          string_val: "model/vf_fc1/w/Adam"
+          string_val: "model/vf_fc1/w/Adam_1"
         }
       }
     }
@@ -32627,7 +32767,7 @@ graph_def {
         list {
           shape {
             dim {
-              size: 15
+              size: 43
             }
           }
         }
@@ -32646,9 +32786,37 @@ graph_def {
           dtype: DT_STRING
           tensor_shape {
             dim {
-              size: 15
+              size: 43
             }
           }
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
+          string_val: ""
           string_val: ""
           string_val: ""
           string_val: ""
@@ -32724,6 +32892,90 @@ graph_def {
           shape {
             unknown_rank: true
           }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
+          shape {
+            unknown_rank: true
+          }
         }
       }
     }
@@ -32746,6 +32998,34 @@ graph_def {
           type: DT_FLOAT
           type: DT_FLOAT
           type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
+          type: DT_FLOAT
         }
       }
     }
@@ -32753,8 +33033,90 @@ graph_def {
   node {
     name: "save/Assign"
     op: "Assign"
-    input: "model/pi/b"
+    input: "beta1_power"
     input: "save/RestoreV2"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/pi/b"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_1"
+    op: "Assign"
+    input: "beta2_power"
+    input: "save/RestoreV2:1"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/pi/b"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_2"
+    op: "Assign"
+    input: "model/pi/b"
+    input: "save/RestoreV2:2"
     attr {
       key: "T"
       value {
@@ -32795,10 +33157,98 @@ graph_def {
     }
   }
   node {
-    name: "save/Assign_1"
+    name: "save/Assign_3"
+    op: "Assign"
+    input: "model/pi/b/Adam"
+    input: "save/RestoreV2:3"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/pi/b"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 18
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_4"
+    op: "Assign"
+    input: "model/pi/b/Adam_1"
+    input: "save/RestoreV2:4"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/pi/b"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 18
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_5"
     op: "Assign"
     input: "model/pi/logstd"
-    input: "save/RestoreV2:1"
+    input: "save/RestoreV2:5"
     attr {
       key: "T"
       value {
@@ -32842,10 +33292,104 @@ graph_def {
     }
   }
   node {
-    name: "save/Assign_2"
+    name: "save/Assign_6"
+    op: "Assign"
+    input: "model/pi/logstd/Adam"
+    input: "save/RestoreV2:6"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/pi/logstd"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 1
+            }
+            dim {
+              size: 18
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_7"
+    op: "Assign"
+    input: "model/pi/logstd/Adam_1"
+    input: "save/RestoreV2:7"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/pi/logstd"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 1
+            }
+            dim {
+              size: 18
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_8"
     op: "Assign"
     input: "model/pi/w"
-    input: "save/RestoreV2:2"
+    input: "save/RestoreV2:8"
     attr {
       key: "T"
       value {
@@ -32889,10 +33433,104 @@ graph_def {
     }
   }
   node {
-    name: "save/Assign_3"
+    name: "save/Assign_9"
+    op: "Assign"
+    input: "model/pi/w/Adam"
+    input: "save/RestoreV2:9"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/pi/w"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 5
+            }
+            dim {
+              size: 18
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_10"
+    op: "Assign"
+    input: "model/pi/w/Adam_1"
+    input: "save/RestoreV2:10"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/pi/w"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 5
+            }
+            dim {
+              size: 18
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_11"
     op: "Assign"
     input: "model/pi_fc0/b"
-    input: "save/RestoreV2:3"
+    input: "save/RestoreV2:11"
     attr {
       key: "T"
       value {
@@ -32933,10 +33571,98 @@ graph_def {
     }
   }
   node {
-    name: "save/Assign_4"
+    name: "save/Assign_12"
+    op: "Assign"
+    input: "model/pi_fc0/b/Adam"
+    input: "save/RestoreV2:12"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/pi_fc0/b"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 4
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_13"
+    op: "Assign"
+    input: "model/pi_fc0/b/Adam_1"
+    input: "save/RestoreV2:13"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/pi_fc0/b"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 4
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_14"
     op: "Assign"
     input: "model/pi_fc0/w"
-    input: "save/RestoreV2:4"
+    input: "save/RestoreV2:14"
     attr {
       key: "T"
       value {
@@ -32980,10 +33706,104 @@ graph_def {
     }
   }
   node {
-    name: "save/Assign_5"
+    name: "save/Assign_15"
+    op: "Assign"
+    input: "model/pi_fc0/w/Adam"
+    input: "save/RestoreV2:15"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/pi_fc0/w"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 18
+            }
+            dim {
+              size: 4
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_16"
+    op: "Assign"
+    input: "model/pi_fc0/w/Adam_1"
+    input: "save/RestoreV2:16"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/pi_fc0/w"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 18
+            }
+            dim {
+              size: 4
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_17"
     op: "Assign"
     input: "model/pi_fc1/b"
-    input: "save/RestoreV2:5"
+    input: "save/RestoreV2:17"
     attr {
       key: "T"
       value {
@@ -33024,10 +33844,98 @@ graph_def {
     }
   }
   node {
-    name: "save/Assign_6"
+    name: "save/Assign_18"
+    op: "Assign"
+    input: "model/pi_fc1/b/Adam"
+    input: "save/RestoreV2:18"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/pi_fc1/b"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 5
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_19"
+    op: "Assign"
+    input: "model/pi_fc1/b/Adam_1"
+    input: "save/RestoreV2:19"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/pi_fc1/b"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 5
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_20"
     op: "Assign"
     input: "model/pi_fc1/w"
-    input: "save/RestoreV2:6"
+    input: "save/RestoreV2:20"
     attr {
       key: "T"
       value {
@@ -33071,10 +33979,104 @@ graph_def {
     }
   }
   node {
-    name: "save/Assign_7"
+    name: "save/Assign_21"
+    op: "Assign"
+    input: "model/pi_fc1/w/Adam"
+    input: "save/RestoreV2:21"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/pi_fc1/w"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 4
+            }
+            dim {
+              size: 5
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_22"
+    op: "Assign"
+    input: "model/pi_fc1/w/Adam_1"
+    input: "save/RestoreV2:22"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/pi_fc1/w"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 4
+            }
+            dim {
+              size: 5
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_23"
     op: "Assign"
     input: "model/q/b"
-    input: "save/RestoreV2:7"
+    input: "save/RestoreV2:23"
     attr {
       key: "T"
       value {
@@ -33115,10 +34117,10 @@ graph_def {
     }
   }
   node {
-    name: "save/Assign_8"
+    name: "save/Assign_24"
     op: "Assign"
     input: "model/q/w"
-    input: "save/RestoreV2:8"
+    input: "save/RestoreV2:24"
     attr {
       key: "T"
       value {
@@ -33162,10 +34164,10 @@ graph_def {
     }
   }
   node {
-    name: "save/Assign_9"
+    name: "save/Assign_25"
     op: "Assign"
     input: "model/vf/b"
-    input: "save/RestoreV2:9"
+    input: "save/RestoreV2:25"
     attr {
       key: "T"
       value {
@@ -33206,10 +34208,98 @@ graph_def {
     }
   }
   node {
-    name: "save/Assign_10"
+    name: "save/Assign_26"
+    op: "Assign"
+    input: "model/vf/b/Adam"
+    input: "save/RestoreV2:26"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/vf/b"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 1
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_27"
+    op: "Assign"
+    input: "model/vf/b/Adam_1"
+    input: "save/RestoreV2:27"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/vf/b"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 1
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_28"
     op: "Assign"
     input: "model/vf/w"
-    input: "save/RestoreV2:10"
+    input: "save/RestoreV2:28"
     attr {
       key: "T"
       value {
@@ -33253,10 +34343,104 @@ graph_def {
     }
   }
   node {
-    name: "save/Assign_11"
+    name: "save/Assign_29"
+    op: "Assign"
+    input: "model/vf/w/Adam"
+    input: "save/RestoreV2:29"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/vf/w"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 5
+            }
+            dim {
+              size: 1
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_30"
+    op: "Assign"
+    input: "model/vf/w/Adam_1"
+    input: "save/RestoreV2:30"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/vf/w"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 5
+            }
+            dim {
+              size: 1
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_31"
     op: "Assign"
     input: "model/vf_fc0/b"
-    input: "save/RestoreV2:11"
+    input: "save/RestoreV2:31"
     attr {
       key: "T"
       value {
@@ -33297,10 +34481,98 @@ graph_def {
     }
   }
   node {
-    name: "save/Assign_12"
+    name: "save/Assign_32"
+    op: "Assign"
+    input: "model/vf_fc0/b/Adam"
+    input: "save/RestoreV2:32"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/vf_fc0/b"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 4
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_33"
+    op: "Assign"
+    input: "model/vf_fc0/b/Adam_1"
+    input: "save/RestoreV2:33"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/vf_fc0/b"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 4
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_34"
     op: "Assign"
     input: "model/vf_fc0/w"
-    input: "save/RestoreV2:12"
+    input: "save/RestoreV2:34"
     attr {
       key: "T"
       value {
@@ -33344,10 +34616,104 @@ graph_def {
     }
   }
   node {
-    name: "save/Assign_13"
+    name: "save/Assign_35"
+    op: "Assign"
+    input: "model/vf_fc0/w/Adam"
+    input: "save/RestoreV2:35"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/vf_fc0/w"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 18
+            }
+            dim {
+              size: 4
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_36"
+    op: "Assign"
+    input: "model/vf_fc0/w/Adam_1"
+    input: "save/RestoreV2:36"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/vf_fc0/w"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 18
+            }
+            dim {
+              size: 4
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_37"
     op: "Assign"
     input: "model/vf_fc1/b"
-    input: "save/RestoreV2:13"
+    input: "save/RestoreV2:37"
     attr {
       key: "T"
       value {
@@ -33388,10 +34754,192 @@ graph_def {
     }
   }
   node {
-    name: "save/Assign_14"
+    name: "save/Assign_38"
+    op: "Assign"
+    input: "model/vf_fc1/b/Adam"
+    input: "save/RestoreV2:38"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/vf_fc1/b"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 5
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_39"
+    op: "Assign"
+    input: "model/vf_fc1/b/Adam_1"
+    input: "save/RestoreV2:39"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/vf_fc1/b"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 5
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_40"
     op: "Assign"
     input: "model/vf_fc1/w"
-    input: "save/RestoreV2:14"
+    input: "save/RestoreV2:40"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/vf_fc1/w"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 4
+            }
+            dim {
+              size: 5
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_41"
+    op: "Assign"
+    input: "model/vf_fc1/w/Adam"
+    input: "save/RestoreV2:41"
+    attr {
+      key: "T"
+      value {
+        type: DT_FLOAT
+      }
+    }
+    attr {
+      key: "_class"
+      value {
+        list {
+          s: "loc:@model/vf_fc1/w"
+        }
+      }
+    }
+    attr {
+      key: "_output_shapes"
+      value {
+        list {
+          shape {
+            dim {
+              size: 4
+            }
+            dim {
+              size: 5
+            }
+          }
+        }
+      }
+    }
+    attr {
+      key: "use_locking"
+      value {
+        b: true
+      }
+    }
+    attr {
+      key: "validate_shape"
+      value {
+        b: true
+      }
+    }
+  }
+  node {
+    name: "save/Assign_42"
+    op: "Assign"
+    input: "model/vf_fc1/w/Adam_1"
+    input: "save/RestoreV2:42"
     attr {
       key: "T"
       value {
@@ -33444,9 +34992,37 @@ graph_def {
     input: "^save/Assign_12"
     input: "^save/Assign_13"
     input: "^save/Assign_14"
+    input: "^save/Assign_15"
+    input: "^save/Assign_16"
+    input: "^save/Assign_17"
+    input: "^save/Assign_18"
+    input: "^save/Assign_19"
     input: "^save/Assign_2"
+    input: "^save/Assign_20"
+    input: "^save/Assign_21"
+    input: "^save/Assign_22"
+    input: "^save/Assign_23"
+    input: "^save/Assign_24"
+    input: "^save/Assign_25"
+    input: "^save/Assign_26"
+    input: "^save/Assign_27"
+    input: "^save/Assign_28"
+    input: "^save/Assign_29"
     input: "^save/Assign_3"
+    input: "^save/Assign_30"
+    input: "^save/Assign_31"
+    input: "^save/Assign_32"
+    input: "^save/Assign_33"
+    input: "^save/Assign_34"
+    input: "^save/Assign_35"
+    input: "^save/Assign_36"
+    input: "^save/Assign_37"
+    input: "^save/Assign_38"
+    input: "^save/Assign_39"
     input: "^save/Assign_4"
+    input: "^save/Assign_40"
+    input: "^save/Assign_41"
+    input: "^save/Assign_42"
     input: "^save/Assign_5"
     input: "^save/Assign_6"
     input: "^save/Assign_7"
