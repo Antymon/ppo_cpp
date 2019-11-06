@@ -132,8 +132,8 @@ parameters are accepted, from *within* the repository call:
 If you require policy other than MLP, modifications to both graph_generator and
 core PPO_CPP may be needed, however as long as the Policy is originally supported
 by Stable Baselines those changes shouldn't be too challenging. The reason for
-forking Stable Baselines mainly to name tensors which need to be referred to on the C++ side,
-but also to introduce a thin graph generator over the original implementation extended with
+forking Stable Baselines was mainly to name tensors which need to be referred to on the C++ side,
+but also to introduce a thin graph generator layer over the original implementation extended with
 computational graph export/import functionality.
 
 Visualizing gaits
