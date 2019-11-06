@@ -7,7 +7,7 @@ From: airl_lab/default/airl_env:tensorflow
     Version v0.0.1
 
 %files
-    ./resources/setup.sh /git/sferes2
+    ./resources/setup.sh /git
     ./resources/help.sh /workspace
     	
 %post
