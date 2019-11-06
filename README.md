@@ -12,7 +12,7 @@ possible along X axis ([example recording](https://drive.google.com/open?id=1ds_
 Why?
 --------
 **Performance**. The interesting thing is that PPO_CPP executes 2~3 times faster than corresponding Python implementation when running on the
-same environment with same number of threads. Originally, however, PPO_CPP was setup for the sake of DRL/Neuroevolution comparison in an unpublished yet project.
+same example environment with the same number of threads. Originally, however, PPO_CPP was setup for the sake of DRL/Neuroevolution comparison in an unpublished yet project.
 
 Is it optimized?
 --------
@@ -177,9 +177,8 @@ integration of Singularity @Kurtzer2016 with the host machine that can
 result in undesirable side effects.
 
 <a name="repos"></a>Related repositories
-----------------------------
--   [docker-pydart2\_hexapod\_baselines](https://gitlab.doc.ic.ac.uk/sb5817/docker-dart-gym) - Docker @Merkel2014 setup of a Python-based hexapod simulation
-    environment.
+==========
+-   [docker-pydart2\_hexapod\_baselines](https://gitlab.doc.ic.ac.uk/sb5817/docker-dart-gym) - Docker @Merkel2014 file describing analogous Python setup.
 
 -   [stable\_baselines](https://gitlab.doc.ic.ac.uk/sb5817/stable-baselines) - Fork of Stable Baselines @Hill2018 (deep RL algorithm
     suite). Includes modified PPO2 algorithm @Schulman2017 and utilities to export
@@ -199,7 +198,7 @@ References
 2. Greg  Brockman,  Vicki  Cheung,  Ludwig  Pettersson,  Jonas  Schneider,  John Schulman,  Jie  Tang,  and  Wojciech Zaremba.   Openai  gym.arXiv  preprintarXiv:1606.01540, 2016
 3. Antoine Cully, Jeff Clune, Danesh Tarapore, and Jean-Baptiste Mouret. Robots that can adapt like animals. Nature, 521(7553):503, 2015.
 4. Gael Guennebaud, Benoit Jacob, et al.  Eigen v3. http://eigen.tuxfamily.org, 2010
-5. Sehoon  Ha.Pydart2:   A  python  binding  of  DART. https://github.com/sehoonha/pydart2, 2016
+5. Sehoon  Ha. Pydart2:   A  python  binding  of  DART. https://github.com/sehoonha/pydart2, 2016
 6. Ashley Hill, Antonin Raffin, Maximilian Ernestus, Adam Gleave, Rene Traore, Prafulla Dhariwal, Christopher Hesse, Oleg Klimov, Alex Nichol, Matthias Plap-pert,  Alec Radford,  John Schulman,  Szymon Sidor,  and Yuhuai Wu.   Stablebaselines.https://github.com/hill-a/stable-baselines, 2018
 7. Gregory M Kurtzer. Singularity 2.1.2 - Linux application and environment con-tainers for science, August 2016
 8. Jeongseok Lee, Michael Grey, Sehoon Ha, Tobias Kunz, Sumit Jain, Yuting Ye, Siddhartha Srinivasa, Mike Stilman, and C Karen Liu.  Dart:  Dynamic anima-tion and robotics toolkit.The Journal of Open Source Software, 3:500, 02 2018
