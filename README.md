@@ -12,7 +12,7 @@ possible along X axis ([example recording](https://drive.google.com/open?id=1ds_
 Why?
 --------
 **Performance**. The interesting thing is that PPO_CPP executes 2~3 times faster than corresponding Python implementation when running on the
-same example environment with the same number of threads. Originally, however, PPO_CPP was setup for the sake of DRL/Neuroevolution comparison in an unpublished yet project.
+same example environment with the same number of threads. Originally, however, PPO_CPP was set up for the sake of DRL/Neuroevolution comparison in an unpublished yet project.
 
 Is it optimized?
 --------
@@ -37,7 +37,7 @@ At the moment multi-threaded version lives on the *parallel* branch, because of 
 
 State of the project
 --------
-This is just a proof-of-concept which could benefit from number of improvements. Let me know if this project is useful for you!
+This a proof-of-concept which could benefit from number of improvements. Let me know if this project is useful for you!
 
 Recommended dev setup and dependencies
 --------
@@ -132,7 +132,9 @@ parameters are accepted, from *within* the repository call:
 If you require policy other than MLP, modifications to both graph_generator and
 core PPO_CPP may be needed, however as long as the Policy is originally supported
 by Stable Baselines those changes shouldn't be too challenging. The reason for
-forking
+forking Stable Baselines mainly to name tensors which need to be referred to on the C++ side,
+but also to introduce a thin graph generator over the original implementation extended with
+computational graph export/import functionality.
 
 Visualizing gaits
 -----------------
