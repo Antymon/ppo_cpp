@@ -207,4 +207,4 @@ References
 9. Dirk Merkel. Docker: Lightweight Linux containers for consistent development and deployment. Linux J., 2014(239), March 2014
 10. Jean-Baptiste Mouret and Stephane  Doncieux.   SFERESv2: Evolvin’ in the multi-core world.   InProc.  of  Congress  on  Evolutionary  Computation  (CEC), pages 4079–4086, 2010
 11. Thomas Nagy.The WAF Book. 2010
-12. John   Schulman,    Filip   Wolski,    Prafulla   Dhariwal,    Alec   Radford,    andOleg  Klimov.Proximal  policy  optimization  algorithms.arXiv  preprintarXiv:1707.06347, 2017
+12. John   Schulman,    Filip   Wolski,    Prafulla   Dhariwal,    Alec   Radford,    and Oleg  Klimov. Proximal  policy  optimization  algorithms. arXiv  preprint arXiv:1707.06347, 2017
