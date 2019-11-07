@@ -25,11 +25,11 @@ Single-threaded version with both hexapod environments was run in many instances
 
 How can I use it for my work?
 --------
-You should be able to easily check the examples below, however, if you want to use it in different settings you will probably need 3 things:
+You should be able to easily check the examples below, however if you want to use it in different settings you will probably need 3 things:
 -   Make your environment inherit from Env abstract class under `env\env.hpp`
--   Modify or replace main `ppo2.cpp` which creates an instance of an environment and passes it to PPO
+-   Modify or replace main `ppo2.cpp` which creates instance of an environment and passes it to PPO
 -   Create own computational graph and potentially make some small modifications to the core algorithm if using more involved
-   policies (current implementation supports only MLP policies). Graph generation is mentioned below.
+    policies (currently implementation supports only MLP policies). Graph generation is mentioned below.
 
 Where is the multi-threaded version?
 --------
@@ -64,25 +64,25 @@ Linux systems). For your convenience, a well-performing PPO setup was
 committed in the PPO repository. Paying attention to the very long
 argument list to the SIMG file, type in bash:
 
-   git clone https://gitlab.doc.ic.ac.uk/sb5817/ppo_cpp.git
+    git clone https://gitlab.doc.ic.ac.uk/sb5817/ppo_cpp.git
 
-   cd ppo_cpp/singularity
+    cd ppo_cpp/singularity
 
-   ./build_final_image.sh
+    ./build_final_image.sh
 
-   # very long argument list
-   ./final*.simg
-       0
-       ppo_cpp_[4_5]_lr_0.0004_cr_0.1610_ent_0.0007
-   ../resources/ppo_cl/graphs/ppo_cpp_\[4_5\]_lr_0.0004_cr_0.1610_ent_0.0007.meta.txt
-       --steps 75000000
-       --num_saves 75
-       --lr 0.000393141171574037
-       --ent 0.0007160293279937344
-       --cr 0.16102319952328978
-       --num_epochs 10
-       --batch_steps 65536
-       --cl
+    # very long argument list
+    ./final*.simg 
+        0 
+        ppo_cpp_[4_5]_lr_0.0004_cr_0.1610_ent_0.0007
+    ../resources/ppo_cl/graphs/ppo_cpp_\[4_5\]_lr_0.0004_cr_0.1610_ent_0.0007.meta.txt 
+        --steps 75000000 
+        --num_saves 75 
+        --lr 0.000393141171574037 
+        --ent 0.0007160293279937344 
+        --cr 0.16102319952328978 
+        --num_epochs 10 
+        --batch_steps 65536 
+        --cl
 
 This will trigger a single training run of a closed-loop PPO for 75M
 frames. On a modern CPU, this will take around 1 day of computation,
@@ -93,7 +93,7 @@ with an example learning curve available in the repository as
 with the log file will be available under `./results` in the same
 directory as the SIMG file. To display help of the main executable through the SIMG file:
 
-       singularity run --app help *.simg
+        singularity run --app help *.simg
 
 Inside of `./results` directory there will be `./tensorboard` directory
 created with episode rewards logs. Tensorboard utility that is installed
@@ -101,7 +101,7 @@ with Python Tensorflow @Abadi2016 can spawn a web server,
 which is able to visualize those logs at runtime by simply pointing to
 the mentioned directory:
 
-       tensorboard --logdir tensorboard --port 6080
+        tensorboard --logdir tensorboard --port 6080
 
 Upon starting the server, weblink will be displayed in the output to
 render the visualization in a browser.\
@@ -109,17 +109,17 @@ render the visualization in a browser.\
 You can of course change passed parameters, however, if you wish to
 change the graph structure you will need to regenerate the graph file (MLP):
 
-   git clone https://gitlab.doc.ic.ac.uk/sb5817/stable-baselines.git
+    git clone https://gitlab.doc.ic.ac.uk/sb5817/stable-baselines.git
 
-   cd stable-baselines/
+    cd stable-baselines/
 
-   python3 ./stable_baselines/ppo2/graph_generator.py
-       [4,5]
-       --observation_space_size 18
-       --save_path graphs/ppo_cpp_[4_5]_lr_0.0004_cr_0.1610_ent_0.0007.meta.txt
-       --learning_rate 0.000393141171574037
-       --ent_coef 0.0007160293279937344
-       --cliprange 0.16102319952328978
+    python3 ./stable_baselines/ppo2/graph_generator.py 
+        [4,5] 
+        --observation_space_size 18 
+        --save_path graphs/ppo_cpp_[4_5]_lr_0.0004_cr_0.1610_ent_0.0007.meta.txt 
+        --learning_rate 0.000393141171574037
+        --ent_coef 0.0007160293279937344
+        --cliprange 0.16102319952328978
 
 This will generate a closed-loop graph similar to the one used in the
 training initiated above. The generator will write the file with respect to
@@ -147,17 +147,17 @@ committed in the PPO repository. The following assumes you are **not**
 running in the headless mode. Paying attention to the very long argument
 list to the SIMG file, type in bash:
 
-   git clone https://gitlab.doc.ic.ac.uk/sb5817/ppo_cpp.git
+    git clone https://gitlab.doc.ic.ac.uk/sb5817/ppo_cpp.git
 
-   cd ppo_cpp/singularity
+    cd ppo_cpp/singularity
 
-   ./start_container.sh
+    ./start_container.sh
 
-   cd /git/sferes2/
-   ./waf --exp ppo_cpp
-   ./build/exp/ppo_cpp/ppo_cpp
-       --cl
-       -p exp/ppo_cpp/resources/ppo_cl/2019-08-20_21_13_01_2859_0.pkl.71
+    cd /git/sferes2/
+    ./waf --exp ppo_cpp
+    ./build/exp/ppo_cpp/ppo_cpp 
+        --cl 
+        -p exp/ppo_cpp/resources/ppo_cl/2019-08-20_21_13_01_2859_0.pkl.71
 
 This will trigger a window in which hexapod will be visualized in
 5-second sessions, looping forever. Close through the Ctrl+C key
@@ -183,17 +183,17 @@ result in undesirable side effects.
 -   [docker-pydart2\_hexapod\_baselines](https://gitlab.doc.ic.ac.uk/sb5817/docker-dart-gym) - Docker @Merkel2014 file describing analogous Python setup. In order to try out an example hexapod experiment run `python3 run_hexapod.py` inside of `/git/stable-baselines` directory.
 
 -   [stable\_baselines](https://gitlab.doc.ic.ac.uk/sb5817/stable-baselines) - Fork of Stable Baselines @Hill2018 (deep RL algorithm
-   suite). Includes modified PPO2 algorithm @Schulman2017 and utilities to export
-   Tensorflow @Abadi2016 meta graph.
+    suite). Includes modified PPO2 algorithm @Schulman2017 and utilities to export
+    Tensorflow @Abadi2016 meta graph.
 
 -   [gym-dart\_env](https://gitlab.doc.ic.ac.uk/sb5817/dart_env) -
-   Hexapod setup as a Python-based environment within OpenAI Gym
-   @Brockman2016 framework.
-  
+    Hexapod setup as a Python-based environment within OpenAI Gym
+    @Brockman2016 framework.
+    
 -   [pydart2](https://gitlab.doc.ic.ac.uk/sb5817/pydart2) - Fork of
-   Pydart2 @Ha2016: Python layer over C++-based DART @Lee2018
-   simulation framework. Modified to enable experiments with hexapod.
-  
+    Pydart2 @Ha2016: Python layer over C++-based DART @Lee2018
+    simulation framework. Modified to enable experiments with hexapod.
+    
 References
 ==========
 1. Martin Abadi, Paul Barham, Jianmin Chen, Zhifeng Chen, Andy Davis, JeffreyDean, Matthieu Devin, Sanjay Ghemawat, Geoffrey Irving, Michael Isard, et al. Tensorflow: A system for large-scale machine learning. In12th{USENIX}Sym-posium on Operating Systems Design and Implementation ({OSDI}16), pages265–283, 2016
