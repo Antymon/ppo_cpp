@@ -127,7 +127,7 @@ your Stable Baselines @Hill2018 repository. You need to point to
 this file when calling into the PPO SIMG file. In order to see what
 parameters are accepted, from *within* the repository call:
 
-   python3 ./stable_baselines/ppo2/graph_generator.py --help
+        python3 ./stable_baselines/ppo2/graph_generator.py --help
 
 If you require policy other than MLP, modifications to both graph_generator and
 core PPO_CPP may be needed, however as long as the Policy is originally supported
