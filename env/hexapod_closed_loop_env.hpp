@@ -38,8 +38,19 @@ public:
 
     void deserialize(nlohmann::json& json) override {
         HexapodEnv::deserialize(json);
-        _reset_noise_scale = json["reset_noise_scale"].get<double>();
+
+
+        if (json.count("reset_noise_scale") != 0)
+        {
+            _reset_noise_scale = json["reset_noise_scale"].get<double>();
+        }
+        else
+        {
+            std::cout << "no reset noise found: defaulting to 0" << std::endl;
+            _reset_noise_scale = 0.;
+        }
         apply_noise();
+
     }
 
 protected:
