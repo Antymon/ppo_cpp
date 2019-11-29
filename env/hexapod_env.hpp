@@ -58,7 +58,7 @@ public:
         simulation.world()->getConstraintSolver()->setCollisionDetector(
                 dart::collision::BulletCollisionDetector::create());
 
-        simulation.add_floor();
+        simulation.add_floor(20.);
 
         if(init_reset) {
             reset();
