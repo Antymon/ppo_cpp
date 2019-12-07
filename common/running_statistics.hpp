@@ -61,9 +61,12 @@ public:
     void serialize(nlohmann::json& json) override {
         json["var"] = std::move(std::vector<float>(var.data(), var.data() + var.rows() * var.cols()));
         json["mean"] = std::move(std::vector<float>(mean.data(), mean.data() + mean.rows() * mean.cols()));
+        json["count"] = count;
     }
 
     void deserialize(nlohmann::json& json) override {
+
+        count = json["count"].get<double>();
 
         auto var_v {json["var"].get<std::vector<float>>()};
         auto mean_v {json["mean"].get<std::vector<float>>()};
