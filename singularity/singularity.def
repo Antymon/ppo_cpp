@@ -1,10 +1,10 @@
 Bootstrap: library
-From: airl_lab/default/airl_env:tensorflow
+From: airl_lab/default/airl_env:tensorflow_original
 
 
 %labels
     Author szymon.brych@gmail.com
-    Version v0.0.1
+    Version v0.0.2
 
 %files
     ./resources/setup.sh /git/sferes2
