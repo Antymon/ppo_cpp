@@ -32,21 +32,29 @@ public:
 
     Mat reset() override {
         HexapodEnv::reset();
+        return std::move(apply_noise());
+    }
 
-        Eigen::VectorXd qpos{local_robot->skeleton()->getPositions()};
-        Eigen::VectorXd qvel{local_robot->skeleton()->getVelocities()};
+    void serialize(nlohmann::json& json) override {
+        HexapodEnv::serialize(json);
+        json["reset_noise_scale"] = _reset_noise_scale;
+    }
 
-        qpos.tail(18) += _reset_noise_scale * Eigen::VectorXd::Random(18);
-        qvel.tail(18) += _reset_noise_scale * Eigen::VectorXd::Random(18);
+    void deserialize(nlohmann::json& json) override {
+        HexapodEnv::deserialize(json);
 
-        local_robot->skeleton()->setPositions(qpos);
-        local_robot->skeleton()->setVelocities(qvel);
 
-        Mat obs{get_obs()};
+        if (json.count("reset_noise_scale") != 0)
+        {
+            _reset_noise_scale = json["reset_noise_scale"].get<double>();
+        }
+        else
+        {
+            std::cout << "no reset noise found: defaulting to 0" << std::endl;
+            _reset_noise_scale = 0.;
+        }
+        apply_noise();
 
-        old_obs = obs;
-
-        return std::move(obs);
     }
 
 protected:
@@ -67,6 +75,23 @@ private:
     double _reset_noise_scale;
     bool observe_velocities;
     int observation_space_size;
+
+    Mat apply_noise() {
+        Eigen::VectorXd qpos{local_robot->skeleton()->getPositions()};
+        Eigen::VectorXd qvel{local_robot->skeleton()->getVelocities()};
+
+        qpos.tail(18) += _reset_noise_scale * Eigen::VectorXd::Random(18);
+        qvel.tail(18) += _reset_noise_scale * Eigen::VectorXd::Random(18);
+
+        local_robot->skeleton()->setPositions(qpos);
+        local_robot->skeleton()->setVelocities(qvel);
+
+        Mat obs{get_obs()};
+
+        old_obs = obs;
+
+        return std::move(obs);
+    }
 };
 
 #endif //PPO_CPP_HEXAPOD_CLOSED_LOOP_ENV_HPP

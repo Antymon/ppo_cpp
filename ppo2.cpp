@@ -102,10 +102,14 @@ int main(int argc, char **argv)
     args::Flag closed_loop(parser,"closed loop environment", "If set, closed-loop hexapod environment will be used, open-loop by default",{"closed_loop","closed-loop","cl"});
 
     args::Flag verbose(parser,"verbose", "output additional logs to the console",{'v',"verbose"});
+    args::Flag resume(parser,"resume", "flag signalling resuming",{'r',"resume"});
 
     args::ValueFlag<double> duration(parser, "duration", "The total duration of played animation [seconds]", {"duration","du"},5.);
 
     args::ValueFlag<int> threads(parser, "num threads", "Number of threads used in training", {'j',"jobs","threads","n_threads","num_threads","nt"},1);
+
+    //seeding needs fixing
+//    args::ValueFlag<int> seed(parser, "seed", "Seed. Time-based if not specified.", {"seed"});
 
     try
     {
@@ -129,43 +133,53 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    auto now = std::chrono::high_resolution_clock::now();
-    auto nanos = std::chrono::duration_cast<std::chrono::nanoseconds>(now.time_since_epoch()).count();
-    int seed = static_cast<int>(nanos%std::numeric_limits<int>::max());
-    srand(seed);
-    std::cout << "seed: " << seed << std::endl;
+    //still not deterministic - perhaps TF needs a global seed setter on the graph
+//    if (seed){
+//        srand(seed.Get());
+//    } else {
+        auto now = std::chrono::high_resolution_clock::now();
+        auto nanos = std::chrono::duration_cast<std::chrono::nanoseconds>(now.time_since_epoch()).count();
+        int seed_val = static_cast<int>(nanos % std::numeric_limits<int>::max());
+        srand(seed_val);
+//    }
 
+    std::cout << "seed: " << seed << std::endl;
 
     auto seconds = time (nullptr);
     std::string run_id {id?id.Get():("ppo_"+std::to_string(seconds))};
     std::string tb_path {save_path.Get()+"/tensorboard/"+run_id+"/"};
 
-    bool training = !load_path;
+    bool training = !load_path || resume;
 //    std::cout << "load_path: " << load_path.Get() << std::endl;
 //    std::cout << "training: " << training << std::endl;
 
     load_and_init_robot2();
 
-    std::shared_ptr<Env> wrapped_env;
+    std::unique_ptr<Env> wrapped_env;
     std::vector<std::shared_ptr<Env>> envs;
 
     bool multi_env = threads.Get()>1;
 
-    for (int i =0; i<threads.Get(); ++i){
+    if(multi_env){
+        for (int i =0; i<threads.Get(); ++i){
+            //TODO: environment selection should be recoverable from serialization as well
+            if(closed_loop){
+                envs.push_back(std::make_shared<HexapodClosedLoopEnv>(reset_noise_scale.Get(),!multi_env));
+            } else {
+                envs.push_back(std::make_shared<HexapodEnv>(!multi_env));
+            }
+        }
+        wrapped_env = std::make_unique<VecEnv>(envs);
+    } else {
+        //TODO: environment selection should be recoverable from serialization as well
         if(closed_loop){
-            envs.push_back(std::make_shared<HexapodClosedLoopEnv>(reset_noise_scale.Get(),!multi_env));
+            wrapped_env = std::make_unique<HexapodClosedLoopEnv>(reset_noise_scale.Get(),!multi_env);
         } else {
-            envs.push_back(std::make_shared<HexapodEnv>(!multi_env));
+            wrapped_env = std::make_unique<HexapodEnv>(!multi_env);
         }
     }
 
-    if(multi_env){
-        wrapped_env = std::make_shared<VecEnv>(envs);
-    } else {
-        wrapped_env = envs[0];
-    }
-
-    EnvNormalize env{*wrapped_env, training};
+    EnvNormalize env{std::move(wrapped_env),training};
 
     const std::string final_graph_path{graph_path.Get()};
 
@@ -176,6 +190,11 @@ int main(int argc, char **argv)
     PPO2 algorithm {final_graph_path,env,
                     .99,num_batch_steps.Get(),entropy.Get(),learning_rate.Get(),.5,.5,.95,32,num_epochs.Get(),clip_range.Get(),-1,tb_path
     };
+
+
+    if(load_path){
+        algorithm.load(load_path.Get());
+    }
 
     if(training) {
         //shell-dependant timestamped directory creation
@@ -206,7 +225,6 @@ int main(int argc, char **argv)
         algorithm.learn(int_steps,total_saves,checkpoint_path);
 
     } else {
-        algorithm.load(load_path.Get());
 
         const int playback_steps = static_cast<int>(duration.Get()/0.015);
 

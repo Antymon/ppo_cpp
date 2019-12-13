@@ -190,7 +190,11 @@ public:
             observation_space = json["observation_space"].get<std::string>();
             action_space = json["action_space"].get<std::string>();
             n_envs = json["n_envs"].get<int>();
-            model_filename = json["model_filename"].get<std::string>();
+            if (model_filename.empty()) {
+                model_filename = json["model_filename"].get<std::string>();
+            } else {
+                std::cout << "filename passed through CLI overrides deserialized one" << std::endl;
+            }
 
             reset();
 
