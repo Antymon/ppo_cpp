@@ -14,7 +14,6 @@ public:
     explicit HexapodClosedLoopEnv(double reset_noise_scale, bool init_reset, bool observe_velocities = false,
                          float step_duration = 0.015,
                          float simulation_duration = 5, float min_action_value = -1, float max_action_value = 1) :
-            Env(),
             HexapodEnv(false, step_duration, simulation_duration, min_action_value, max_action_value),
             _reset_noise_scale{reset_noise_scale},
             observe_velocities{observe_velocities},

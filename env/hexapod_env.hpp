@@ -42,7 +42,6 @@ public:
         Env(),
         step_duration{step_duration},
         simulation_duration{simulation_duration},
-
         min_action_value{min_action_value},
         max_action_value{max_action_value},
         reward_accumulator{0},
@@ -50,6 +49,31 @@ public:
         old_rew{Mat::Zero(get_num_envs(),1)}
         //actions_clamp{1,action_space_size,min_action_value,max_action_value}
     {
+        simulation=std::make_unique<robot_dart::RobotDARTSimu>(step_duration);
+
+#ifdef GRAPHIC
+        simulation->set_graphics(std::make_shared<robot_dart::graphics::Graphics>(simulation->world()));
+        std::static_pointer_cast<robot_dart::graphics::Graphics>(simulation->graphics())->look_at({0.5, 3., 0.75}, {0.5, 0., 0.2});
+#endif
+        simulation->world()->getConstraintSolver()->setCollisionDetector(
+                dart::collision::BulletCollisionDetector::create());
+
+        simulation->add_floor(20.);
+
+        local_robot = global2::global_robot->clone();
+
+        //this controller is dummy but alters state of robot in such a way that it is possible to do manual control
+        //without it, hexapod's position will be fixed regardless of legs
+        //would be nice to extract this logic and get rid of this dummy conroller
+        std::vector<double> ctrl = {1, 0, 0.5, 0.25, 0.25, 0.5, 1, 0.5, 0.5, 0.25, 0.75, 0.5, 1, 0, 0.5, 0.25, 0.25, 0.5, 1, 0, 0.5, 0.25, 0.75, 0.5, 1, 0.5, 0.5, 0.25, 0.25, 0.5, 1, 0, 0.5, 0.25, 0.75, 0.5};
+        local_robot->add_controller(std::make_shared<robot_dart::control::HexaControl>(step_duration, ctrl));
+        std::static_pointer_cast<robot_dart::control::HexaControl>(local_robot->controllers()[0])
+                ->set_h_params(std::vector<double>(1, step_duration));
+
+        simulation->add_robot(local_robot);
+
+//        std::cout << local_robot->skeleton()->getPositions() << std::endl;
+
         if(init_reset) {
             reset();
         }
@@ -75,45 +99,13 @@ public:
 
         //std::cout << "reset(): time: " << simulation->world()->getTime() << " \n";
 
-        if (local_robot) {
-            local_robot->clear_controllers();
+        auto world = simulation->world();
+        world->reset();
+        world->setTime(0);
 
-            simulation->clear_robots();
-            simulation->clear_descriptors();
-
-            auto world = simulation->world();
-
-            world->removeAllSkeletons();
-            world->removeAllSimpleFrames();
-            world->reset();
-
-            simulation.reset();
-            local_robot.reset();
-        }
-
-        simulation=std::make_unique<robot_dart::RobotDARTSimu>(step_duration);
-
-#ifdef GRAPHIC
-        simulation->set_graphics(std::make_shared<robot_dart::graphics::Graphics>(simulation->world()));
-        std::static_pointer_cast<robot_dart::graphics::Graphics>(simulation->graphics())->look_at({0.5, 3., 0.75}, {0.5, 0., 0.2});
-#endif
-        simulation->world()->getConstraintSolver()->setCollisionDetector(
-                dart::collision::BulletCollisionDetector::create());
-
-        simulation->add_floor();
-
-        local_robot = global2::global_robot->clone();
+        local_robot->skeleton()->setVelocities(Eigen::VectorXd::Zero(24));
+        local_robot->skeleton()->setPositions(Eigen::VectorXd::Zero(24));
         local_robot->skeleton()->setPosition(5, 0.15);
-
-        //this controller is dummy but alters state of robot in such a way that it is possible to do manual control
-        //without it, hexapod's position will be fixed regardless of legs
-        //would be nice to extract this logic and get rid of this dummy conroller
-        std::vector<double> ctrl = {1, 0, 0.5, 0.25, 0.25, 0.5, 1, 0.5, 0.5, 0.25, 0.75, 0.5, 1, 0, 0.5, 0.25, 0.25, 0.5, 1, 0, 0.5, 0.25, 0.75, 0.5, 1, 0.5, 0.5, 0.25, 0.25, 0.5, 1, 0, 0.5, 0.25, 0.75, 0.5};
-        local_robot->add_controller(std::make_shared<robot_dart::control::HexaControl>(step_duration, ctrl));
-        std::static_pointer_cast<robot_dart::control::HexaControl>(local_robot->controllers()[0])
-                ->set_h_params(std::vector<double>(1, step_duration));
-
-        simulation->add_robot(local_robot);
 
         reward_accumulator = 0;
         initial_position = local_robot->skeleton()->getPositions().head(6).tail(3).cast<float>();
