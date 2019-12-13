@@ -143,7 +143,7 @@ int main(int argc, char **argv)
         srand(seed_val);
 //    }
 
-    std::cout << "seed: " << seed << std::endl;
+//    std::cout << "seed: " << seed << std::endl;
 
     auto seconds = time (nullptr);
     std::string run_id {id?id.Get():("ppo_"+std::to_string(seconds))};
@@ -159,6 +159,12 @@ int main(int argc, char **argv)
     std::vector<std::shared_ptr<Env>> envs;
 
     bool multi_env = threads.Get()>1;
+
+#ifdef GRAPHIC
+    if (multi_env){
+        std::cout << "WARNING: Visuals enabled in a multithreaded mode. Is this intentional?" << std::endl;
+    }
+#endif
 
     if(multi_env){
         for (int i =0; i<threads.Get(); ++i){
