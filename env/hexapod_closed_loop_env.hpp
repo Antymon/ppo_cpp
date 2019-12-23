@@ -11,10 +11,10 @@ typedef Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> Ma
 
 class  HexapodClosedLoopEnv : public HexapodEnv {
 public:
-    explicit HexapodClosedLoopEnv(double reset_noise_scale, bool init_reset, bool observe_velocities = false,
+    explicit HexapodClosedLoopEnv(double reset_noise_scale, bool init_reset, bool use_bullet = false, bool observe_velocities = false,
                          float step_duration = 0.015,
                          float simulation_duration = 5, float min_action_value = -1, float max_action_value = 1) :
-            HexapodEnv(false, step_duration, simulation_duration, min_action_value, max_action_value),
+            HexapodEnv(false, use_bullet, step_duration, simulation_duration, min_action_value, max_action_value),
             _reset_noise_scale{reset_noise_scale},
             observe_velocities{observe_velocities},
             observation_space_size{observe_velocities ? 36 : 18}{

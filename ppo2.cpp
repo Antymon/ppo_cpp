@@ -104,6 +104,8 @@ int main(int argc, char **argv)
     args::Flag verbose(parser,"verbose", "output additional logs to the console",{'v',"verbose"});
     args::Flag resume(parser,"resume", "flag signalling resuming",{'r',"resume"});
 
+    args::Flag use_bullet(parser,"use_bullet", "Replace default constraint solver with Bullet",{"bullet","use_bullet","bullet_solver"});
+
     args::ValueFlag<double> duration(parser, "duration", "The total duration of played animation [seconds]", {"duration","du"},5.);
 
     args::ValueFlag<int> threads(parser, "num threads", "Number of threads used in training", {'j',"jobs","threads","n_threads","num_threads","nt"},1);
@@ -170,18 +172,18 @@ int main(int argc, char **argv)
         for (int i =0; i<threads.Get(); ++i){
             //TODO: environment selection should be recoverable from serialization as well
             if(closed_loop){
-                envs.push_back(std::make_shared<HexapodClosedLoopEnv>(reset_noise_scale.Get(),!multi_env));
+                envs.push_back(std::make_shared<HexapodClosedLoopEnv>(reset_noise_scale.Get(),!multi_env, use_bullet));
             } else {
-                envs.push_back(std::make_shared<HexapodEnv>(!multi_env));
+                envs.push_back(std::make_shared<HexapodEnv>(!multi_env, use_bullet));
             }
         }
         wrapped_env = std::make_unique<VecEnv>(envs);
     } else {
         //TODO: environment selection should be recoverable from serialization as well
         if(closed_loop){
-            wrapped_env = std::make_unique<HexapodClosedLoopEnv>(reset_noise_scale.Get(),!multi_env);
+            wrapped_env = std::make_unique<HexapodClosedLoopEnv>(reset_noise_scale.Get(),!multi_env, use_bullet);
         } else {
-            wrapped_env = std::make_unique<HexapodEnv>(!multi_env);
+            wrapped_env = std::make_unique<HexapodEnv>(!multi_env, use_bullet);
         }
     }
 

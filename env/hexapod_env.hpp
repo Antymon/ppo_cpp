@@ -38,7 +38,7 @@ void load_and_init_robot2() {
 class HexapodEnv : public Env
 {
 public:
-    explicit HexapodEnv(bool init_reset, float step_duration = 0.015, float simulation_duration = 5, float min_action_value = -1, float max_action_value = 1):
+    explicit HexapodEnv(bool init_reset, bool use_bullet = false, float step_duration = 0.015, float simulation_duration = 5, float min_action_value = -1, float max_action_value = 1):
         Env(),
         step_duration{step_duration},
         simulation_duration{simulation_duration},
@@ -55,8 +55,10 @@ public:
         simulation->set_graphics(std::make_shared<robot_dart::graphics::Graphics>(simulation->world()));
         std::static_pointer_cast<robot_dart::graphics::Graphics>(simulation->graphics())->look_at({0.5, 3., 0.75}, {0.5, 0., 0.2});
 #endif
-        simulation->world()->getConstraintSolver()->setCollisionDetector(
-                dart::collision::BulletCollisionDetector::create());
+        if(use_bullet) {
+            simulation->world()->getConstraintSolver()->setCollisionDetector(
+                    dart::collision::BulletCollisionDetector::create());
+        }
 
         simulation->add_floor(20.);
 

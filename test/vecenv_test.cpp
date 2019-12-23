@@ -48,6 +48,7 @@ void simulate_steps(const int steps, const int num_threads){
     }
 }
 
+//TODO: fix seed
 //this test is non-deterministic
 //if it fails, there is a problem somewhere
 //if it succeeds it doesn't give a guarantee of correctness

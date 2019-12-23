@@ -36,11 +36,9 @@ def build(bld):
     bld.env.INCLUDES_PROTOBUF = '/workspace/include/'
 
     bld.program(features = 'cxx',
-            #source = 'cpp/tf_exp.cpp',
             source = 'ppo2.cpp',
             includes = './cpp . ../../',
             uselib = 'ROBOTDART ABSL TBB BOOST EIGEN PTHREAD MPI DART DART_GRAPHIC PROTOBUF TF',
-            #use = 'sferes2',
             defines = [], # defines = ['GRAPHIC'],
             target = 'ppo_cpp')
 
