@@ -22,7 +22,7 @@ do
 		echo $port
 		
 		cd $dir
-		for i in *; do xdg-open "http://szymon-tws:"${port}"/data/plugin/scalars/scalars?tag=episode_reward&run="${i}"&experiment=&format=csv"; done
+		for j in *; do xdg-open "http://szymon-tws:"${port}"/data/plugin/scalars/scalars?tag=episode_reward&run="${j}"&experiment=&format=csv"; done
 		cd ..
 		mkdir -p csv
 		sleep 3s
