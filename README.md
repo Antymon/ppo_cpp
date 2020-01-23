@@ -21,7 +21,7 @@ ported ideas and leveraging thread safety of Tensorflow's Session.Run() or promo
 
 How was it tested so far?
 --------
-Single-threaded version with both hexapod environments was run in many instances on a High Performance Computing cluster for a grand total of 50 000 to 100 000 CPU hours yielding believable results.
+Both hexapod environments were run in many instances on a High Performance Computing cluster for a grand total of 100 000 CPU hours yielding believable results.
 
 How can I use it for my work?
 --------
@@ -30,10 +30,6 @@ You should be able to easily check the examples below, however if you want to us
 -   Modify or replace main `ppo2.cpp` which creates instance of an environment and passes it to PPO
 -   Create own computational graph and potentially make some small modifications to the core algorithm if using more involved
     policies (currently implementation supports only MLP policies). Graph generation is mentioned below.
-
-Where is the multi-threaded version?
---------
-At the moment multi-threaded version lives on the *parallel* branch, because of the hexapod environment which proved to be annoyingly leaky in this setup.
 
 State of the project
 --------
