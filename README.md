@@ -46,7 +46,7 @@ To run the examples a Linux system supporting Singularity container system is ne
 
 -   Ubuntu 18.04 LTS operating system,
 
--   [Singularity](https://sylabs.io/guides/3.3/user-guide/quick_start.html#quick-installation-steps) @Kurtzer2016 containerization environment,
+-   [Singularity](https://sylabs.io/guides/3.5/user-guide/quick_start.html#quick-installation-steps) @Kurtzer2016 containerization environment,
 
 Examples
 ==========
@@ -54,8 +54,8 @@ Training gaits
 --------------
 
 To start the PPO training you need to [install
-Singularity](https://sylabs.io/guides/3.3/user-guide/quick_start.html#quick-installation-steps)
-@Kurtzer2016 version 3.3 or later (at the moment available only for
+Singularity](https://sylabs.io/guides/3.5/user-guide/quick_start.html#quick-installation-steps)
+@Kurtzer2016 version 3.5 or later (at the moment available only for
 Linux systems). For your convenience, a well-performing PPO setup was
 committed in the PPO repository. Paying attention to the very long
 argument list to the SIMG file, type in bash:
@@ -136,8 +136,8 @@ Visualizing gaits
 -----------------
 
 To start the PPO gait visualization you need to [install
-Singularity](https://sylabs.io/guides/3.3/user-guide/quick_start.html#quick-installation-steps)
-@Kurtzer2016 version 3.3 or later (at the moment available only for
+Singularity](https://sylabs.io/guides/3.5/user-guide/quick_start.html#quick-installation-steps)
+@Kurtzer2016 version 3.5 or later (at the moment available only for
 Linux systems). For your convenience, a well-performing PPO setup was
 committed in the PPO repository. The following assumes you are **not**
 running in the headless mode. Paying attention to the very long argument
@@ -150,7 +150,7 @@ list to the SIMG file, type in bash:
     ./start_container.sh
 
     cd /git/sferes2/
-    ./waf --exp ppo_cpp
+    ./exp/ppo_cpp/singularity/resources/setup.sh
     ./build/exp/ppo_cpp/ppo_cpp_visual
         --cl 
         -p exp/ppo_cpp/resources/ppo_cl/2019-08-20_21_13_01_2859_0.pkl.71
