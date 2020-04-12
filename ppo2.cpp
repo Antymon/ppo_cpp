@@ -7,6 +7,8 @@
 #include <fstream>
 #include <limits>
 #include <chrono>
+#include <thread>
+#include <cmath>
 
 #include "args.hxx"
 
@@ -35,10 +37,15 @@ void handle_signal(int sig) {
     exit(1);
 }
 
-void playback(Env& env, PPO2& algorithm, bool verbose, const int steps){
+void playback(Env& env, PPO2& algorithm, bool verbose, const int steps, const int framerate){
+
+    const float frameTime = 1000/framerate;
+
     Mat obs{env.reset()};
     float episode_reward = 0;
     for(int i = 0; i < steps; ++i){
+        //measure frame duration
+        auto start = std::chrono::steady_clock::now();
 
         if(verbose) {
             std::cout << "obs: " << env.get_original_obs() << std::endl;
@@ -57,6 +64,14 @@ void playback(Env& env, PPO2& algorithm, bool verbose, const int steps){
         if(outputs[2](0,0)>.5 || i==steps-1){
             std::cout << "episode reward: " << episode_reward << std::endl;
             episode_reward = 0;
+        }
+
+        //sleep if frame was processed too fast for visualization framerate request
+        auto end = std::chrono::steady_clock::now();
+        int duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+        if(duration<frameTime) {
+            int x = std::round(frameTime-duration);
+            std::this_thread::sleep_for(std::chrono::milliseconds(x));
         }
     }
 }
@@ -109,6 +124,8 @@ int main(int argc, char **argv)
     args::ValueFlag<double> duration(parser, "duration", "The total duration of played animation [seconds]", {"duration","du"},5.);
 
     args::ValueFlag<int> threads(parser, "num threads", "Number of threads used in training", {'j',"jobs","threads","n_threads","num_threads","nt"},1);
+
+    args::ValueFlag<int> framerate(parser, "framerate", "Framerate of visualization, no effect on training", {'f',"framerate", "fps"},60);
 
     //seeding needs fixing
 //    args::ValueFlag<int> seed(parser, "seed", "Seed. Time-based if not specified.", {"seed"});
@@ -236,7 +253,7 @@ int main(int argc, char **argv)
 
         const int playback_steps = static_cast<int>(duration.Get()/0.015);
 
-        playback(env,algorithm,verbose.Get(), playback_steps);
+        playback(env,algorithm,verbose.Get(), playback_steps, framerate.Get());
     }
 
     global2::global_robot.reset();
