@@ -151,7 +151,7 @@ list to the SIMG file, type in bash:
 
     cd /git/sferes2/
     ./waf --exp ppo_cpp
-    ./build/exp/ppo_cpp/ppo_cpp 
+    ./build/exp/ppo_cpp/ppo_cpp_visual
         --cl 
         -p exp/ppo_cpp/resources/ppo_cl/2019-08-20_21_13_01_2859_0.pkl.71
 

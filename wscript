@@ -43,6 +43,13 @@ def build(bld):
             target = 'ppo_cpp')
 
     bld.program(features = 'cxx',
+	    source = 'ppo2.cpp',
+	    includes = './cpp . ../../',
+	    uselib = 'ROBOTDART ABSL TBB BOOST EIGEN PTHREAD MPI DART DART_GRAPHIC PROTOBUF TF',
+	    defines = ['GRAPHIC'],
+	    target = 'ppo_cpp_visual')
+
+    bld.program(features = 'cxx',
                 source = 'test/vecenv_test.cpp',
                 includes = './test .',
                 uselib = 'ROBOTDART ABSL TBB BOOST EIGEN PTHREAD MPI DART DART_GRAPHIC PROTOBUF TF',
