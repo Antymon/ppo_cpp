@@ -105,7 +105,7 @@ render the visualization in a browser.\
 You can of course change passed parameters, however, if you wish to
 change the graph structure you will need to regenerate the graph file (MLP):
 
-    git clone https://gitlab.doc.ic.ac.uk/sb5817/stable-baselines.git
+    git clone git@github.com:Antymon/ppo_cpp.git
 
     cd stable-baselines/
 
@@ -143,7 +143,7 @@ committed in the PPO repository. The following assumes you are **not**
 running in the headless mode. Paying attention to the very long argument
 list to the SIMG file, type in bash:
 
-    git clone https://gitlab.doc.ic.ac.uk/sb5817/ppo_cpp.git
+    git clone git@github.com:Antymon/ppo_cpp.git
 
     cd ppo_cpp/singularity
 
