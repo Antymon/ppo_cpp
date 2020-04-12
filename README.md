@@ -150,7 +150,7 @@ list to the SIMG file, type in bash:
     ./start_container.sh
 
     cd /git/sferes2/
-    ./waf --exp ppo_cpp
+    ./exp/ppo_cpp/singularity/resources/setup.sh
     ./build/exp/ppo_cpp/ppo_cpp 
         --cl 
         -p exp/ppo_cpp/resources/ppo_cl/2019-08-20_21_13_01_2859_0.pkl.71
