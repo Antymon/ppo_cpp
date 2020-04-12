@@ -23,7 +23,7 @@ do
 		echo $port
 		tensorboard --logdir $dir --port $port &> tensorboard_dummy.log &
 		sleep 3s
-		xdg-open http://szymon-tws:$port/ &> tensorboard_dummy.log &
+		xdg-open http://localhost:$port/ &> tensorboard_dummy.log &
 		
 		if [ $(($counter % 5)) -eq 0 ]; then
 			echo "when ready to continue hit [ENTER]:"
