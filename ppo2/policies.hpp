@@ -17,6 +17,7 @@ protected:
 class ActorCriticPolicy : public virtual BasePolicy{
 protected:
     static const std::string action;
+    static const std::string deterministic_action;
     static const std::string neglogp;
     static const std::string value_flat;
 };
@@ -44,11 +45,12 @@ std::vector<tensorflow::Tensor> step(const tensorflow::Tensor& obs){
     return outputs;
 }
 
-tensorflow::Tensor get_action(const tensorflow::Tensor& obs){
+
+tensorflow::Tensor get_deterministic_action(const tensorflow::Tensor& obs){
 
     std::vector<tensorflow::Tensor> outputs;
 
-    tensorflow::Status s = _session->Run({{obs_ph,obs}},{action}, {}, &outputs);
+    tensorflow::Status s = _session->Run({{obs_ph,obs}},{deterministic_action}, {}, &outputs);
 
     if (!s.ok()) {
         std::cout << "get_action(): evaluation step error" << std::endl;

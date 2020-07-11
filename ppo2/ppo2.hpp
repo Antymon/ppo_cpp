@@ -227,7 +227,7 @@ public:
         auto tensor_obs = tensorflow::Tensor();
         Utils::convert_mat(obs,tensor_obs);
 
-        tensorflow::Tensor tensor_actions =  act_model->get_action(tensor_obs);
+        tensorflow::Tensor tensor_actions =  act_model->get_deterministic_action(tensor_obs);
 
         Mat actions;
         Utils::convert_tensor(tensor_actions,actions,env.get_action_space());
@@ -521,6 +521,7 @@ private:
 const std::string BasePolicy::obs_ph{"input/Ob:0"};
 
 const std::string ActorCriticPolicy::action{"output/_action:0"};
+const std::string ActorCriticPolicy::deterministic_action{"output/_deterministic_action:0"};
 const std::string ActorCriticPolicy::neglogp{"output/_neglogp:0"};
 const std::string ActorCriticPolicy::value_flat{"output/_value_flat:0"};
 
