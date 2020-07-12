@@ -34,7 +34,6 @@ From: airl_lab/default/airl_env:tensorflow_original
    cd /git/sferes2/exp/
    git clone https://gitlab.doc.ic.ac.uk/sb5817/ppo_cpp.git
    cd ppo_cpp
-   git checkout parallel
    cd ../../
    ./setup.sh
 
