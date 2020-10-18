@@ -12,7 +12,7 @@ possible along X-axis ([example recording](https://drive.google.com/open?id=1ds_
 Why?
 --------
 **Performance**. The interesting thing is that PPO_CPP executes 2~3 times faster than corresponding Python implementation when running on the
-same example environment with the same number of threads. Originally, however, PPO_CPP was set up for the sake of DRL/Neuroevolution comparison in an unpublished yet project.
+same example environment with the same number of threads. Originally, however, PPO_CPP was set up for the sake of DRL/Neuroevolution comparison (see citation section below).
 
 Is it optimized?
 --------
@@ -190,6 +190,17 @@ result in undesirable side effects.
     Pydart2 @Ha2016: Python layer over C++-based DART @Lee2018
     simulation framework. Modified to enable experiments with hexapod.
     
+Citing
+==========
+
+    @misc{brych2020competitiveness,
+      title={Competitiveness of MAP-Elites against Proximal Policy Optimization on locomotion tasks in deterministic simulations}, 
+      author={Szymon Brych and Antoine Cully},
+      year={2020},
+      eprint={2009.08438},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI}
+
 References
 ==========
 1. Martin Abadi, Paul Barham, Jianmin Chen, Zhifeng Chen, Andy Davis, JeffreyDean, Matthieu Devin, Sanjay Ghemawat, Geoffrey Irving, Michael Isard, et al. Tensorflow: A system for large-scale machine learning. In12th{USENIX}Sym-posium on Operating Systems Design and Implementation ({OSDI}16), pages265–283, 2016
